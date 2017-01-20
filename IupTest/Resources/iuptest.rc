@@ -1,0 +1,14 @@
+/* SIZE_ICON ICON "test_sizes.ico" */
+TECGRAF_ICON ICON "tecgraf.ico"
+TECGRAF_BITMAP BITMAP "tecgraf.bmp"
+CURSOR_PEN CURSOR "pen.cur"
+
+
+#ifndef IUP_DLL
+/* The following line will enable Windows XP Visual Styles */
+#ifdef TEC_64
+1 24 "iup64.manifest"
+#else
+1 24 "iup.manifest"
+#endif
+#endif
