@@ -6,19 +6,12 @@ import std.conv;
 import std.string;
 
 /**
-Color
 The Color structure, composed of a private, synchronized ScRgb (IEC 61966-2-2) value
 a color context, composed of an ICC profile and the native color values.
 */
 public struct Color 
 {
-    //------------------------------------------------------
-    //  Constructors
-    //------------------------------------------------------
-
-    ///<summary>
     /// Color - sRgb legacy interface, assumes Rgb values are sRgb, 0x00RRGGBB
-    ///</summary>
     public static Color fromUInt(uint argb)// internal legacy sRGB interface
     {
         Color c1;
@@ -1767,5 +1760,46 @@ public final class Colors
         Yellow = 0xFFFFFF00,
         YellowGreen = 0xFF9ACD32,
         UnknownColor = 0x00000001
+    }
+}
+
+
+/**
+The Hue in the HSI coordinate system defines a plane that it is a triangle in the RGB
+cube. But the maximum saturation in this triangle is different for each Hue because 
+of the geometry of the cube. In ColorBrowser this point is fixed at the center of the
+I axis. So the I axis is not completely linear, it is linear in two parts, one from 0
+to 0.5, and another from 0.5 to 1.0. Although the selected values are linear specified 
+you can notice that when Hue is changed the gray scale also changes, visually compacting
+values above or below the I=0.5 line according to the selected Hue.
+
+the color is in the "h s i" format; h, s and i are floating
+point numbers ranging from 0-360, 0-1 and 0-1 respectively. 
+*/
+struct HsiColor 
+{
+    float H;
+    float S;
+    float I;
+
+    static HsiColor parse(string color, char seperator = ' ')
+    {
+        //if(color.empty) 
+        //    return Colors.Black;
+
+        string c = color;
+        string[] parts = split(c, seperator);
+        float h, s, i;
+
+        h = to!float(parts[0]);
+        s = to!float(parts[1]);
+        i = to!float(parts[2]);
+
+        return HsiColor(h, s, i);
+    }
+
+    string toString(char seperator = ' ')
+    {
+        return std.format.format("%f%c%f%c%f", this.H, seperator, this.S, seperator, this.I);
     }
 }

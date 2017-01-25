@@ -421,8 +421,10 @@
   <File path="CalendarTest.d" />
   <File path="CanvasTest.d" />
   <File path="ClipboardTest.d" />
+  <File path="ColorTest.d" />
   <File path="ContainerTest.d" />
   <File path="DialogTest.d" />
+  <File path="HmiControlsTest.d" />
   <File path="IdleTest.d" />
   <File path="LabelTest.d" />
   <File path="ListTest.d" />

@@ -36,7 +36,9 @@ import ButtonTest;
 import CalendarTest;
 import CanvasTest;
 import ClipboardTest;
+import ColorTest;
 import ContainerTest;
+import HmiControlsTest;
 import DialogTest;
 import IdleTest;
 import LabelTest;
@@ -202,6 +204,14 @@ public class MainForm : IupDialog
                 dialog = new ClipboardTestDialog();
                 break;
 
+            case TestElements.ColorBrowser:
+                dialog = new ColorBrowserTestDialog();
+                break;
+
+            case TestElements.Dial:
+                dialog = new DialTestDialog();
+                break;
+
             case TestElements.Dialog:
                 dialog = new DialogTestDialog();
                 break;
@@ -332,6 +342,8 @@ public class MainForm : IupDialog
         testItems.insertBack(new TestElement(TestElements.CanvasOpenGL, TestElements.CanvasOpenGL));
         testItems.insertBack(new TestElement(TestElements.CanvasScrollbar, TestElements.CanvasScrollbar));
         testItems.insertBack(new TestElement(TestElements.Clipboard, TestElements.Clipboard));
+        testItems.insertBack(new TestElement(TestElements.ColorBrowser, TestElements.ColorBrowser));
+        testItems.insertBack(new TestElement(TestElements.Dial, TestElements.Dial));
         testItems.insertBack(new TestElement(TestElements.Dialog, TestElements.Dialog));
         testItems.insertBack(new TestElement(TestElements.FlatButton, TestElements.FlatButton));
         testItems.insertBack(new TestElement(TestElements.GetColorDialog, TestElements.GetColorDialog));
@@ -376,7 +388,9 @@ struct TestElements
     enum CanvasOpenGL = "CanvasOpenGL";
     enum CanvasScrollbar = "CanvasScrollbar";
     enum Clipboard = "Clipboard";
+    enum ColorBrowser = "ColorBrowser";
     enum Dialog = "Dialog";
+    enum Dial = "Dial";
     enum FlatButton = "FlatButton";
     enum GetColorDialog = "GetColorDialog";
     enum GridBox = "GridBox";

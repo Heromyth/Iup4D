@@ -21,7 +21,7 @@ This software is licensed under the Boost Software License, Version 1.0.
 
 For more details, see the full text of the license in the file Boost.txt.
 
-## Examples
+## Example
 ```D
 module main;
 
@@ -88,10 +88,10 @@ class MainForm : IupDialog
 }
 ```
 
-## Snaps
-<img src="Snaps/Simple Paint.png" />
+## ScreenShots
+<img src="ScreenShots/Simple Paint.png" />
 
-<img src="Snaps/Button.png" />
+<img src="ScreenShots/Button.png" />
 
 ## Todo
 - Bind more APIs for more controls

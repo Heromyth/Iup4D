@@ -1,9 +1,9 @@
 module iup.button;
 
+import iup.canvas;
 import iup.control;
 import iup.core;
 import iup.image;
-import iup.canvas;
 
 import iup.c.core;
 import iup.c.api;
@@ -14,15 +14,19 @@ import toolkit.drawing;
 import std.string;
 import std.traits;
 
+
+/**
+*/
 public interface IIupButton : IIupObject
 {
 
 }
 
 
+/**
+*/
 public class IupButtonBase : IupStandardControl
 {
-
 	protected class IupAttributes : super.IupAttributes
 	{
         enum Alignment = "ALIGNMENT";

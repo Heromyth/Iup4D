@@ -1,4 +1,4 @@
-module iup.slider;
+module iup.number;
 
 import iup.control;
 import iup.core;
@@ -11,7 +11,8 @@ import toolkit.event;
 import std.string;
 
 /**
-Creates a Valuator control. Selects a value in a limited interval. Also known as Scale or Trackbar in native systems.
+Creates a Valuator control. Selects a value in a limited interval. Also known as Scale 
+or Trackbar in native systems.
 */
 public class IupSlider : IupStandardControl
 {
@@ -278,7 +279,7 @@ public class IupSlider : IupStandardControl
 }
 
 alias IupVal = IupSlider;
-alias IupTrackbar = IupSlider;
+//alias IupTrackbar = IupSlider;
 
 enum TickPosition
 {

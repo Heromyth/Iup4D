@@ -1029,6 +1029,9 @@ public class IupIntegerUpDown : IupUpDown!(int)
 
 }
 
+
+/**
+*/
 public class IupFloatUpDown : IupUpDown!(float)
 {
 

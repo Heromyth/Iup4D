@@ -1,8 +1,8 @@
 module iup.container;
 
+import iup.canvas;
 import iup.control;
 import iup.core;
-import iup.canvas;
 import iup.image;
 
 import iup.c;

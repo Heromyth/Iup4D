@@ -4,8 +4,7 @@ import iup.canvas;
 import iup.core;
 import iup.image;
 
-import iup.c.core;
-import iup.c.api;
+import iup.c;
 
 import toolkit.drawing;
 
@@ -207,5 +206,4 @@ public class IupDraw
         return info;
     }
 }
-
 

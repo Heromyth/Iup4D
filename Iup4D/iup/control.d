@@ -493,9 +493,9 @@ public class IupControl : IupElement
 */
 public class IupStandardControl : IupControl
 {	
-
     class IupCallbacks : super.IupCallbacks
     {
+        enum IupStandardControl = "IupStandardControl";
         enum Action = "ACTION";
     }
     

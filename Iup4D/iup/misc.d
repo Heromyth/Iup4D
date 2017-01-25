@@ -1,7 +1,8 @@
 module iup.misc;
 
-import std.string;
 import iup.c.api;
+import std.string;
+
 
 
 /**
@@ -12,5 +13,3 @@ int IupHelp(string url)
 {
     return iup.c.api.IupHelp(std.string.toStringz(url));
 }
-
-

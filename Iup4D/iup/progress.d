@@ -1,4 +1,4 @@
-module iup.progression;
+module iup.progress;
 
 import iup.control;
 import iup.core;
@@ -11,10 +11,11 @@ import toolkit.event;
 import std.string;
 
 /**
-Creates a date editing interface element, which can displays a calendar for selecting a date.
+Creates a progress bar control. Shows a percent value that can be updated to simulate
+a progression.
 
-In Windows is a native element. In GTK and Motif is a custom element. In Motif is not 
-capable of displaying the calendar.
+It is similar of IupGauge, but uses native controls internally. Also does not have 
+support for text inside the bar.
 */
 public class IupProgressBar : IupStandardControl
 {

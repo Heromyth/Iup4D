@@ -156,26 +156,27 @@ public class IupDatePicker : IupStandardControl
 }
 
 
+/**
+Creates a month calendar interface element, where the user can select a date.
+
+GTK and Windows only. NOT available in Motif.
+*/
 public class IupCalendar : IupStandardControl
 {
 
-	protected class IupAttributes : super.IupAttributes
+	class IupAttributes : super.IupAttributes
 	{
         enum IupCalendar = "IupCalendar";
         enum WeekNumbers = "WEEKNUMBERS";
         enum Today = "TODAY";
 	}
 
-    protected class IupCallbacks : super.IupCallbacks
+    class IupCallbacks : super.IupCallbacks
     {
 		enum ValueChanged = "VALUECHANGED_CB";
     }
 
-
-	this()
-	{
-        super();
-    }
+	this() { super(); }
 
 
     /* ************* Protected methods *************** */
@@ -203,7 +204,10 @@ public class IupCalendar : IupStandardControl
     */
     @property 
     {
-        public bool showWeekNumbers ()  { return getAttribute(IupAttributes.WeekNumbers) == FlagIdentifiers.Yes; }
+        public bool showWeekNumbers ()  {
+            return getAttribute(IupAttributes.WeekNumbers) == FlagIdentifiers.Yes; 
+        }
+
         public void showWeekNumbers (bool value)  { 
             setAttribute(IupAttributes.WeekNumbers, value ? FlagIdentifiers.Yes : FlagIdentifiers.No);
         }

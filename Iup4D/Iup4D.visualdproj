@@ -442,15 +442,15 @@
     <File path="iup\c\opengl.d" />
     <File path="iup\c\package.d" />
    </Folder>
-   <Folder name="input">
-    <File path="iup\input\key.d" />
+   <Folder name="HMI">
+    <File path="iup\HMI\number.d" />
+    <File path="iup\HMI\package.d" />
    </Folder>
    <File path="iup\application.d" />
    <File path="iup\assembly.d" />
    <File path="iup\button.d" />
    <File path="iup\canvas.d" />
-   <File path="iup\clipboard.d" />
-   <File path="iup\configuration.d" />
+   <File path="iup\color.d" />
    <File path="iup\container.d" />
    <File path="iup\control.d" />
    <File path="iup\core.d" />
@@ -464,8 +464,8 @@
    <File path="iup\menu.d" />
    <File path="iup\misc.d" />
    <File path="iup\package.d" />
-   <File path="iup\progression.d" />
-   <File path="iup\slider.d" />
+   <File path="iup\progress.d" />
+   <File path="iup\number.d" />
    <File path="iup\system.d" />
    <File path="iup\text.d" />
    <File path="iup\thread.d" />
@@ -482,6 +482,7 @@
    <File path="toolkit\event.d" />
    <File path="toolkit\exception.d" />
    <File path="toolkit\input.d" />
+   <File path="toolkit\package.d" />
    <File path="toolkit\path.d" />
    <File path="toolkit\string.d" />
   </Folder>

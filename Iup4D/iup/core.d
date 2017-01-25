@@ -395,6 +395,7 @@ class IupElement : IupDisposableObject
         this.title = title;
     }
 
+
     /* ************* Protected methods *************** */
 
     protected override void onCreated()
@@ -847,12 +848,15 @@ string toIupIdentifier(LeftRightAlignment alignment)
 }
 
 
+/**
+*/
 enum Orientation
 {
     Horizontal,
     Vertical
 }
 
+/// ditto
 struct OrientationIdentifiers
 {
 	enum Horizontal  =	"HORIZONTAL";
@@ -862,38 +866,35 @@ struct OrientationIdentifiers
     {
         switch(id)
         {
-            case OrientationIdentifiers.Horizontal:
+            case Horizontal:
                 return Orientation.Horizontal;
 
-            case OrientationIdentifiers.Vertical:
+            case Vertical:
                 return Orientation.Vertical;
 
             default:
-                assert(0, "Not supported");
+                assert(0,"Identifier is Not supported: " ~ id);
         }
     }
 
     static string convert(Orientation d)
     {
-        switch(d)
+        final switch(d)
         {
             case Orientation.Horizontal:
-                return OrientationIdentifiers.Horizontal;
+                return Horizontal;
 
             case Orientation.Vertical:
-                return OrientationIdentifiers.Vertical;
-
-            default:
-                assert(0, "Not supported");
+                return Vertical;
         }
     }
 }
 
 
 
-
-// horizontal position of the top left corner of the window, relative to the origin of the main screen.
-// HorizontalAlignment
+/**
+horizontal position of the top left corner of the window, relative to the origin of the main screen.
+*/
 enum ScreenPostionH
 {
 	Center        = 0xFFFF,  /* 65535 */
@@ -904,8 +905,9 @@ enum ScreenPostionH
     CenterParent  = 0xFFFA,  /* 65530 */
 }
 
-// vertical position of the top left corner of the window, relative to the origin of the main screen.
-// VerticalAlignment
+/**
+vertical position of the top left corner of the window, relative to the origin of the main screen.
+*/
 enum ScreenPostionV
 {
 	Center        = 0xFFFF,  /* 65535 */
