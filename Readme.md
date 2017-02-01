@@ -89,9 +89,8 @@ class MainForm : IupDialog
 ```
 
 ## Screenshots
-<img src="Screenshots/Simple Paint.png" />
-
-<img src="Screenshots/Button.png" />
+![Paint](Screenshots/Simple%20Paint.png)
+![Button](Screenshots/Button.png)
 
 ## Todo
 - Bind more APIs for more controls
