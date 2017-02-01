@@ -204,6 +204,10 @@ public class MainForm : IupDialog
                 dialog = new ClipboardTestDialog();
                 break;
 
+            case TestElements.ColorBar:
+                dialog = new ColorBarTestDialog();
+                break;
+
             case TestElements.ColorBrowser:
                 dialog = new ColorBrowserTestDialog();
                 break;
@@ -342,6 +346,7 @@ public class MainForm : IupDialog
         testItems.insertBack(new TestElement(TestElements.CanvasOpenGL, TestElements.CanvasOpenGL));
         testItems.insertBack(new TestElement(TestElements.CanvasScrollbar, TestElements.CanvasScrollbar));
         testItems.insertBack(new TestElement(TestElements.Clipboard, TestElements.Clipboard));
+        testItems.insertBack(new TestElement(TestElements.ColorBar, TestElements.ColorBar));
         testItems.insertBack(new TestElement(TestElements.ColorBrowser, TestElements.ColorBrowser));
         testItems.insertBack(new TestElement(TestElements.Dial, TestElements.Dial));
         testItems.insertBack(new TestElement(TestElements.Dialog, TestElements.Dialog));
@@ -388,6 +393,7 @@ struct TestElements
     enum CanvasOpenGL = "CanvasOpenGL";
     enum CanvasScrollbar = "CanvasScrollbar";
     enum Clipboard = "Clipboard";
+    enum ColorBar = "ColorBar";
     enum ColorBrowser = "ColorBrowser";
     enum Dialog = "Dialog";
     enum Dial = "Dial";

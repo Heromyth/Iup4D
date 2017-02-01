@@ -134,7 +134,7 @@ public class ProgressBarTestDialog : IupDialog
         hbox.gap = 5;
 
         this.child = hbox;
-        this.title = "IupProgressBar Test";
+        this.title = "ProgressBar Test";
         this.unmapped += &dialog_unmapped;
         this.destroying += &dialog_destroying;
         this.closing += &dialog_closing;

@@ -22,6 +22,135 @@ import toolkit.event;
 import toolkit.input;
 import toolkit.drawing;
 
+public class ColorBarTestDialog : IupDialog
+{
+    private IupCdCanvas cdcanvas;
+    private IupColorBar cb;
+
+    this() 
+    {
+        super();
+    }
+
+    protected override void initializeComponent() 
+    {
+        /* Creates a canvas associated with the redraw action */
+        IupCanvas canvas = new IupCanvas();
+        canvas.rasterSize = Size(200, 300);
+        canvas.paint += &canvas_paint;
+
+        cb = new IupColorBar();
+        cb.rasterSize = Size(70, 0);
+        cb.expandOrientation = ExpandOrientation.Vertical;
+        cb.groupNumber = 2;
+        cb.canShowSecondary = true;
+        cb.previewSize = 60;
+        //cb.backgroundColor = "128 0 255";
+
+        cb.colorSelected += &cb_colorSelected;
+        cb.cellDoubleClicked += &cb_cellDoubleClicked;
+        cb.selectionSwitched += &cb_selectionSwitched;
+        cb.extendedRightClick += &cb_extendedRightClick;
+
+
+        IupHbox hbox = new IupHbox(canvas, cb);
+
+        this.child = hbox;
+        this.margin = Size(5, 5);
+        this.title = "IupColorbar Test";
+
+        this.loaded += &dialog_loaded;
+        this.closing += &dialog_closing;
+        this.mapped += &dialog_mapped;
+
+        /* Maps the dlg. This must be done before the creation of the CD canvas.
+        Could also use MAP_CB callback. */
+        this.map();
+        cdcanvas = new IupCdCanvas(canvas);
+    }
+
+
+    private void dialog_mapped(Object sender, CallbackEventArgs args)
+    {
+        IupDialog dialog = cast(IupDialog)sender;
+        writefln("MAP_CB(%s)", dialog.title);
+    }
+
+    private void dialog_loaded(Object sender, CallbackEventArgs args)
+    {
+        IupDialog dialog = cast(IupDialog)sender;
+        writefln("loaded(%s)", dialog.title);
+        //cdcanvas.activate();
+    }
+
+    private void dialog_closing(Object sender, CallbackEventArgs e)
+    {
+        cdcanvas.dispose();
+    }
+
+    private void canvas_paint(Object sender, CallbackEventArgs e, float posx, float posy)
+    {
+        redrawCanvas();
+    }
+
+    private void redrawCanvas()
+    {
+        //writefln("ACTION(posx=%.2f, posy=%.2f)", posx, posy);
+        /* Activates canvas cdcanvas */
+        cdcanvas.activate();
+        cdcanvas.clear();
+
+        /* Draws a rectangle on the canvas */
+        cdcanvas.begin(CdPolygonMode.Fill);
+        cdcanvas.vertex(50, 50);
+        cdcanvas.vertex(150, 50);
+        cdcanvas.vertex(100, 150);
+        cdcanvas.end();
+
+        /* Function executed sucessfully */
+    }
+
+    void cb_colorSelected(Object sender, CallbackEventArgs args, int cell, int type)
+    {
+        Color color = cb.getCellColor(cell);
+        printf("select_cb(%d, %d): %d, %d, %d\n", cell, type, color.R, color.G, color.B);
+
+        cdcanvas.activate();
+        if(type == -1)
+            cdcanvas.foreground = color;
+        else
+            cdcanvas.background = color;
+        redrawCanvas();
+    }
+
+    void cb_cellDoubleClicked(Object sender, ColorBarCallbackEventArgs args, int cell)
+    {
+        Color color = cb.getCellColor(cell);
+        printf("cell_cb(%d): %d, %d, %d\n", cell, color.R, color.G, color.B);
+
+        args.result = CallbackResult.Ignore;
+        args.color = Colors.Red;
+    }
+
+    void cb_selectionSwitched(Object sender, CallbackEventArgs args, int primcell, int seccell)
+    {
+        writef("switch_cb(%d, %d)\n", primcell, seccell);
+        cdcanvas.activate();
+
+        Color foreColor = cdcanvas.foreground;
+        Color backColor = cdcanvas.background;
+        cdcanvas.background = foreColor;
+        cdcanvas.foreground = backColor;
+
+        redrawCanvas();
+    }
+
+    void cb_extendedRightClick(Object sender, CallbackEventArgs args, int cell)
+    {
+        writef("extended_cb(%d)\n", cell);
+    }
+}
+
 
 public class ColorBrowserTestDialog : IupDialog
 {

@@ -159,7 +159,7 @@ public class CanvasBase
     @property 
     {
         public Color foreground() { 
-            uint hex =cast(uint)cdCanvasBackground(handle, CD_QUERY);
+            uint hex =cast(uint)cdCanvasForeground(handle, CD_QUERY);
             return Color.fromUInt(hex); 
         }
 
@@ -177,7 +177,7 @@ public class CanvasBase
     @property 
     {
         public Color background() { 
-            uint hex =cast(uint)cdCanvasForeground(handle, CD_QUERY);
+            uint hex =cast(uint)cdCanvasBackground(handle, CD_QUERY);
             return Color.fromUInt(hex); 
         }
 
@@ -621,12 +621,51 @@ public class WdCanvas : CanvasBase
 
 /**
 */
+enum CdPolygonMode
+{
+    Fill = CD_FILL,
+    OpenLines = CD_OPEN_LINES,
+    ClosedLines = CD_CLOSED_LINES,
+    Clip = CD_CLIP,
+    Bezier = CD_BEZIER,
+    Region = CD_REGION,
+    Path = CD_PATH
+}
+
+
+/**
+*/
 public class CdCanvas : CanvasBase
 {
     protected this()
     {
     }
 
+    /**
+    Starts defining a polygon to be drawn (or filled) according to the mode.
+
+    Do not create embedded polygons, that is, do not call function cdBegin twice without a call to cdEnd in between.
+    */
+    void begin(CdPolygonMode mode)
+    {
+        cdCanvasBegin(handle, cast(int)mode);
+    }
+
+    /**
+    Adds a vertex to the polygon definition.
+    */
+    void vertex(int x, int y)
+    {
+        cdCanvasVertex(handle, x, y);
+    }
+
+    /**
+    Ends the polygon's definition and draws it.
+    */
+    void end()
+    {
+        cdCanvasEnd(handle);
+    }
 
     /**
     Draws the arc of an ellipse aligned with the axis, using the current foreground color and line width and style.
