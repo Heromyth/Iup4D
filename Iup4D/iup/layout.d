@@ -49,9 +49,9 @@ public class IupFlatLayoutControl : IupContainerControl
     */
     @property 
 	{
-		public bool canExpandChildren()  {  return getAttribute(IupAttributes.ExpandChildren) == FlagIdentifiers.Yes; }
+		bool canExpandChildren()  {  return getAttribute(IupAttributes.ExpandChildren) == FlagIdentifiers.Yes; }
 
-        public void canExpandChildren(bool value) {
+        void canExpandChildren(bool value) {
             setAttribute(IupAttributes.ExpandChildren, value ? FlagIdentifiers.Yes : FlagIdentifiers.No);
         }
 	}
@@ -63,9 +63,9 @@ public class IupFlatLayoutControl : IupContainerControl
     */
     @property 
 	{
-		public bool isHomogeneous()  {  return getAttribute(IupAttributes.Homogeneous) == FlagIdentifiers.Yes; }
+		bool isHomogeneous()  {  return getAttribute(IupAttributes.Homogeneous) == FlagIdentifiers.Yes; }
 
-        public void isHomogeneous(bool value) {
+        void isHomogeneous(bool value) {
             setAttribute(IupAttributes.Homogeneous, value ? FlagIdentifiers.Yes : FlagIdentifiers.No);
         }
 	}
@@ -77,9 +77,9 @@ public class IupFlatLayoutControl : IupContainerControl
     */
     @property 
 	{
-		public Size cmargin() { return m_cmargin; }
+		Size cmargin() { return m_cmargin; }
 
-		public void cmargin(Size value) 
+		void cmargin(Size value) 
 		{
 			m_cmargin = value;
 			setAttribute(IupAttributes.CMargin, IupSize.format(value));
@@ -90,9 +90,9 @@ public class IupFlatLayoutControl : IupContainerControl
     /// ditto
     @property 
 	{
-		public Size margin() { return m_margin; }
+		Size margin() { return m_margin; }
 
-		public void margin(Size value) 
+		void margin(Size value) 
 		{
 			m_margin = value;
 			setAttribute(IupAttributes.Margin, IupSize.format(value));
@@ -103,9 +103,9 @@ public class IupFlatLayoutControl : IupContainerControl
     /// ditto
     @property 
 	{
-		public Size nmargin() { return m_nmargin; }
+		Size nmargin() { return m_nmargin; }
 
-		public void nmargin(Size value) 
+		void nmargin(Size value) 
 		{
 			m_nmargin = value;
 			setAttribute(IupAttributes.NMargin, IupSize.format(value));
@@ -116,9 +116,9 @@ public class IupFlatLayoutControl : IupContainerControl
     /// ditto
     @property 
 	{
-		public Size ncmargin() { return m_ncmargin; }
+		Size ncmargin() { return m_ncmargin; }
 
-		public void ncmargin(Size value) 
+		void ncmargin(Size value) 
 		{
 			m_ncmargin = value;
 			setAttribute(IupAttributes.NCMargin, IupSize.format(value));
@@ -132,9 +132,9 @@ public class IupFlatLayoutControl : IupContainerControl
     */
     @property 
 	{
-		public int gap() { return m_gap; }
+		int gap() { return m_gap; }
 
-		public void gap(int value) 
+		void gap(int value) 
 		{
 			m_gap = value;
 			const(char) * str = iupToStringz(value);
@@ -151,12 +151,12 @@ public class IupFlatLayoutControl : IupContainerControl
     */
     @property 
 	{
-		public SizeNormalizationStyle sizeNormalization() { 
+		SizeNormalizationStyle sizeNormalization() { 
             string s = getAttribute(IupAttributes.NormalizeSize);
             return SizeNormalizationStyleIdentifiers.convert(s); 
         }
 
-		public void sizeNormalization(SizeNormalizationStyle value) {
+		void sizeNormalization(SizeNormalizationStyle value) {
 			setAttribute(IupAttributes.NormalizeSize, SizeNormalizationStyleIdentifiers.convert(value));
 		}
 	}
@@ -167,13 +167,13 @@ public class IupFlatLayoutControl : IupContainerControl
     */
     @property 
 	{
-		public Size padding() 
+		Size padding() 
         { 
             string s = getAttribute(IupAttributes.Padding);
             return IupSize.parse(s); 
         }
 
-		public void padding(Size value) 
+		void padding(Size value) 
 		{
 			setAttribute(IupAttributes.Padding, IupSize.format(value));
 		}
@@ -207,12 +207,12 @@ public class IupHbox : IupFlatLayoutControl
     */
     @property 
 	{
-		public VerticalAlignment alignment() { 
+		VerticalAlignment alignment() { 
             string s = getAttribute(IupAttributes.Alignment);
             return AlignmentIdentifiers.convertVerticalAlignment(s); 
         }
 
-		public void alignment(VerticalAlignment value) {
+		void alignment(VerticalAlignment value) {
 			setAttribute(IupAttributes.Alignment, AlignmentIdentifiers.convert(value));
 		}
 	}
@@ -255,13 +255,13 @@ public class IupSbox : IupContainerControl
     */
     @property 
 	{
-		public Color color()  
+		Color color()  
         {  
             string c = getAttribute(IupAttributes.Color);
             return Color.parse(c); 
         }
 
-        public void color(Color value) { setAttribute(IupAttributes.Color, value.toRgb()); }
+        void color(Color value) { setAttribute(IupAttributes.Color, value.toRgb()); }
 
         void color(string value)  { setAttribute(IupAttributes.Color, value); }
 	}
@@ -273,11 +273,11 @@ public class IupSbox : IupContainerControl
     */
     @property 
 	{
-		public Position barPosition()  {  
+		Position barPosition()  {  
             return DirectionIdentifiers.convert(getAttribute(IupAttributes.Direction)); 
         }
 
-        public void barPosition(Position value) { 
+        void barPosition(Position value) { 
             setAttribute(IupAttributes.Direction, DirectionIdentifiers.convert(value));
         }
 	}
@@ -310,12 +310,12 @@ public class IupVbox : IupFlatLayoutControl
     */
     @property 
 	{
-		public HorizontalAlignment alignment() {
+		HorizontalAlignment alignment() {
             string s = getAttribute(IupAttributes.Alignment);
             return AlignmentIdentifiers.convertHorizontalAlignment(s); 
         }
 
-		public void alignment(HorizontalAlignment value) {
+		void alignment(HorizontalAlignment value) {
 			setAttribute(IupAttributes.Alignment, AlignmentIdentifiers.convert(value));
 		}
 	}
@@ -368,9 +368,9 @@ public class IupZbox : IupContainerControl
     */
     @property 
 	{
-		public ContentAlignment alignment() { return m_alignment; }
+		ContentAlignment alignment() { return m_alignment; }
 
-		public void alignment(ContentAlignment value) 
+		void alignment(ContentAlignment value) 
 		{
 			m_alignment = value;
 			setAttribute(IupAttributes.Alignment, IupZbox.toIupIdentifier(value));
@@ -386,13 +386,13 @@ public class IupZbox : IupContainerControl
     */
     @property 
 	{
-		public IupControl currentControl() {
+		IupControl currentControl() {
             //Ihandle * m_handle = iup.c.api.IupGetAttributeHandle (handle, "VALUE_HANDLE"); // bug: null
             Ihandle* m_handle = cast(Ihandle*) getPointerAttribute(IupAttributes.ValueHandle);
             return getChild(m_handle); 
         }
 
-		public void currentControl(IupControl value) 
+		void currentControl(IupControl value) 
 		{
             setPointerAttribute(IupAttributes.ValueHandle, value.handle);
             //iup.c.api.IupSetAttributeHandle (handle, std.string.toStringz(IupAttributes.ValueHandle), 
@@ -407,9 +407,9 @@ public class IupZbox : IupContainerControl
     */
     @property 
 	{
-		public int currentIndex() { return getIntAttribute(IupAttributes.ValuePos); }
+		int currentIndex() { return getIntAttribute(IupAttributes.ValuePos); }
 
-		public void currentIndex(int value) 
+		void currentIndex(int value) 
 		{
 			setIntAttribute(IupAttributes.ValuePos, value);
 		}
@@ -514,12 +514,12 @@ public class IupGridBox : IupFlatLayoutControl
     */
     @property 
 	{
-		public SimpleExpandOrientation childrenExpandOrientation() { 
+		SimpleExpandOrientation childrenExpandOrientation() { 
             string s = getAttribute(IupAttributes.ExpandChildren);
             return SimpleExpandIdentifiers.convert(s); 
         }
 
-		public void childrenExpandOrientation(SimpleExpandOrientation value) {
+		void childrenExpandOrientation(SimpleExpandOrientation value) {
 			setAttribute(IupAttributes.ExpandChildren, SimpleExpandIdentifiers.convert(value));
 		}
 	}
@@ -533,7 +533,7 @@ public class IupGridBox : IupFlatLayoutControl
     */
     @property 
 	{
-		public int divisionNumber()  {  
+		int divisionNumber()  {  
             string v = getAttribute(IupAttributes.NumDiv);
             if(v == "AUTO")
                 return -1;
@@ -541,7 +541,7 @@ public class IupGridBox : IupFlatLayoutControl
                 return to!int(v); 
         }
 
-        public void divisionNumber(int value) { 
+        void divisionNumber(int value) { 
             if(value <= 0)
                 setAttribute(IupAttributes.NumDiv, "AUTO");
             else
@@ -554,12 +554,12 @@ public class IupGridBox : IupFlatLayoutControl
     */
     @property 
 	{
-		public HorizontalAlignment horizontalAlignment() {
+		HorizontalAlignment horizontalAlignment() {
             string s = getAttribute(IupAttributes.AlignmentCol);
             return AlignmentIdentifiers.convertHorizontalAlignment(s); 
         }
 
-		public void horizontalAlignment(HorizontalAlignment value) {
+		void horizontalAlignment(HorizontalAlignment value) {
 			setAttribute(IupAttributes.AlignmentCol, AlignmentIdentifiers.convert(value));
 		}
 	}
@@ -570,12 +570,12 @@ public class IupGridBox : IupFlatLayoutControl
     */
     @property 
 	{
-		public VerticalAlignment verticalAlignment() { 
+		VerticalAlignment verticalAlignment() { 
             string s = getAttribute(IupAttributes.AlignmentLin);
             return AlignmentIdentifiers.convertVerticalAlignment(s); 
         }
 
-		public void verticalAlignment(VerticalAlignment value) {
+		void verticalAlignment(VerticalAlignment value) {
 			setAttribute(IupAttributes.AlignmentLin, AlignmentIdentifiers.convert(value));
 		}
 	}
@@ -587,9 +587,9 @@ public class IupGridBox : IupFlatLayoutControl
     */
     @property 
     {
-        public bool isSameColumnWidth() { return getAttribute(IupAttributes.HomogeneousCol) == FlagIdentifiers.Yes; }
+        bool isSameColumnWidth() { return getAttribute(IupAttributes.HomogeneousCol) == FlagIdentifiers.Yes; }
 
-        public void isSameColumnWidth(bool value) {
+        void isSameColumnWidth(bool value) {
             setAttribute(IupAttributes.HomogeneousCol,  value ? FlagIdentifiers.Yes : FlagIdentifiers.No);
         }
     }
@@ -602,9 +602,9 @@ public class IupGridBox : IupFlatLayoutControl
     */
     @property 
     {
-        public bool isSameRowHeight() { return getAttribute(IupAttributes.HomogeneousLin) == FlagIdentifiers.Yes; }
+        bool isSameRowHeight() { return getAttribute(IupAttributes.HomogeneousLin) == FlagIdentifiers.Yes; }
 
-        public void isSameRowHeight(bool value) {
+        void isSameRowHeight(bool value) {
             setAttribute(IupAttributes.HomogeneousLin,  value ? FlagIdentifiers.Yes : FlagIdentifiers.No);
         }
     }
@@ -615,12 +615,12 @@ public class IupGridBox : IupFlatLayoutControl
     */
     @property 
 	{
-		public Orientation layoutOrientation() { 
+		Orientation layoutOrientation() { 
             string s =getAttribute(IupAttributes.Orientation); 
             return OrientationIdentifiers.convert(s);
         }
 
-		public void layoutOrientation(Orientation value) {
+		void layoutOrientation(Orientation value) {
 			setAttribute(IupAttributes.Orientation, OrientationIdentifiers.convert(value));
 		}
 	}
@@ -631,8 +631,8 @@ public class IupGridBox : IupFlatLayoutControl
     */
     @property 
 	{
-		public int rowGap()  {  return getIntAttribute(IupAttributes.GapLin); }
-        public void rowGap(int value) { setIntAttribute(IupAttributes.GapLin, value);}
+		int rowGap()  {  return getIntAttribute(IupAttributes.GapLin); }
+        void rowGap(int value) { setIntAttribute(IupAttributes.GapLin, value);}
 	}
 
     /**
@@ -641,8 +641,8 @@ public class IupGridBox : IupFlatLayoutControl
     */
     @property 
 	{
-		public int columnGap()  {  return getIntAttribute(IupAttributes.GapCol); }
-        public void columnGap(int value) { setIntAttribute(IupAttributes.GapCol, value);}
+		int columnGap()  {  return getIntAttribute(IupAttributes.GapCol); }
+        void columnGap(int value) { setIntAttribute(IupAttributes.GapCol, value);}
 	}
 
     /**
@@ -650,8 +650,8 @@ public class IupGridBox : IupFlatLayoutControl
     */
     @property 
 	{
-		public int rowCount()  {  return getIntAttribute(IupAttributes.NumLin); }
-        public void rowCount(int value) { setIntAttribute(IupAttributes.SizeLin, value);}
+		int rowCount()  {  return getIntAttribute(IupAttributes.NumLin); }
+        void rowCount(int value) { setIntAttribute(IupAttributes.SizeLin, value);}
 	}
 
     /**
@@ -659,8 +659,8 @@ public class IupGridBox : IupFlatLayoutControl
     */
     @property 
 	{
-		public int columnCount()  {  return getIntAttribute(IupAttributes.NumCol); }
-        public void columnCount(int value) { setIntAttribute(IupAttributes.SizeCol, value);}
+		int columnCount()  {  return getIntAttribute(IupAttributes.NumCol); }
+        void columnCount(int value) { setIntAttribute(IupAttributes.SizeCol, value);}
 	}
 
     /**

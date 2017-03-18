@@ -736,9 +736,9 @@ public class IupToggleButton : IupButtonBase
     public EventHandler!(CallbackEventArgs, ToggleState)  checked;
     mixin EventCallbackAdapter!(IupToggleButton, "checked", int);
 
-    private CallbackResult onChecked(int state) nothrow
+    private IupElementAction onChecked(int state) nothrow
     {
-        CallbackResult r = CallbackResult.Default;
+        IupElementAction r = IupElementAction.Default;
         try
         {
             auto callbackArgs = new CallbackEventArgs();

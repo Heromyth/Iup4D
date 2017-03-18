@@ -41,7 +41,7 @@ public class SliderTestDialog : IupDialog
         val_v.maximum = 10.0;
         val_v.step = 0.02;
         val_v.pageStep = 0.2;
-        val_v.tickNumber = 5;
+        val_v.ticksCount = 5;
         //val_v.tickPosition = TickPosition.Reverse;
         val_v.tooltip.text  = "Val Tip";
         val_v.isInverted = true;

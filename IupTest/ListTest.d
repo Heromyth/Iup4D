@@ -607,7 +607,7 @@ public class TreeTestDialog : IupDialog
                                int drag_id, int drop_id, bool isShift, bool isControl)
     {
         writefln("DRAGDROP_CB (%d)->(%d) shift=%s ctrl=%s", drag_id, drop_id, isShift, isControl);
-        e.result = CallbackResult.Continue;
+        e.result = IupElementAction.Continue;
     }
 
     private void tree_executeLeaf(Object sender, CallbackEventArgs e, int id)
@@ -628,14 +628,14 @@ public class TreeTestDialog : IupDialog
     {
         writefln("SHOWRENAME_CB(%d)", id);
         if (id == 6)
-            e.result = CallbackResult.Ignore;
+            e.result = IupElementAction.Ignore;
     }
 
     private void tree_nodeRenamed(Object sender, CallbackEventArgs e, int id, string title)
     {
         writefln("RENAME_CB (%d=%s)", id, title);
         if (title == "fool")
-            e.result = CallbackResult.Ignore;
+            e.result = IupElementAction.Ignore;
     }
 
     private void tree_rightClick(Object sender, CallbackEventArgs e, int id)

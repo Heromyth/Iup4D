@@ -2,6 +2,9 @@ module toolkit.drawing.shape;
 
 import std.format;
 
+
+/**
+*/
 struct Point(T) if(is(T == int) || is(T == float) || is(T == double))
 {
 	T x;
@@ -24,6 +27,8 @@ struct Point(T) if(is(T == int) || is(T == float) || is(T == double))
 alias PointInt = Point!int;
 
 
+/**
+*/
 struct Rectangle(T) if(is(T == int) || is(T == float) || is(T == double))
 {
     T x1;

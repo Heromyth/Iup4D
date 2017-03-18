@@ -161,9 +161,9 @@ public class IupListControl : IupStandardControl
     */
     EventHandler!(CallbackEventArgs, int, string)  doubleClick;
     mixin EventCallbackAdapter!(IupListBox, "doubleClick", int, const(char)*);
-    private CallbackResult onDoubleClick(int index, const(char) *text) nothrow
+    private IupElementAction onDoubleClick(int index, const(char) *text) nothrow
     {       
-        CallbackResult r = CallbackResult.Default;
+        IupElementAction r = IupElementAction.Default;
         try
         {
             auto callbackArgs = new CallbackEventArgs();
@@ -179,11 +179,11 @@ public class IupListControl : IupStandardControl
     /**
     Action generated when a mouse button is pressed or released.
     */
-    public EventHandler!(CallbackEventArgs, MouseButtons, MouseState, int, int, string)  mouseClick;
+    EventHandler!(CallbackEventArgs, MouseButtons, MouseState, int, int, string)  mouseClick;
     mixin EventCallbackAdapter!(IupListControl, "mouseClick", int, int, int, int, const(char)*);
-    private CallbackResult onMouseClick(int button, int pressed, int x, int y, const(char) *status) nothrow
+    private IupElementAction onMouseClick(int button, int pressed, int x, int y, const(char) *status) nothrow
     {       
-        CallbackResult r = CallbackResult.Default;
+        IupElementAction r = IupElementAction.Default;
         try
         {
             auto callbackArgs = new CallbackEventArgs();
@@ -203,11 +203,11 @@ public class IupListControl : IupStandardControl
     status: status of mouse buttons and certain keyboard keys at the moment the event was generated. 
     The same macros used for BUTTON_CB can be used for this status.
     */
-    public EventHandler!(CallbackEventArgs, int, int, string)  mouseMove;
+    EventHandler!(CallbackEventArgs, int, int, string)  mouseMove;
     mixin EventCallbackAdapter!(IupListControl, "mouseMove", int, int, const(char)*);
-    private CallbackResult onMouseMove(int x, int y, const(char) *status) nothrow
+    private IupElementAction onMouseMove(int x, int y, const(char) *status) nothrow
     {       
-        CallbackResult r = CallbackResult.Default;
+        IupElementAction r = IupElementAction.Default;
         try
         {
             auto callbackArgs = new CallbackEventArgs();
@@ -239,9 +239,9 @@ public class IupListControl : IupStandardControl
     */
     EventHandler!(CallbackEventArgs, int, string, bool) selectedItemChanged;
     mixin EventCallbackAdapter!(IupListControl, "selectedItemChanged", const(char)*,int, int);
-    private CallbackResult onSelectedItemChanged(const(char) *text, int index, int state) nothrow
+    private IupElementAction onSelectedItemChanged(const(char) *text, int index, int state) nothrow
     {       
-        CallbackResult r = CallbackResult.Default;
+        IupElementAction r = IupElementAction.Default;
         try
         {
             auto callbackArgs = new CallbackEventArgs();
@@ -258,7 +258,7 @@ public class IupListControl : IupStandardControl
     /**
     returns the number of items. Before mapping it counts the number of non NULL items before the first NULL item. (since 3.0)
     */
-	//@property public int itemsCount()  { return getIntAttribute(IupAttributes.Count); }
+	//@property int itemsCount()  { return getIntAttribute(IupAttributes.Count); }
 
 
     /**
@@ -266,9 +266,9 @@ public class IupListControl : IupStandardControl
     */
     @property 
     {
-        public bool autoHideScrollbar() { return getAttribute(IupAttributes.AutoHide) == FlagIdentifiers.Yes; }
+        bool autoHideScrollbar() { return getAttribute(IupAttributes.AutoHide) == FlagIdentifiers.Yes; }
 
-        public void autoHideScrollbar(bool value) {
+        void autoHideScrollbar(bool value) {
             setAttribute(IupAttributes.AutoHide,  value ? FlagIdentifiers.Yes : FlagIdentifiers.No);
         }
     }
@@ -281,7 +281,7 @@ public class IupListControl : IupStandardControl
     */
     @property 
 	{
-		public bool hasDropDown() { return getAttribute(IupAttributes.DropDown) == FlagIdentifiers.Yes; }
+		bool hasDropDown() { return getAttribute(IupAttributes.DropDown) == FlagIdentifiers.Yes; }
 
 		protected void hasDropDown(bool value) {
             setAttribute(IupAttributes.DropDown,  value ? FlagIdentifiers.Yes : FlagIdentifiers.No);
@@ -294,7 +294,7 @@ public class IupListControl : IupStandardControl
     */
     @property 
 	{
-		public bool hasEditBox()  {  return getAttribute(IupAttributes.EditBox) == FlagIdentifiers.Yes; }
+		bool hasEditBox()  {  return getAttribute(IupAttributes.EditBox) == FlagIdentifiers.Yes; }
 
         protected void hasEditBox(bool value) { 
             setAttribute(IupAttributes.EditBox, value ? FlagIdentifiers.Yes : FlagIdentifiers.No);
@@ -316,7 +316,7 @@ public class IupListControl : IupStandardControl
     */
     @property 
 	{
-		public IupScrollBar scrollBars() { return m_scrollBar; }
+		IupScrollBar scrollBars() { return m_scrollBar; }
 		protected void scrollBars(IupScrollBar value) { m_scrollBar = value; }
         private IupScrollBar m_scrollBar; 
 	}
@@ -329,8 +329,8 @@ public class IupListControl : IupStandardControl
     */
     @property 
 	{
-		public int spacing()  {  return getIntAttribute(IupAttributes.Spacing); }
-        public void spacing(int value) { setIntAttribute(IupAttributes.Spacing, value);}
+		int spacing()  {  return getIntAttribute(IupAttributes.Spacing); }
+        void spacing(int value) { setIntAttribute(IupAttributes.Spacing, value);}
 	}
 
     /**
@@ -343,14 +343,14 @@ public class IupListControl : IupStandardControl
     */
     @property 
 	{
-		public string text()  {  
+		string text()  {  
             if(hasDropDown && !hasEditBox)
                 return getAttribute(IupAttributes.ValueString); 
             else
                 return getAttribute(IupAttributes.Value); 
         }
 
-        public void text(string value) { 
+        void text(string value) { 
             if(hasDropDown && !hasEditBox)
                 setAttribute(IupAttributes.ValueString, value);
             else
@@ -366,8 +366,8 @@ public class IupListControl : IupStandardControl
     */
     @property 
 	{
-		public int visibleColumns()  {  return getIntAttribute(IupAttributes.VisibleColumns); }
-        public void visibleColumns(int value) { setIntAttribute(IupAttributes.VisibleColumns, value);}
+		int visibleColumns()  {  return getIntAttribute(IupAttributes.VisibleColumns); }
+        void visibleColumns(int value) { setIntAttribute(IupAttributes.VisibleColumns, value);}
 	}
 
     /**
@@ -375,8 +375,8 @@ public class IupListControl : IupStandardControl
     */
     @property 
 	{
-		public int visibleItems()  {  return getIntAttribute(IupAttributes.VisibleItems); }
-        public void visibleItems(int value) { setIntAttribute(IupAttributes.VisibleItems, value);}
+		int visibleItems()  {  return getIntAttribute(IupAttributes.VisibleItems); }
+        void visibleItems(int value) { setIntAttribute(IupAttributes.VisibleItems, value);}
 	}
 
     /**
@@ -385,8 +385,8 @@ public class IupListControl : IupStandardControl
     */
     @property 
 	{
-		public int visibleLines()  {  return getIntAttribute(IupAttributes.VisibleLines); }
-        public void visibleLines(int value) { setIntAttribute(IupAttributes.VisibleLines, value);}
+		int visibleLines()  {  return getIntAttribute(IupAttributes.VisibleLines); }
+        void visibleLines(int value) { setIntAttribute(IupAttributes.VisibleLines, value);}
 	}
 
 
@@ -522,9 +522,9 @@ public class IupComboBox : IupListControl
     c: valid alpha numeric character or 0.
     new_value: Represents the new text value.
     */
-    private CallbackResult onTextChanging(int c, const char *newValue) nothrow
+    private IupElementAction onTextChanging(int c, const char *newValue) nothrow
     {       
-        CallbackResult r = CallbackResult.Default;
+        IupElementAction r = IupElementAction.Default;
         try
         {
             auto callbackArgs = new CallbackEventArgs();
@@ -547,9 +547,9 @@ public class IupComboBox : IupListControl
         */
         @property 
         {
-            public bool canDropExpand() { return getAttribute(IupAttributes.DropExpand) == FlagIdentifiers.Yes; }
+            bool canDropExpand() { return getAttribute(IupAttributes.DropExpand) == FlagIdentifiers.Yes; }
 
-            public void canDropExpand(bool value) {
+            void canDropExpand(bool value) {
                 setAttribute(IupAttributes.DropExpand,  value ? FlagIdentifiers.Yes : FlagIdentifiers.No);
             }
         }
@@ -561,9 +561,9 @@ public class IupComboBox : IupListControl
     */
     @property 
     {
-        public int caretLocation() { return getIntAttribute(IupAttributes.Caret); }
+        int caretLocation() { return getIntAttribute(IupAttributes.Caret); }
 
-        public void caretLocation(int value) 
+        void caretLocation(int value) 
         {
             setIntAttribute(IupAttributes.Caret, value);
         }
@@ -574,7 +574,7 @@ public class IupComboBox : IupListControl
     */
     @property 
 	{
-		public ComboBoxStyle dropDownStyle()  {
+		ComboBoxStyle dropDownStyle()  {
             //bool m_hasDropDown = this.hasDropDown;
             //bool m_hasEditBox = this.hasEditBox;
 
@@ -584,7 +584,7 @@ public class IupComboBox : IupListControl
             return ComboBoxStyle.DropDown;
         }
 
-        public void dropDownStyle(ComboBoxStyle value) { 
+        void dropDownStyle(ComboBoxStyle value) { 
             if(value == ComboBoxStyle.Simple)
             {
                 this.hasEditBox = true;
@@ -611,9 +611,9 @@ public class IupComboBox : IupListControl
     */
     @property 
 	{
-		public bool isReadOnly() { return getAttribute(IupAttributes.ReadOnly) == FlagIdentifiers.Yes; }
+		bool isReadOnly() { return getAttribute(IupAttributes.ReadOnly) == FlagIdentifiers.Yes; }
 
-		public void isReadOnly(bool value) {
+		void isReadOnly(bool value) {
             setAttribute(IupAttributes.ReadOnly,  value ? FlagIdentifiers.Yes : FlagIdentifiers.No);
 		}
 	}
@@ -622,14 +622,14 @@ public class IupComboBox : IupListControl
     */
     @property 
 	{
-		public int selectedIndex()  {  
+		int selectedIndex()  {  
             if(hasEditBox)
                 return 0;
             else
                 return getIntAttribute(IupAttributes.Value) - 1; 
         }
 
-        public void selectedIndex(int value) { setIntAttribute(IupAttributes.Value, value+1);}
+        void selectedIndex(int value) { setIntAttribute(IupAttributes.Value, value+1);}
 	}
 
 
@@ -670,7 +670,7 @@ public class IupComboBox : IupListControl
 
 // Summary:
 //     Specifies the System.Windows.Forms.ComboBox style.
-public enum ComboBoxStyle
+enum ComboBoxStyle
 {
     // Summary:
     //     Specifies that the list is always visible and that the text portion is editable.
@@ -747,9 +747,9 @@ public class IupListBox : IupListControl
     marked with '+', items deselected are marked with '-', and non changed items are marked
     with an 'x'.
     */
-    private CallbackResult onMultiSelected(const char *value) nothrow
+    private IupElementAction onMultiSelected(const char *value) nothrow
     {       
-        CallbackResult r = CallbackResult.Default;
+        IupElementAction r = IupElementAction.Default;
         try
         {
             auto callbackArgs = new CallbackEventArgs();
@@ -770,9 +770,9 @@ public class IupListBox : IupListControl
     */
     @property 
     {
-        public bool isMultiSelectable() { return getAttribute(IupAttributes.Multiple) == FlagIdentifiers.Yes; }
+        bool isMultiSelectable() { return getAttribute(IupAttributes.Multiple) == FlagIdentifiers.Yes; }
 
-        public void isMultiSelectable(bool value) {
+        void isMultiSelectable(bool value) {
             setAttribute(IupAttributes.Multiple,  value ? FlagIdentifiers.Yes : FlagIdentifiers.No);
         }
     }
@@ -782,11 +782,11 @@ public class IupListBox : IupListControl
     */
     @property 
 	{
-		public int selectedIndex()  {  
+		int selectedIndex()  {  
             return getIntAttribute(IupAttributes.Value) - 1; 
         }
 
-        public void selectedIndex(int value) { setIntAttribute(IupAttributes.Value, value+1);}
+        void selectedIndex(int value) { setIntAttribute(IupAttributes.Value, value+1);}
 	}
 
 }
@@ -958,11 +958,11 @@ public class IupTree : IupStandardControl
     /**
     Action generated when a mouse button is pressed or released.
     */
-    public EventHandler!(CallbackEventArgs, MouseButtons, MouseState, int, int, string)  mouseClick;
+    EventHandler!(CallbackEventArgs, MouseButtons, MouseState, int, int, string)  mouseClick;
     mixin EventCallbackAdapter!(IupTree, "mouseClick", int, int, int, int, const(char)*);
-    private CallbackResult onMouseClick(int button, int pressed, int x, int y, const(char) *status) nothrow
+    private IupElementAction onMouseClick(int button, int pressed, int x, int y, const(char) *status) nothrow
     {       
-        CallbackResult r = CallbackResult.Default;
+        IupElementAction r = IupElementAction.Default;
         try
         {
             auto callbackArgs = new CallbackEventArgs();
@@ -982,11 +982,11 @@ public class IupTree : IupStandardControl
     status: status of mouse buttons and certain keyboard keys at the moment the event was generated. 
     The same macros used for BUTTON_CB can be used for this status.
     */
-    public EventHandler!(CallbackEventArgs, int, int, string)  mouseMove;
+    EventHandler!(CallbackEventArgs, int, int, string)  mouseMove;
     mixin EventCallbackAdapter!(IupTree, "mouseMove", int, int, const(char)*);
-    private CallbackResult onMouseMove(int x, int y, const(char) *status) nothrow
+    private IupElementAction onMouseMove(int x, int y, const(char) *status) nothrow
     {       
-        CallbackResult r = CallbackResult.Default;
+        IupElementAction r = IupElementAction.Default;
         try
         {
             auto callbackArgs = new CallbackEventArgs();
@@ -1008,13 +1008,13 @@ public class IupTree : IupStandardControl
     ids: Array of node identifiers. This array is kept for backward compatibility, the range
     is simply defined by ids[0] to ids[n-1], where ids[i+1]=ids[i]+1.
     */
-    public EventHandler!(CallbackEventArgs, int[])  multipleSelected;
+    EventHandler!(CallbackEventArgs, int[])  multipleSelected;
     /// ditto
     mixin EventCallbackAdapter!(IupTree, "multipleSelected", int*, int);
     /// ditto
-    private CallbackResult onMultipleSelected(int* ids, int n) nothrow
+    private IupElementAction onMultipleSelected(int* ids, int n) nothrow
     {
-        CallbackResult r = CallbackResult.Default;
+        IupElementAction r = IupElementAction.Default;
         try
         {
             int[] idList = new int[n];
@@ -1045,13 +1045,13 @@ public class IupTree : IupStandardControl
     Enter after editing the name, or when the text box looses it focus. Called only 
     if SHOWRENAME=YES.
     */
-    public EventHandler!(CallbackEventArgs, int, string)  nodeRenamed;
+    EventHandler!(CallbackEventArgs, int, string)  nodeRenamed;
     /// ditto
     mixin EventCallbackAdapter!(IupTree, "nodeRenamed", int, char*);
     /// ditto
-    private CallbackResult onNodeRenamed(int id, char *title) nothrow
+    private IupElementAction onNodeRenamed(int id, char *title) nothrow
     {
-        CallbackResult r = CallbackResult.Default;
+        IupElementAction r = IupElementAction.Default;
         try
         {
             auto callbackArgs = new CallbackEventArgs();
@@ -1101,9 +1101,9 @@ public class IupTree : IupStandardControl
     EventHandler!(CallbackEventArgs, int, ToggleState)  toggleStateChanged;
     mixin EventCallbackAdapter!(IupTree, "toggleStateChanged", int, int);
 
-    private CallbackResult onToggleStateChanged(int id, int state) nothrow
+    private IupElementAction onToggleStateChanged(int id, int state) nothrow
     {
-        CallbackResult r = CallbackResult.Default;
+        IupElementAction r = IupElementAction.Default;
         try
         {
             auto callbackArgs = new CallbackEventArgs();
@@ -1123,9 +1123,9 @@ public class IupTree : IupStandardControl
     */
     @property 
 	{
-        public bool canAddRoot() { return getAttribute(IupAttributes.AddRoot) == FlagIdentifiers.Yes; }
+        bool canAddRoot() { return getAttribute(IupAttributes.AddRoot) == FlagIdentifiers.Yes; }
 
-        public void canAddRoot(bool value)  {
+        void canAddRoot(bool value)  {
             setAttribute(IupAttributes.AddRoot, value ? FlagIdentifiers.Yes : FlagIdentifiers.No);
         }
 	}
@@ -1136,9 +1136,9 @@ public class IupTree : IupStandardControl
     */
     @property 
 	{
-        public bool canAutoRedraw() { return getAttribute(IupAttributes.AutoRedraw) == FlagIdentifiers.Yes; }
+        bool canAutoRedraw() { return getAttribute(IupAttributes.AutoRedraw) == FlagIdentifiers.Yes; }
 
-        public void canAutoRedraw(bool value)  {
+        void canAutoRedraw(bool value)  {
             setAttribute(IupAttributes.AutoRedraw, value ? FlagIdentifiers.Yes : FlagIdentifiers.No);
         }
 	}
@@ -1147,9 +1147,9 @@ public class IupTree : IupStandardControl
     */
     @property 
 	{
-        public bool canHideButtons() { return getAttribute(IupAttributes.HideButtons) == FlagIdentifiers.Yes; }
+        bool canHideButtons() { return getAttribute(IupAttributes.HideButtons) == FlagIdentifiers.Yes; }
 
-        public void canHideButtons(bool value)  {
+        void canHideButtons(bool value)  {
             setAttribute(IupAttributes.HideButtons, value ? FlagIdentifiers.Yes : FlagIdentifiers.No);
         }
 	}
@@ -1158,9 +1158,9 @@ public class IupTree : IupStandardControl
     */
     @property 
 	{
-        public bool canHideLines() { return getAttribute(IupAttributes.HideLines) == FlagIdentifiers.Yes; }
+        bool canHideLines() { return getAttribute(IupAttributes.HideLines) == FlagIdentifiers.Yes; }
 
-        public void canHideLines(bool value)  {
+        void canHideLines(bool value)  {
             setAttribute(IupAttributes.HideLines, value ? FlagIdentifiers.Yes : FlagIdentifiers.No);
         }
 	}
@@ -1171,9 +1171,9 @@ public class IupTree : IupStandardControl
     */
     @property 
 	{
-        public bool canDragDrop() { return getAttribute(IupAttributes.ShowDragDrop) == FlagIdentifiers.Yes; }
+        bool canDragDrop() { return getAttribute(IupAttributes.ShowDragDrop) == FlagIdentifiers.Yes; }
 
-        public void canDragDrop(bool value)  {
+        void canDragDrop(bool value)  {
             setAttribute(IupAttributes.ShowDragDrop, value ? FlagIdentifiers.Yes : FlagIdentifiers.No);
         }
 	}
@@ -1185,9 +1185,9 @@ public class IupTree : IupStandardControl
     */
     @property 
 	{
-        public bool canRename() { return getAttribute(IupAttributes.ShowRename) == FlagIdentifiers.Yes; }
+        bool canRename() { return getAttribute(IupAttributes.ShowRename) == FlagIdentifiers.Yes; }
 
-        public void canRename(bool value)  {
+        void canRename(bool value)  {
             setAttribute(IupAttributes.ShowRename, value ? FlagIdentifiers.Yes : FlagIdentifiers.No);
         }
 	}
@@ -1199,9 +1199,9 @@ public class IupTree : IupStandardControl
     */
     @property 
 	{
-        public bool canToggle() { return getAttribute(IupAttributes.ShowToggle) == FlagIdentifiers.Yes; }
+        bool canToggle() { return getAttribute(IupAttributes.ShowToggle) == FlagIdentifiers.Yes; }
 
-        public void canToggle(bool value)  {
+        void canToggle(bool value)  {
             setAttribute(IupAttributes.ShowToggle, value ? FlagIdentifiers.Yes : FlagIdentifiers.No);
         }
 	}
@@ -1210,8 +1210,8 @@ public class IupTree : IupStandardControl
     */
     @property 
 	{
-		public int currentNodeId()  {  return getIntAttribute(IupAttributes.Value); }
-        public void currentNodeId(int value) { setIntAttribute(IupAttributes.Value, value);}
+		int currentNodeId()  {  return getIntAttribute(IupAttributes.Value); }
+        void currentNodeId(int value) { setIntAttribute(IupAttributes.Value, value);}
 	}
 
     /**
@@ -1232,8 +1232,8 @@ public class IupTree : IupStandardControl
     */
     @property 
 	{
-		public int indentation()  {  return getIntAttribute(IupAttributes.Indentation); }
-        public void indentation(int value) { setIntAttribute(IupAttributes.Indentation, value);}
+		int indentation()  {  return getIntAttribute(IupAttributes.Indentation); }
+        void indentation(int value) { setIntAttribute(IupAttributes.Indentation, value);}
 	}
 
     /**
@@ -1243,9 +1243,9 @@ public class IupTree : IupStandardControl
     */
     @property 
 	{
-        public bool isAddExpanded() { return getAttribute(IupAttributes.AddExpanded) == FlagIdentifiers.Yes; }
+        bool isAddExpanded() { return getAttribute(IupAttributes.AddExpanded) == FlagIdentifiers.Yes; }
 
-        public void isAddExpanded(bool value)  {
+        void isAddExpanded(bool value)  {
             setAttribute(IupAttributes.AddExpanded, value ? FlagIdentifiers.Yes : FlagIdentifiers.No);
         }
 	}
@@ -1254,9 +1254,9 @@ public class IupTree : IupStandardControl
     */
     @property 
 	{
-        public bool isDropDragEqual() { return getAttribute(IupAttributes.DropEqualDrag) == FlagIdentifiers.Yes; }
+        bool isDropDragEqual() { return getAttribute(IupAttributes.DropEqualDrag) == FlagIdentifiers.Yes; }
 
-        public void isDropDragEqual(bool value)  {
+        void isDropDragEqual(bool value)  {
             setAttribute(IupAttributes.DropEqualDrag, value ? FlagIdentifiers.Yes : FlagIdentifiers.No);
         }
 	}
@@ -1266,12 +1266,12 @@ public class IupTree : IupStandardControl
     */
     @property 
     {
-        public NodeSelectionMode selectionMode()  { 
+        NodeSelectionMode selectionMode()  { 
             string v = getAttribute(IupAttributes.MarkMode); 
             return NodeMarkModeIdentifiers.convert(v);
         }
 
-        public void selectionMode(NodeSelectionMode value) { 
+        void selectionMode(NodeSelectionMode value) { 
             setAttribute(IupAttributes.MarkMode, NodeMarkModeIdentifiers.convert(value));
         }
     }
@@ -1281,8 +1281,8 @@ public class IupTree : IupStandardControl
     */
     @property 
 	{
-		public int nodeCount()  {  return getIntAttribute(IupAttributes.Count); }
-        public void nodeCount(int value) { setIntAttribute(IupAttributes.Count, value);}
+		int nodeCount()  {  return getIntAttribute(IupAttributes.Count); }
+        void nodeCount(int value) { setIntAttribute(IupAttributes.Count, value);}
 	}
 
     /**
@@ -1291,8 +1291,8 @@ public class IupTree : IupStandardControl
     */
     @property 
 	{
-		public int spacing()  {  return getIntAttribute(IupAttributes.Spacing); }
-        public void spacing(int value) { setIntAttribute(IupAttributes.Spacing, value);}
+		int spacing()  {  return getIntAttribute(IupAttributes.Spacing); }
+        void spacing(int value) { setIntAttribute(IupAttributes.Spacing, value);}
 	}
 
     /**
@@ -1302,12 +1302,12 @@ public class IupTree : IupStandardControl
     */
     @property 
     {
-        public ToggleButtonVisibility toggleMode()  {  
+        ToggleButtonVisibility toggleMode()  {  
             string v = getAttribute(IupAttributes.ShowToggle); 
             return ToggleButtonVisibilityIdentifiers.convert(v);
         }
 
-        public void toggleMode(ToggleButtonVisibility value) { 
+        void toggleMode(ToggleButtonVisibility value) { 
             setAttribute(IupAttributes.ShowToggle, ToggleButtonVisibilityIdentifiers.convert(value));
         }
     }
@@ -1322,9 +1322,9 @@ public class IupTree : IupStandardControl
         */
         @property 
         {
-            public bool canShowInfoTip() { return getAttribute(IupAttributes.InfoTip) == FlagIdentifiers.Yes; }
+            bool canShowInfoTip() { return getAttribute(IupAttributes.InfoTip) == FlagIdentifiers.Yes; }
 
-            public void canShowInfoTip(bool value)  {
+            void canShowInfoTip(bool value)  {
                 setAttribute(IupAttributes.InfoTip, value ? FlagIdentifiers.Yes : FlagIdentifiers.No);
             }
         }

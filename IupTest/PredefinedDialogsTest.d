@@ -236,12 +236,12 @@ public class PreDialogsTestDialog : IupDialog
         else if(status == "FILTER")
         {
             //dialog.initialFile = "test";
-            //args.result = CallbackResult.Continue;
+            //args.result = IupElementActionContinue;
         }
         else if(status == "OK")
         {
             //dialog.initialFile = "test";
-            //args.result = CallbackResult.Continue;
+            //args.result = IupElementActionContinue;
         }
 
     }
@@ -447,7 +447,7 @@ public class PreDialogsTestDialog : IupDialog
 
             case Keys.ESC:
                 dialog.close();
-                args.result = CallbackResult.Ignore;
+                args.result = IupElementAction.Ignore;
                 break;
 
                 default:

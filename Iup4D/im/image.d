@@ -91,7 +91,7 @@ class ImImage
         /**
         Number of planes (ColorSpaceDepth. That means the alpha channel is not included.)
         */
-		public int planeNumber() { return image.depth; }
+		public int planesCount() { return image.depth; }
 
         /**
         Number of bytes per line in one plane (width * DataTypeSize) 

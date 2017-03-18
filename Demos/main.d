@@ -11,6 +11,7 @@ import std.path;
 import core.stdc.stdlib; 
 
 import iup;
+import cd;
 
 import toolkit.drawing;
 import toolkit.event;
@@ -18,12 +19,21 @@ import toolkit.input;
 
 version(Windows) { 
     pragma(lib, "iup.lib");
+
     pragma(lib, "iupimglib.lib"); // required only if function IupImageLibOpen() is called
     pragma(lib, "iupim.lib");
     pragma(lib, "im.lib");
+
     pragma(lib, "iupgl.lib");
     pragma(lib, "opengl32.lib");
+
+    pragma(lib, "iupcontrols.lib");
     pragma(lib, "iupglcontrols.lib");
+
+    pragma(lib, "iupcd.lib");
+    pragma(lib, "cd.lib");
+    pragma(lib, "cdgl.lib");
+    pragma(lib, "cdpdf.lib"); 
 }
 
 
@@ -148,7 +158,7 @@ class GotoDialog : IupDialog
 
     private void dialog_closing(Object sender, CallbackEventArgs e)
     {
-        //e.result = CallbackResult.Ignore;
+        //e.result = IupElementAction.Ignore;
     }
 
     private void bt_ok_click(Object sender, CallbackEventArgs e)
@@ -179,14 +189,14 @@ class GotoDialog : IupDialog
 
         dialogResult = DialogResult.OK;
         e.isHandled = true;
-        e.result = CallbackResult.Close;
+        e.result = IupElementAction.Close;
         //this.close(DialogResult.OK);
     }
 
     private void bt_cancel_click(Object sender, CallbackEventArgs e)
     {
         dialogResult = DialogResult.Cancel;
-        e.result = CallbackResult.Close;
+        e.result = IupElementAction.Close;
         //this.close(DialogResult.Cancel);
     }
 
@@ -359,7 +369,7 @@ public class MainForm : IupDialog
     private void dialog_closing(Object sender, CallbackEventArgs e)
     {
         performExit();
-        //e.result = CallbackResult.Ignore;
+        //e.result = IupElementAction.Ignore;
     }
 
     private void dialog_stateChanged(Object sender, CallbackEventArgs args, DialogState state)
@@ -880,7 +890,7 @@ public class MainForm : IupDialog
         //statusbar.title  = format("fileName:%s, Number=%d, x=%d, y=%d", fileName, number, x, y);
 
         //if(number < 2)
-        //    e.result = CallbackResult.Ignore;
+        //    e.result = IupElementAction.Ignore;
     }
 
     private void dialog_fileDropped(Object sender, CallbackEventArgs e,
@@ -939,10 +949,10 @@ public class MainForm : IupDialog
             performExit();
             //config.dispose();
             //this.close();
-            e.result = CallbackResult.Close;
+            e.result = IupElementAction.Close;
         }
         else
-            e.result = CallbackResult.Ignore;
+            e.result = IupElementAction.Ignore;
     }
 
     private void performExit()
@@ -960,6 +970,8 @@ int main(string[] args)
 {
 	Application.open();
     Application.useImageLib();
+    Application.useIupControls();
+    Application.useOpenGL();
 
     MainForm mainForm = new MainForm();
     Application.run(mainForm);

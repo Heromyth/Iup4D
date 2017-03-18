@@ -18,6 +18,40 @@ version(Windows)
 	import std.windows.charset;
 }
 
+
+//public class IupCanvasControl : IupStandardControl
+//{
+//
+//    this() { super(); }
+//
+//    this(string title)
+//    {
+//        super(title);
+//    }
+//
+//
+//    /* ************* Protected methods *************** */
+//
+//    protected override void onCreated()
+//    {    
+//        super.onCreated();
+//
+//        m_scrollBar = new IupScrollBar(this);
+//    }  
+//
+//
+//    /**
+//    Associates a horizontal and/or vertical scrollbar to the canvas. Default: "NO". The 
+//    secondary attributes are all non inheritable.
+//    */
+//    @property 
+//    {
+//        IupScrollBar scrollBars() { return m_scrollBar; }
+//        protected void scrollBars(IupScrollBar value) { m_scrollBar = value; }
+//        private IupScrollBar m_scrollBar; 
+//    }
+//}
+
 /**
 Creates an interface element that is a canvas - a working area for your application.
 */
@@ -48,12 +82,8 @@ public class IupCanvasBase : IupStandardControl
         super(title);
     }
 
-    /* ************* Protected methods *************** */
 
-	protected override Ihandle* createIupObject()
-	{
-		return iup.c.api.IupCanvas(null);
-	}
+    /* ************* Protected methods *************** */
 
     protected override void onCreated()
     {    
@@ -61,7 +91,6 @@ public class IupCanvasBase : IupStandardControl
 
         m_scrollBar = new IupScrollBar(this);
     }  
-
 
 
     /* ************* Properties *************** */
@@ -86,14 +115,14 @@ public class IupCanvasBase : IupStandardControl
     */
     @property 
 	{
-		public Size drawSize() 
+		Size drawSize() 
         {
             Size m_drawSize;
             getIntIntAttribute(IupAttributes.DrawSize, m_drawSize.width, m_drawSize.height);
             return m_drawSize; 
         }
 
-		public void drawSize(Size value) 
+		void drawSize(Size value) 
 		{
 			setAttribute(IupAttributes.DrawSize, value.width, value.height);
 		}
@@ -120,10 +149,36 @@ public class IupCanvasBase : IupStandardControl
     */
     @property 
 	{
-		public bool hasBorder() { return getAttribute(IupAttributes.Border) == FlagIdentifiers.Yes; }
+		bool hasBorder() { return getAttribute(IupAttributes.Border) == FlagIdentifiers.Yes; }
 
-		public void hasBorder(bool value) {
+		void hasBorder(bool value) {
             setAttribute(IupAttributes.Border, value ? FlagIdentifiers.Yes : FlagIdentifiers.No);
+		}
+    }
+
+    /**
+    */
+    @property 
+	{
+		bool isDropTarget() { return getAttribute(IupAttributes.DropTarget) == FlagIdentifiers.Yes; }
+
+		void isDropTarget(bool value) {
+            setAttribute(IupAttributes.DropTarget, value ? FlagIdentifiers.Yes : FlagIdentifiers.No);
+		}
+    }
+
+    /**
+    */
+    @property 
+	{
+		DragDropContent dropContent() { 
+            string s = getAttribute(IupAttributes.DropTarget);
+            return DragDropContentIdentifiers.convert(s); 
+        }
+
+		void dropContent(DragDropContent value) {
+            string c = DragDropContentIdentifiers.convert(value);
+            setAttribute(IupAttributes.DropTarget, c);
 		}
     }
 
@@ -133,55 +188,30 @@ public class IupCanvasBase : IupStandardControl
     */
     @property 
 	{
-		public IupScrollBar scrollBars() { return m_scrollBar; }
+		IupScrollBar scrollBars() { return m_scrollBar; }
 		protected void scrollBars(IupScrollBar value) { m_scrollBar = value; }
         private IupScrollBar m_scrollBar; 
 	}
-
-    /**
-    */
-    @property 
-	{
-		public bool isDropTarget() { return getAttribute(IupAttributes.DropTarget) == FlagIdentifiers.Yes; }
-
-		public void isDropTarget(bool value) {
-            setAttribute(IupAttributes.DropTarget, value ? FlagIdentifiers.Yes : FlagIdentifiers.No);
-		}
-    }
-
-    /**
-    */
-    @property 
-	{
-		public DragDropContent dropContent() { 
-            string s = getAttribute(IupAttributes.DropTarget);
-            return DragDropContentIdentifiers.convert(s); 
-        }
-
-		public void dropContent(DragDropContent value) {
-            string c = DragDropContentIdentifiers.convert(value);
-            setAttribute(IupAttributes.DropTarget, c);
-		}
-    }
-
 
     version(Windows)
     {
 
         /**
-        Contains the HDC created with the BeginPaint inside the WM_PAINT message. Valid only during the ACTION callback.
+        Contains the HDC created with the BeginPaint inside the WM_PAINT message. 
+        Valid only during the ACTION callback.
         */
         @property 
         {
-            public HDC hdcWmPaint() { return cast(HDC)getPointerAttribute(IupAttributes.HDC_WmPaint); }
+            HDC hdcWmPaint() { return cast(HDC)getPointerAttribute(IupAttributes.HDC_WmPaint); }
         }
 
         /**
-        Returns the Windows Window handle. Available in the Windows driver or in the GTK driver in Windows.
+        Returns the Windows Window handle. Available in the Windows driver or in the 
+        GTK driver in Windows.
         */
         @property 
         {
-            public HWND hwnd() { return cast(HWND)getPointerAttribute(IupAttributes.HWND); }
+            HWND hwnd() { return cast(HWND)getPointerAttribute(IupAttributes.HWND); }
         }
 
         /**
@@ -191,9 +221,9 @@ public class IupCanvasBase : IupStandardControl
         */
         @property 
         {
-            public bool isMdiClient() { return getAttribute(IupAttributes.MdiClient) == FlagIdentifiers.Yes; }
+            bool isMdiClient() { return getAttribute(IupAttributes.MdiClient) == FlagIdentifiers.Yes; }
 
-            public void isMdiClient(bool value) 
+            void isMdiClient(bool value) 
             {
                 setAttribute(IupAttributes.MdiClient, value ? FlagIdentifiers.Yes : FlagIdentifiers.No);
             }
@@ -205,9 +235,9 @@ public class IupCanvasBase : IupStandardControl
         */
         @property 
         {
-            public iup.menu.IupMenu mdiMenu() { return m_menu; }
+            iup.menu.IupMenu mdiMenu() { return m_menu; }
 
-            public void mdiMenu(iup.menu.IupMenu value) 
+            void mdiMenu(iup.menu.IupMenu value) 
             {
                 m_menu = value;
                 setHandleAttribute(IupAttributes.MdiMenu, value);
@@ -216,13 +246,14 @@ public class IupCanvasBase : IupStandardControl
         }
     }
 
+
     /* ************* Public methods *************** */
 
 }
 
 
-
 /**
+Creates an interface element that is a canvas - a working area for your application.
 */
 public class IupCanvas : IupCanvasBase
 {
@@ -248,7 +279,7 @@ public class IupCanvas : IupCanvasBase
         enum IupCanvas = "IupCanvas";
 	}
 
-	this(){ super(); }
+	this() { super(); }
 
     this(string title)
     {
@@ -272,10 +303,11 @@ public class IupCanvas : IupCanvasBase
         registerFileDroppedCallback(IupCallbacks.DropFiles);
         registerMouseClickCallback(IupCallbacks.Button);
         registerMouseMoveCallback(IupCallbacks.Motion);
-        registerPaintCallback(IupCallbacks.Action);
+        //registerPaintCallback(IupCallbacks.Action);
         registerSizeChangedCallback(IupCallbacks.Resize);
         registerScrollCallback(IupCallbacks.Scroll);
         registerWheelCallback(IupCallbacks.Wheel);
+        setPaintEvent(true);
     }  
 
 
@@ -293,11 +325,11 @@ public class IupCanvas : IupCanvasBase
     len: data size in bytes.
     x, y: cursor position relative to the top-left corner of the element.
     */
-    public EventHandler!(CallbackEventArgs, DragDropContent, void*, int, int, int)  dropped;
+    EventHandler!(CallbackEventArgs, DragDropContent, void*, int, int, int)  dropped;
     mixin EventCallbackAdapter!(IupCanvas, "dropped", const(char)*, void*, int, int, int, );
-    private CallbackResult onDropped(const(char)* type, void* data, int len, int x, int y) nothrow
+    private IupElementAction onDropped(const(char)* type, void* data, int len, int x, int y) nothrow
     {       
-        CallbackResult r = CallbackResult.Default;
+        IupElementAction r = IupElementAction.Default;
         try
         {
             auto callbackArgs = new CallbackEventArgs();
@@ -314,12 +346,12 @@ public class IupCanvas : IupCanvasBase
     /**
     Action generated when one or more files are dropped in the element.
     */
-    public EventHandler!(CallbackEventArgs, string, int, int, int)  fileDropped;
+    EventHandler!(CallbackEventArgs, string, int, int, int)  fileDropped;
     mixin EventCallbackAdapter!(IupCanvas, "fileDropped", const (char)*, int, int, int);
 
-    private CallbackResult onFileDropped(const (char)* fileName, int num, int x, int y) nothrow
+    private IupElementAction onFileDropped(const (char)* fileName, int num, int x, int y) nothrow
     {
-        CallbackResult r = CallbackResult.Default;
+        IupElementAction r = IupElementAction.Default;
         try
         {
             auto callbackArgs = new CallbackEventArgs();
@@ -333,12 +365,17 @@ public class IupCanvas : IupCanvasBase
 
     /**
     Action generated when a mouse button is pressed or released.
+
+    button: identifies the activated mouse button.
+    pressed: indicates the state of the button.
+    x, y: position in the canvas where the event has occurred, in pixels.
+    status: status of the mouse buttons and some keyboard keys at the moment the event is generated.
     */
-    public EventHandler!(CallbackEventArgs, MouseButtons, MouseState, int, int, string)  mouseClick;
+    EventHandler!(CallbackEventArgs, MouseButtons, MouseState, int, int, string)  mouseClick;
     mixin EventCallbackAdapter!(IupCanvas, "mouseClick", int, int, int, int, const(char)*);
-    private CallbackResult onMouseClick(int button, int pressed, int x, int y, const(char) *status) nothrow
+    private IupElementAction onMouseClick(int button, int pressed, int x, int y, const(char) *status) nothrow
     {       
-        CallbackResult r = CallbackResult.Default;
+        IupElementAction r = IupElementAction.Default;
         try
         {
             auto callbackArgs = new CallbackEventArgs();
@@ -354,15 +391,15 @@ public class IupCanvas : IupCanvasBase
 
     /** 
     Action generated when the mouse moves.
+
     x, y: position in the canvas where the event has occurred, in pixels.
     status: status of mouse buttons and certain keyboard keys at the moment the event was generated. 
-    The same macros used for BUTTON_CB can be used for this status.
     */
-    public EventHandler!(CallbackEventArgs, int, int, string)  mouseMove;
+    EventHandler!(CallbackEventArgs, int, int, string)  mouseMove;
     mixin EventCallbackAdapter!(IupCanvas, "mouseMove", int, int, const(char)*);
-    private CallbackResult onMouseMove(int x, int y, const(char) *status) nothrow
+    private IupElementAction onMouseMove(int x, int y, const(char) *status) nothrow
     {       
-        CallbackResult r = CallbackResult.Default;
+        IupElementAction r = IupElementAction.Default;
         try
         {
             auto callbackArgs = new CallbackEventArgs();
@@ -376,6 +413,7 @@ public class IupCanvas : IupCanvasBase
 
     /**
     Action generated when the canvas needs to be redrawn.
+
     posx: thumb position in the horizontal scrollbar. The POSX attribute value.
     posy: thumb position in the vertical scrollbar. The POSY attribute value.
     */
@@ -388,24 +426,26 @@ public class IupCanvas : IupCanvasBase
     mixin EventCallback!(IupCanvas, "sizeChanged", int, int);
 
     /**
-    Called when some manipulation is made to the scrollbar. The canvas is automatically redrawn only if this callback is NOT defined.
+    Called when some manipulation is made to the scrollbar. The canvas is automatically 
+    redrawn only if this callback is NOT defined.
     */
     mixin EventCallback!(IupCanvas, "scroll", int, float, float);
 
     /**
-    Action generated when the mouse wheel is rotated. If this callback is not defined the wheel will automatically scroll the canvas 
-    in the vertical direction by some lines, the SCROLL_CB callback if defined will be called with the IUP_SBDRAGV operation.
+    Action generated when the mouse wheel is rotated. If this callback is not defined the 
+    wheel will automatically scroll the canvas in the vertical direction by some lines, the
+    SCROLL_CB callback if defined will be called with the IUP_SBDRAGV operation.
 
     delta: the amount the wheel was rotated in notches.
     x, y: position in the canvas where the event has occurred, in pixels.
     status: status of mouse buttons and certain keyboard keys at the moment the event was generated. 
     The same macros used for BUTTON_CB can be used for this status.
     */
-    public EventHandler!(CallbackEventArgs, float, int, int, string)  wheel;
+    EventHandler!(CallbackEventArgs, float, int, int, string)  wheel;
     mixin EventCallbackAdapter!(IupCanvas, "wheel", float, int, int, char*);
-    private CallbackResult onWheel(float delta, int x, int y, char *status) nothrow
+    private IupElementAction onWheel(float delta, int x, int y, char *status) nothrow
     {       
-        CallbackResult r = CallbackResult.Default;
+        IupElementAction r = IupElementAction.Default;
         try
         {
             auto callbackArgs = new CallbackEventArgs();
@@ -417,6 +457,25 @@ public class IupCanvas : IupCanvasBase
         return r;
     }
 
+    /**
+    */
+    void setPaintEvent(bool isEnabled = true)
+    {
+        if(isEnabled)
+        {
+            if(!isPaintEventEnabled)
+            {
+                registerPaintCallback(IupCallbacks.Action);
+                isPaintEventEnabled = true;
+            }
+        }
+        else if(isPaintEventEnabled)
+        {
+            clearAttribute(IupCallbacks.Action);
+            isPaintEventEnabled = false;
+        }
+    }
+    private bool isPaintEventEnabled = false;
 }
 
 
@@ -482,9 +541,9 @@ public class IupGLCanvas : IupCanvas
     */
     @property 
 	{
-		public GlBufferMode bufferMode() { return m_bufferMode; }
+		GlBufferMode bufferMode() { return m_bufferMode; }
 
-		public void bufferMode(GlBufferMode value) 
+		void bufferMode(GlBufferMode value) 
 		{
 			m_bufferMode = value;
             setAttribute(IupAttributes.Buffer, toIupIdentifier(value));
@@ -497,8 +556,8 @@ public class IupGLCanvas : IupCanvas
     */
     @property 
 	{
-		public string contextVersion()  {  return getAttribute(IupAttributes.ContextVersion); }
-        public void contextVersion(string value) { setAttribute(IupAttributes.ContextVersion, value);}
+		string contextVersion()  {  return getAttribute(IupAttributes.ContextVersion); }
+        void contextVersion(string value) { setAttribute(IupAttributes.ContextVersion, value);}
 	}
 
     /**
@@ -515,7 +574,7 @@ public class IupGLCanvas : IupCanvas
     */
     @property 
 	{
-		public string errorMessage()  {  return getAttribute(IupAttributes.Error); }
+		string errorMessage()  {  return getAttribute(IupAttributes.Error); }
 	}
 
     /**
@@ -523,7 +582,7 @@ public class IupGLCanvas : IupCanvas
     */
     version(Windows) @property 
 	{
-		public string lastError()  {  return getAttribute(IupAttributes.LastError); }
+		string lastError()  {  return getAttribute(IupAttributes.LastError); }
 	}
 
     /**
@@ -533,9 +592,9 @@ public class IupGLCanvas : IupCanvas
     */
     @property 
 	{
-		public bool enableArbContext() { return getAttribute(IupAttributes.ArbContext) == FlagIdentifiers.Yes; }
+		bool enableArbContext() { return getAttribute(IupAttributes.ArbContext) == FlagIdentifiers.Yes; }
 
-		public void enableArbContext(bool value) 
+		void enableArbContext(bool value) 
 		{
             setAttribute(IupAttributes.ArbContext, value ? FlagIdentifiers.Yes : FlagIdentifiers.No);
 		}
@@ -550,9 +609,9 @@ public class IupGLCanvas : IupCanvas
     */
     @property 
 	{
-		public bool isStereo() { return getAttribute(IupAttributes.Stereo) == FlagIdentifiers.Yes; }
+		bool isStereo() { return getAttribute(IupAttributes.Stereo) == FlagIdentifiers.Yes; }
 
-		public void isStereo(bool value) 
+		void isStereo(bool value) 
 		{
             setAttribute(IupAttributes.Stereo, value ? FlagIdentifiers.Yes : FlagIdentifiers.No);
 		}
@@ -581,7 +640,7 @@ public class IupGLCanvas : IupCanvas
 }
 
 
-public enum GlBufferMode
+enum GlBufferMode
 {
     Single,
     Double

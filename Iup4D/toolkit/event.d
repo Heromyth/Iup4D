@@ -76,6 +76,7 @@ struct EventHandler(T...)
     ref EventHandler!(T) opOpAssign(string op, HandlerDelegate)(HandlerDelegate handler)
         if(op == "+" || op == "-" )
     {
+        // BUG: Can't connect delegate which is defined in a function.
         static if(op == "+")
             connect(handler);
         else static if(op == "-")
@@ -203,12 +204,14 @@ struct CallbackHandler(T...)
 }
 
 
-// Summary:
-//     System.EventArgs is the base class for classes containing event data.
+/**
+the base class for classes containing event data.
+*/
 class EventArgs
 {
-	// Summary:
-	//     Represents an event with no event data.
+    /**
+    Represents an event with no event data.
+    */
 	static EventArgs empty;
 
     static this()
@@ -216,9 +219,5 @@ class EventArgs
         empty = new EventArgs();
     }
 
-	// Summary:
-	//     Initializes a new instance of the System.EventArgs class.
-	this()
-	{
-	}
+	this() { }
 }

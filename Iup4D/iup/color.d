@@ -24,17 +24,14 @@ Creates a color palette to enable a color selection from several samples. It can
 one or two colors. The primary color is selected with the left mouse button, and the 
 secondary color is selected with the right mouse button. You can double click a cell 
 to change its color and you can double click the preview area to switch between primary 
-and secondary colors.
-
-This is an additional control that depends on the CD library. It is included in the 
-IupControls library. It inherits from IupCanvas. 
+and secondary colors. 
 */
 public class IupColorBar : IupCanvasBase
 {
 	class IupAttributes : super.IupAttributes
 	{
         enum IupColorBar = "IupColorBar";
-        enum BufferSize = "BUFFERSIZE";
+        enum Bufferize = "BUFFERIZE";
         enum Cell = "CELL";
         enum NumCells = "NUM_CELLS";
         enum Count = "COUNT";
@@ -110,7 +107,7 @@ public class IupColorBar : IupCanvasBase
             ColorBarCallbackEventArgs r = new ColorBarCallbackEventArgs();
             cellDoubleClicked(this, r, index);
 
-            if( r.result == CallbackResult.Ignore)
+            if( r.result == IupElementAction.Ignore)
                 return  null;
 
             string color = r.color.toRgb();
@@ -187,10 +184,10 @@ public class IupColorBar : IupCanvasBase
     */
     @property 
     {
-        public bool isBufferSizeEnabled() { return getAttribute(IupAttributes.BufferSize) == FlagIdentifiers.Yes; }
+        public bool canAutoRedraw() { return getAttribute(IupAttributes.Bufferize) == FlagIdentifiers.Yes; }
 
-        public void isBufferSizeEnabled (bool value)  {
-            setAttribute(IupAttributes.BufferSize, value ? FlagIdentifiers.Yes : FlagIdentifiers.No);
+        public void canAutoRedraw (bool value)  {
+            setAttribute(IupAttributes.Bufferize, value ? FlagIdentifiers.Yes : FlagIdentifiers.No);
         }
     }
 
@@ -200,9 +197,9 @@ public class IupColorBar : IupCanvasBase
     */
     @property 
 	{
-		public int cellCount()  {  return getIntAttribute(IupAttributes.Count); }
-		public int cellNumber()  {  return getIntAttribute(IupAttributes.NumCells); }
-        public void cellNumber(int value) { setIntAttribute(IupAttributes.NumCells, value);}
+        //public int cellCount()  {  return getIntAttribute(IupAttributes.Count); }
+		public int cellCount()  {  return getIntAttribute(IupAttributes.NumCells); }
+        public void cellCount(int value) { setIntAttribute(IupAttributes.NumCells, value);}
 	}
 
     /**
@@ -210,8 +207,8 @@ public class IupColorBar : IupCanvasBase
     */
     @property 
 	{
-		public int groupNumber()  {  return getIntAttribute(IupAttributes.NumParts); }
-        public void groupNumber(int value) { setIntAttribute(IupAttributes.NumParts, value);}
+		public int divisionNumber()  {  return getIntAttribute(IupAttributes.NumParts); }
+        public void divisionNumber(int value) { setIntAttribute(IupAttributes.NumParts, value);}
 	}
 
     /**

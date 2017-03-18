@@ -368,7 +368,7 @@ public class MenuTestDialog : IupDialog
         IupMenuItem item = cast(IupMenuItem)sender;
         writefln("ACTION(%s)", item.title);
         this.dispose();
-        //e.result = CallbackResult.Close;
+        //e.result = IupElementActionClose;
     }
 
     private void closeMenuItem_click(Object sender, CallbackEventArgs e)

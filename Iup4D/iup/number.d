@@ -33,7 +33,7 @@ public class IupSlider : IupStandardControl
         enum Min = "MIN";
         enum Orientation = "ORIENTATION";
         enum PageStep   = "PAGESTEP";
-        enum Showticks = "SHOWTICKS";
+        enum ShowTicks = "SHOWTICKS";
         enum Step   = "STEP";
         enum TicksPos = "TICKSPOS";
 	}
@@ -200,8 +200,8 @@ public class IupSlider : IupStandardControl
     */
     @property 
 	{
-		public int tickNumber()  {  return getIntAttribute(IupAttributes.Showticks); }
-        public void tickNumber(int value) { setIntAttribute(IupAttributes.Showticks, value);}
+		public int ticksCount()  {  return getIntAttribute(IupAttributes.ShowTicks); }
+        public void ticksCount(int value) { setIntAttribute(IupAttributes.ShowTicks, value);}
 	}
 
     /**

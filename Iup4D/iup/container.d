@@ -12,23 +12,23 @@ import std.conv;
 import std.string;
 
 import toolkit.container;
+import toolkit.event;
 import toolkit.drawing;
 
 
-public class IupBackgroundBox : iup.canvas.IupCanvas
+/**
+Creates a simple native container with no decorations. Useful for controlling children 
+visibility for IupZbox or IupExpander. It inherits from IupCanvas. 
+*/
+public class IupBackgroundBox : IupCanvasBase
 {
-    //protected class IupAttributes : super.IupAttributes
-    //{
-    //    enum CANVASBOX = "CANVASBOX";
-    //    enum CHILDOFFSET = "CHILDOFFSET";
-    //}
-
-
-    this()
+    class IupAttributes : super.IupAttributes
     {
-        super();
+        enum CanvasBox = "CANVASBOX";
+        enum ChildOffset = "CHILDOFFSET";
     }
 
+    this() { super(); }
 
 	this(IupControl child)
 	{
@@ -50,19 +50,53 @@ public class IupBackgroundBox : iup.canvas.IupCanvas
     */
 	@property 
 	{
-		public IupControl  child(){ return m_child; }
-		public void child(IupControl value)
+		IupControl child() { return m_child; }
+		
+        void child(IupControl value)
         { 
-            // 检查IupDialog是否只允许1个子控件
             if(m_child !is null)
                 iup.c.IupDetach(m_child.handle);
 
             m_child = value;
             iup.c.IupAppend(handle, value is null ? null : m_child.handle);
         }
-        private  IupControl m_child;
+        private IupControl m_child;
 	}
 
+    /**
+    enable the behavior of a canvas box instead of a regular container. Can be Yes or No.
+    Default: No.
+    */
+    @property 
+	{
+		bool enableCanvasBox() { return getAttribute(IupAttributes.CanvasBox) == FlagIdentifiers.Yes; }
+
+		void enableCanvasBox(bool value) 
+		{
+            setAttribute(IupAttributes.CanvasBox, value ? FlagIdentifiers.Yes : FlagIdentifiers.No);
+		}
+	}
+
+    /**
+    Allow to specify a position offset for the child. Available for native containers only. 
+    It will not affect the natural size, and allows to position controls outside the client
+    area. Format "dxxdy", where dx and dy are integer values corresponding to the horizontal
+    and vertical offsets, respectively, in pixels. Default: 0x0.
+    */
+    @property 
+	{
+		OffsetXY childOffset() 
+        {
+            OffsetXY offset;
+            getIntIntAttribute(IupAttributes.ChildOffset, offset.dx, offset.dy);
+            return offset; 
+        }
+
+		void childOffset(OffsetXY offset) 
+		{
+			setAttribute(IupAttributes.ChildOffset, offset.dx, offset.dy);
+		}
+	}
 }
 
 
@@ -79,10 +113,7 @@ public class IupContentControl : IupControl
 		enum UserSize = "USERSIZE";
 	}
 
-    this()
-    {
-        super();
-    }
+    this() { super(); }
 
     this(string title)
     {
@@ -108,10 +139,10 @@ public class IupContentControl : IupControl
     */
 	@property 
 	{
-		public IupControl  child(){ return m_child; }
+		public IupControl child() { return m_child; }
+
 		public void child(IupControl value)
         { 
-            // 检查IupDialog是否只允许1个子控件
             if(m_child !is null)
                 iup.c.IupDetach(m_child.handle);
 
@@ -220,26 +251,26 @@ public class IupContentControl : IupControl
 public class IupContainerControl : IupControl
 {
 
-    protected class IupAttributes : super.IupAttributes
+    class IupAttributes : super.IupAttributes
 	{
         enum Alignment = "ALIGNMENT";
 		enum ClientSize = "CLIENTSIZE";
 	}
 
-
     protected Array!IupControl children;
 
-    this()
-    {
-        super();
-        expandOrientation = ExpandOrientation.Both;
-    }
+    this() { super(); }
 
 	this(IupControl[] children...)
 	{
         append(children);
-        expandOrientation = ExpandOrientation.Both;
 	}
+
+    override protected void onCreated()
+	{
+        super.onCreated();
+        expandOrientation = ExpandOrientation.Both;
+    }
 
 
     /* ************* Public methods *************** */
@@ -290,6 +321,602 @@ public class IupContainerControl : IupControl
 }
 
 
+/**
+Creates a void container that can interactively show or hide its child.
+
+It does not have a native representation, but it contains also several elements to implement
+the bar handler.
+*/
+public class IupExpander : IupContentControl
+{
+    class IupCallbacks : super.IupCallbacks
+    {
+        enum Action = "ACTION";
+		enum OpenClose = "OPENCLOSE_CB";
+		enum ExtraButton = "EXTRABUTTON_CB";
+    }
+
+    class IupAttributes : super.IupAttributes
+	{
+        enum IupExpander = "IupExpander";
+        enum AutoShow = "AUTOSHOW";
+        enum Animation = "ANIMATION";
+        enum BackColor = "BACKCOLOR";
+        enum BarPosition = "BARPOSITION";
+        enum BarSize = "BARSIZE";
+        enum ExtraButtons = "EXTRABUTTONS";
+        enum ImageExtra = "IMAGEEXTRA";
+        enum ImageExtraPress = "IMAGEEXTRAPRESS";
+        enum ImageExtraHighlight = "IMAGEEXTRAHIGHLIGHT";
+        enum ForeColor = "FORECOLOR";
+        enum OpenColor = "OPENCOLOR";
+        enum HighColor = "HIGHCOLOR";
+        enum Image = "IMAGE";
+        enum ImageOpen = "IMAGEOPEN";
+        enum ImageHighlight = "IMAGEHIGHLIGHT";
+        enum ImageOpenhighlight = "IMAGEOPENHIGHLIGHT";
+        enum State = "STATE";
+        enum StateRefresh = "STATEREFRESH";
+        enum TitleImage = "TITLEIMAGE";
+        enum TitleImageOpen = "TITLEIMAGEOPEN";
+        enum TitleImageHighlight = "TITLEIMAGEHIGHLIGHT";
+        enum TitleImageOpenHighlight = "TITLEIMAGEOPENHIGHLIGHT";
+        enum TitleExpand = "TITLEEXPAND";
+	}
+
+    this() { super(); }
+
+    this(string title)
+    {
+        super(title);
+    }
+
+	this(IupControl child)
+	{
+		super(child);
+	}
+
+
+    /* ************* Protected methods *************** */
+
+	override protected Ihandle* createIupObject()
+	{
+		return iup.c.IupExpander(null);
+	}
+
+    override protected void onCreated()
+    {
+        super.onCreated();
+
+        registerExtraMouseClickCallback(IupCallbacks.ExtraButton);
+        registerStateChangingCallback(IupCallbacks.OpenClose);
+        registerStateChangedCallback(IupCallbacks.Action);
+    }
+
+
+    /* ************* Events *************** */
+
+    /**
+    Action generated when any mouse button is pressed or released.
+
+    button: identifies the extra button. can be 1, 2 or 3. (this is not the same as BUTTON_CB)
+    pressed: indicates the state of the button
+    */
+    EventHandler!(CallbackEventArgs, int, MouseState)  extraMouseClick;
+    mixin EventCallbackAdapter!(IupExpander, "extraMouseClick", int, int);
+    private IupElementAction onExtraMouseClick(int button, int pressed) nothrow
+    {       
+        IupElementAction r = IupElementAction.Default;
+        try
+        {
+            auto callbackArgs = new CallbackEventArgs();
+            extraMouseClick(this, callbackArgs, button, 
+                       cast(MouseState)pressed);
+            r = callbackArgs.result;
+        }
+        catch(Exception ex) { /* do nothing. */ }
+        return r;
+    }
+
+    /**
+    Action generated after the expander state is interactively changed.
+    */
+    mixin EventCallback!(IupExpander, "stateChanged");
+
+    /**
+    Action generated before the expander state is interactively changed.
+
+    state: new state to be applied. 
+    Returns: if return IUP_IGNORE the new state is ignored.
+    */
+    EventHandler!(CallbackEventArgs, ExpanderState)  stateChanging;
+    mixin EventCallbackAdapter!(IupExpander, "stateChanging", int);
+    private IupElementAction onStateChanging(int state) nothrow
+    {       
+        IupElementAction r = IupElementAction.Default;
+        try
+        {
+            auto callbackArgs = new CallbackEventArgs();
+            stateChanging(this, callbackArgs, cast(ExpanderState)state);
+            r = callbackArgs.result;
+        }
+        catch(Exception ex) { /* do nothing. */ }
+        return r;
+    }
+
+
+    /* ************* Properties *************** */
+
+    /**
+    enable animation during open/close. Works only for BARPOSITION=TOP and does not works 
+    for AUTOSHOW. Also the child must be a native container like IupTabs, IupFrame, 
+    IupBackgroundBox, or IupScrollBox, or it will not work accordantly. Values can be SLIDE 
+    (child controls slide down), CURTAIN (child controls appears as if a curtain is being 
+    pulled) or NO. Default: NO. 
+    */
+    @property 
+    {
+        ExpanderAnimationStyle animationStyle() { 
+            string v = getAttribute(IupAttributes.Animation); 
+            return ExpanderAnimationStyleIdentifiers.convert(v);
+        }
+
+        void animationStyle(ExpanderAnimationStyle value) {
+            setAttribute(IupAttributes.Animation, ExpanderAnimationStyleIdentifiers.convert(value));
+        }
+    }
+
+    /**
+    when state is changed IupRefresh is automatically called. Can be Yes or No. Default: Yes. 
+    */
+    @property 
+    {
+        bool canAutoRefresh() { return getAttribute(IupAttributes.StateRefresh) == FlagIdentifiers.Yes; }
+
+        void canAutoRefresh(bool value) {
+            setAttribute(IupAttributes.StateRefresh, value ? FlagIdentifiers.Yes : FlagIdentifiers.No);
+        }
+    }
+
+    /**
+    enables the automatic show of the child when mouse is over the handler for more 
+    than 1 second. Default: No.
+    */
+    @property 
+    {
+        bool canAutoShow() { return getAttribute(IupAttributes.AutoShow) == FlagIdentifiers.Yes; }
+
+        void canAutoShow(bool value) {
+            setAttribute(IupAttributes.AutoShow, value ? FlagIdentifiers.Yes : FlagIdentifiers.No);
+        }
+    }
+
+    /**
+    enable the expand/collapse action also at the tile. Default: NO.
+    */
+    @property 
+    {
+        bool canTitleExpand() { return getAttribute(IupAttributes.TitleExpand) == FlagIdentifiers.Yes; }
+
+        void canTitleExpand(bool value) {
+            setAttribute(IupAttributes.TitleExpand, value ? FlagIdentifiers.Yes : FlagIdentifiers.No);
+        }
+    }
+
+    /**
+    background color of the bar handler. If not defined it will use the background color of
+    the native parent. 
+    */
+    @property 
+    {
+        Color barBackground() { 
+            string c = getAttribute(IupAttributes.BackColor);
+            return Color.parse(c); 
+        }
+
+        void barBackground(Color value) { setAttribute(IupAttributes.BackColor, value.toRgb()); }
+
+        void barBackground(string value) { setAttribute(IupAttributes.BackColor, value); }
+    }
+
+    /**
+    indicates the bar handler position. Possible values are "TOP", "BOTTOM", "LEFT" or 
+    "RIGHT". Default: "TOP".
+    */
+    @property 
+	{
+		Position barPosition() {  
+            return PositionIdentifiers.convert(getAttribute(IupAttributes.BarPosition)); 
+        }
+
+        void barPosition(Position value) { 
+            setAttribute(IupAttributes.BarPosition, PositionIdentifiers.convert(value));
+        }
+	}
+
+    /**
+    controls the size of the bar handler. Default: the height or width that fits all its 
+    internal elements according to BARPOSITION.
+    */
+    @property 
+	{
+        int barSize() {  return getIntAttribute(IupAttributes.BarSize); }
+
+        void barSize(int value) { 
+            setIntAttribute(IupAttributes.BarSize, value);
+        }
+	}
+
+    /**
+    sets the number of extra image buttons at right when BARPOSITION=TOP. The maximum number
+    of buttons is 3. See the EXTRABUTTON_CB callback. Default: 0.
+    */
+    @property 
+	{
+		int extraButtonsCount() {  return getIntAttribute(IupAttributes.ExtraButtons); }
+
+        void extraButtonsCount(int value) { 
+            assert(value>=1 && value <=3);
+            setIntAttribute(IupAttributes.ExtraButtons, value);
+        }
+	}
+
+    /**
+    title text color. Default: the global attribute DLGFGCOLOR.
+    */
+    @property 
+    {
+        Color titleForceColor() { 
+            string c = getAttribute(IupAttributes.ForeColor);
+            return Color.parse(c); 
+        }
+
+        void titleForceColor(Color value) { setAttribute(IupAttributes.ForeColor, value.toRgb()); }
+
+        void titleForceColor(string value) { setAttribute(IupAttributes.ForeColor, value); }
+    }
+
+    /**
+    title text color when STATE=OPEN. Defaults to the FORECOLOR if not defined.
+    */
+    @property 
+    {
+        Color titleOpenColor() { 
+            string c = getAttribute(IupAttributes.OpenColor);
+            return Color.parse(c); 
+        }
+
+        void titleOpenColor(Color value) { setAttribute(IupAttributes.OpenColor, value.toRgb()); }
+
+        void titleOpenColor(string value) { setAttribute(IupAttributes.OpenColor, value); }
+    }
+
+    /**
+    title text color when STATE=OPEN. Defaults to the FORECOLOR if not defined.
+    */
+    @property 
+    {
+        Color titleHighlightColor() { 
+            string c = getAttribute(IupAttributes.HighColor);
+            return Color.parse(c); 
+        }
+
+        void titleHighlightColor(Color value) { setAttribute(IupAttributes.HighColor, value.toRgb()); }
+
+        void titleHighlightColor(string value) { setAttribute(IupAttributes.HighColor, value); }
+    }
+
+    /**
+    image name to replace the arrow image by a custom image when STATE=CLOSE. Works
+    only when BARPOSITION=TOP. Use IupSetHandle or IupSetAttributeHandle to associate 
+    an image to a name.
+    */
+    @property 
+    {
+        string arrowImage() { 
+            return getAttribute(IupAttributes.Image);
+        }
+
+        void arrowImage(iup.image.IupImage image) {
+            setHandleAttribute(IupAttributes.Image, image);
+        }
+
+        void arrowImage(string image) {
+            setAttribute(IupAttributes.Image, image);
+        }
+    }
+
+    /**
+    image name used when STATE=OPEN.
+    */
+    @property 
+    {
+        string arrowImageOpen() { 
+            return getAttribute(IupAttributes.ImageOpen);
+        }
+
+        void arrowImageOpen(iup.image.IupImage image) {
+            setHandleAttribute(IupAttributes.ImageOpen, image);
+        }
+
+        void arrowImageOpen(string image) {
+            setAttribute(IupAttributes.ImageOpen, image);
+        }
+    }
+
+    /**
+    image name used when mouse is over the bar handler and STATE=CLOSE.
+    */
+    @property 
+    {
+        string arrowImageCloseHighlight() { 
+            return getAttribute(IupAttributes.ImageHighlight);
+        }
+
+        void arrowImageCloseHighlight(iup.image.IupImage image) {
+            setHandleAttribute(IupAttributes.ImageHighlight, image);
+        }
+
+        void arrowImageCloseHighlight(string image) {
+            setAttribute(IupAttributes.ImageHighlight, image);
+        }
+    }
+
+    /**
+    image name used when mouse is over the bar handler and STATE=OPEN.
+    */
+    @property 
+    {
+        string arrowImageOpenHighlight() { 
+            return getAttribute(IupAttributes.ImageOpenhighlight);
+        }
+
+        void arrowImageOpenHighlight(iup.image.IupImage image) {
+            setHandleAttribute(IupAttributes.ImageOpenhighlight, image);
+        }
+
+        void arrowImageOpenHighlight(string image) {
+            setAttribute(IupAttributes.ImageOpenhighlight, image);
+        }
+    }
+
+    /**
+    Show or hide the container elements. Possible values: "OPEN" (expanded) or "CLOSE" 
+    (collapsed). Default: OPEN. Setting this attribute will automatically change the 
+    layout of the entire dialog so the child can be recomposed.
+    */
+    @property 
+    {
+        ExpanderState state() { 
+            string s = getAttribute(IupAttributes.State);
+            return ExpanderStateIdentifiers.convert(s);
+        }
+
+        void state(ExpanderState s) {
+            setAttribute(IupAttributes.State, ExpanderStateIdentifiers.convert(s));
+        }
+    }
+
+    /**
+    title image, shown in the bar handler near the expand/collapse button. When set it
+    will reset TITLE (image and text title are mutually exclusive). Shown only when 
+    BARPOSITION=TOP.
+    */
+    @property 
+    {
+        string titleImage() { 
+            return getAttribute(IupAttributes.TitleImage);
+        }
+
+        void titleImage(iup.image.IupImage image) {
+            setHandleAttribute(IupAttributes.TitleImage, image);
+        }
+
+        void titleImage(string image) {
+            setAttribute(IupAttributes.TitleImage, image);
+        }
+    }
+
+    /**
+    image name used when STATE=OPEN.
+    */
+    @property 
+    {
+        string titleImageOpen() { 
+            return getAttribute(IupAttributes.TitleImageOpen);
+        }
+
+        void titleImageOpen(iup.image.IupImage image) {
+            setHandleAttribute(IupAttributes.TitleImageOpen, image);
+        }
+
+        void titleImageOpen(string image) {
+            setAttribute(IupAttributes.TitleImageOpen, image);
+        }
+    }
+
+    /**
+    image name used when mouse is over the bar handler and STATE=CLOSE.
+    */
+    @property 
+    {
+        string titleImageCloseHighlight() { 
+            return getAttribute(IupAttributes.TitleImageHighlight);
+        }
+
+        void titleImageCloseHighlight(iup.image.IupImage image) {
+            setHandleAttribute(IupAttributes.TitleImageHighlight, image);
+        }
+
+        void titleImageCloseHighlight(string image) {
+            setAttribute(IupAttributes.TitleImageHighlight, image);
+        }
+    }
+
+    /**
+    image name used when mouse is over the bar handler and STATE=OPEN.
+    */
+    @property 
+    {
+        string titleImageOpenHighlight() { 
+            return getAttribute(IupAttributes.TitleImageOpenHighlight);
+        }
+
+        void titleImageOpenHighlight(iup.image.IupImage image) {
+            setHandleAttribute(IupAttributes.TitleImageOpenHighlight, image);
+        }
+
+        void titleImageOpenHighlight(string image) {
+            setAttribute(IupAttributes.TitleImageOpenHighlight, image);
+        }
+    }
+
+
+    /* ************* Public methods *************** */
+
+    /**
+    image name used for the button. id can be 1, 2 or 3. 1 is the rightmost button, and count
+    from right to left.
+    */
+    void setExtraButtonImage(int index, string image)
+    {
+        assert(index>=1 && index <=3);
+        setIdAttribute(IupAttributes.ImageExtra, index, image);
+    }
+
+    /// ditto
+    void setExtraButtonImage(int index, iup.image.IupImage image)
+    {
+        assert(index>=1 && index <=3);
+        setHandleAttribute(IupAttributes.ImageExtra ~ to!string(index), image);
+    }
+
+    /// ditto
+    string getExtraButtonImage(int index)
+    {
+        assert(index>=1 && index <=3);
+        return getIdAttributeAsString(IupAttributes.ImageExtra, index);
+    }
+
+    /**
+    image name used for the button when pressed.
+    */
+    void setExtraButtonPressedImage(int index, string image)
+    {
+        assert(index>=1 && index <=3);
+        setIdAttribute(IupAttributes.ImageExtraPress, index, image);
+    }
+
+    /// ditto
+    void setExtraButtonPressedImage(int index, iup.image.IupImage image)
+    {
+        assert(index>=1 && index <=3);
+        setHandleAttribute(IupAttributes.ImageExtraPress ~ to!string(index), image);
+    }
+
+    /// ditto
+    string getExtraButtonPressedImage(int index)
+    {
+        assert(index>=1 && index <=3);
+        return getIdAttributeAsString(IupAttributes.ImageExtraPress, index);
+    }
+
+    /**
+    image name for the button used when mouse is over the button area.
+    */
+    void setExtraButtonHighlightImage(int index, string image)
+    {
+        assert(index>=1 && index <=3);
+        setIdAttribute(IupAttributes.ImageExtraHighlight, index, image);
+    }
+
+    /// ditto
+    void setExtraButtonHighlightImage(int index, iup.image.IupImage image)
+    {
+        assert(index>=1 && index <=3);
+        setHandleAttribute(IupAttributes.ImageExtraHighlight ~ to!string(index), image);
+    }
+
+    /// ditto
+    string getExtraButtonHighlightImage(int index)
+    {
+        assert(index>=1 && index <=3);
+        return getIdAttributeAsString(IupAttributes.ImageExtraHighlight, index);
+    }
+}
+
+
+enum ExpanderAnimationStyle
+{
+    Slide,
+    Curtain,
+    None
+}
+
+struct ExpanderAnimationStyleIdentifiers
+{
+    enum Slide = "SLIDE";
+    enum Curtain = "CURTAIN";
+    enum None = "NO";
+
+    static string convert(ExpanderAnimationStyle t)
+    {
+        switch(t)
+        {
+            case ExpanderAnimationStyle.Slide:
+                return Slide;
+
+            case ExpanderAnimationStyle.Curtain:
+                return Curtain;
+
+            default:
+                return None;
+        }
+    }
+
+    static ExpanderAnimationStyle convert(string v)
+    {
+        if(v == Slide)
+            return ExpanderAnimationStyle.Slide;
+        else if(v == Curtain)
+            return ExpanderAnimationStyle.Curtain;
+        else
+            return ExpanderAnimationStyle.None;
+    }
+}
+
+enum ExpanderState
+{
+    Open,
+    Close
+}
+
+
+struct ExpanderStateIdentifiers
+{
+    enum Open = "Open";
+    enum Close = "Close";
+
+    static string convert(ExpanderState t)
+    {
+        switch(t)
+        {
+            case ExpanderState.Open:
+                return Open;
+
+            default:
+                return Close;
+        }
+    }
+
+    static ExpanderState convert(string v)
+    {
+        if(v == Open)
+            return ExpanderState.Open;
+        else
+            return ExpanderState.Close;
+    }
+}
 
 
 /**
@@ -297,7 +924,7 @@ Creates a native container, which draws a frame with a title around its child.
 */
 public class IupGroupBox : IupContentControl
 {
-    protected class IupAttributes : super.IupAttributes
+    class IupAttributes : super.IupAttributes
 	{
         enum IupGroupBox = "IupGroupBox";
         enum IupFrame = "IupFrame";
@@ -305,12 +932,7 @@ public class IupGroupBox : IupContentControl
         enum Sunken = "SUNKEN";
 	}
 
-
-    this()
-    {
-        super();
-    }
-
+    this() { super(); }
 
     this(string title)
     {
@@ -330,14 +952,8 @@ public class IupGroupBox : IupContentControl
 		return iup.c.IupFrame(null);
 	}
 
-    //override protected void onCreated()
-    //{
-    //    super.onCreated();
-    //}
-
 
     /* ************* Properties *************** */
-
 
     /**
     Allow to specify a position offset for the child. Available for native containers only. 
@@ -347,13 +963,13 @@ public class IupGroupBox : IupContentControl
     */   
     @property 
 	{
-		public OffsetXY childOffset() 
+		OffsetXY childOffset() 
         { 
             string s = getAttribute(IupAttributes.ChildOffset);
             return IupOffsetXY.parse(s); 
         }
 
-		public void childOffset(OffsetXY value) 
+		void childOffset(OffsetXY value) 
 		{
 			setAttribute(IupAttributes.ChildOffset, IupOffsetXY.format(value));
 		}
@@ -365,9 +981,9 @@ public class IupGroupBox : IupContentControl
     */    
     @property 
 	{
-		public bool isSunken()  {  return getAttribute(IupAttributes.Sunken) == FlagIdentifiers.Yes; }
+		bool isSunken() {  return getAttribute(IupAttributes.Sunken) == FlagIdentifiers.Yes; }
 
-        public void isSunken(bool value) { 
+        void isSunken(bool value) { 
             setAttribute(IupAttributes.Sunken, value ? FlagIdentifiers.Yes : FlagIdentifiers.No);
         }
 	}
@@ -384,15 +1000,12 @@ It does not have a native representation.
 */
 public class IupRadioBox : IupContentControl
 {
-    protected class IupAttributes : super.IupAttributes
+    class IupAttributes : super.IupAttributes
 	{
         enum IupRadioBox = "IupRadioBox";
 	}
 
-    this()
-    {
-        super();
-    }
+    this() { super(); }
 
 	this(IupControl child)
 	{
@@ -406,15 +1019,145 @@ public class IupRadioBox : IupContentControl
 	{
 		return iup.c.IupRadio(null);
 	}
-
-    //override protected void onCreated()
-    //{
-    //    super.onCreated();
-    //}
 }
 
 //alias IupRadio = IupRadioBox;
 alias IupRadioGroup = IupRadioBox;
+
+
+/**
+Creates a native container that allows its child to be scrolled.
+*/
+public class IupScrollBox : IupCanvasBase
+{
+    class IupAttributes : super.IupAttributes
+    {
+        enum IupScrollBox = "IupScrollBox";
+        enum CanvasBox = "CANVASBOX";
+        enum ChildOffset = "CHILDOFFSET";
+        enum LayoutDrag = "LAYOUTDRAG";
+        enum ScrollTo = "SCROLLTO";
+        enum ScrollToChild = "SCROLLTOCHILD";
+        enum ScrollToChildHandle = "SCROLLTOCHILD_HANDLE";
+    }
+
+    this() { super(); }
+
+	this(IupControl child)
+	{
+        super();
+        this.child = child;
+	}
+
+    /* ************* Protected methods *************** */
+
+	override protected Ihandle* createIupObject()
+	{
+		return iup.c.IupScrollBox(null);
+	}
+
+
+    /* ************* Properties *************** */
+
+    /**
+    */
+	@property 
+	{
+		IupControl  child() { return m_child; }
+
+        void child(IupControl value)
+        { 
+            if(m_child !is null)
+                iup.c.IupDetach(m_child.handle);
+
+            m_child = value;
+            iup.c.IupAppend(handle, value is null ? null : m_child.handle);
+        }
+        private  IupControl m_child;
+	}
+
+    /**
+    enable the behavior of a canvas box instead of a regular container. Can be Yes or No.
+    Default: No.
+    */
+    @property 
+	{
+		bool enableCanvasBox() { return getAttribute(IupAttributes.CanvasBox) == FlagIdentifiers.Yes; }
+
+		void enableCanvasBox(bool value) 
+		{
+            setAttribute(IupAttributes.CanvasBox, value ? FlagIdentifiers.Yes : FlagIdentifiers.No);
+		}
+	}
+
+    /**
+    Allow to specify a position offset for the child. Available for native containers only. 
+    It will not affect the natural size, and allows to position controls outside the client
+    area. Format "dxxdy", where dx and dy are integer values corresponding to the horizontal
+    and vertical offsets, respectively, in pixels. Default: 0x0.
+    */
+    @property 
+	{
+		OffsetXY childOffset() 
+        {
+            OffsetXY offset;
+            getIntIntAttribute(IupAttributes.ChildOffset, offset.dx, offset.dy);
+            return offset; 
+        }
+
+		void childOffset(OffsetXY offset) 
+		{
+			setAttribute(IupAttributes.ChildOffset, offset.dx, offset.dy);
+		}
+	}
+
+
+    version(Windows)
+    {
+        /**
+        When the scrollbar is moved automatically update the children layout. Default: YES. 
+        If set to NO then the layout will be updated only when the mouse drag is released. 
+        */
+        @property 
+        {
+            bool canAutoUpdateLayout() { 
+                return getAttribute(IupAttributes.LayoutDrag) == FlagIdentifiers.Yes; 
+            }
+
+            void canAutoUpdateLayout(bool value) {
+                setAttribute(IupAttributes.LayoutDrag, value ? FlagIdentifiers.Yes : FlagIdentifiers.No);
+            }
+        }
+    }
+
+    /* ************* Public methods *************** */
+
+    /**
+    position the scroll at the given x,y coordinates relative to the box top-left corner. 
+    Format "x,y". Value can also be TOP or BOTTOM for a vertical scroll to the top or to
+    the bottom of the scroll range.
+    */
+    void scrollTo(int x, int y)
+    {
+        setAttribute(IupAttributes.ScrollTo, x, y);
+    }
+
+    /// ditto
+    void scrollTo(Position pos)
+    {
+        setAttribute(IupAttributes.ScrollTo, PositionIdentifiers.convert(pos));
+    }
+
+    /**
+    position the scroll at the top-left corner of the given child. The child must be 
+    contained in the Scrollbox hierarchy. 
+    */
+    void scrollToChild(IupControl child)
+    {
+        setHandleAttribute(IupAttributes.ScrollToChildHandle, child);
+    }
+
+}
 
 
 /**
@@ -543,9 +1286,9 @@ public class IupSplitContainer : IupControl
             return Color.parse(c); 
         }
 
-        void color(Color value)  { setAttribute(IupAttributes.Color, value.toRgb()); }
+        void color(Color value) { setAttribute(IupAttributes.Color, value.toRgb()); }
 
-        void color(string value)  { setAttribute(IupAttributes.Color, value); }
+        void color(string value) { setAttribute(IupAttributes.Color, value); }
     }
 
     /** 
@@ -553,7 +1296,7 @@ public class IupSplitContainer : IupControl
     */
     @property 
 	{
-		public int barSize()  {  return getIntAttribute(IupAttributes.BarSize); }
+		public int barSize() {  return getIntAttribute(IupAttributes.BarSize); }
         public void barSize(int value) { setIntAttribute(IupAttributes.BarSize, value);}
 	}
 
@@ -623,7 +1366,7 @@ public class IupSplitContainer : IupControl
 	{
         public string cropRange() { return getAttribute(IupAttributes.MinMax); }
 
-        public void cropRange(string value)  {
+        public void cropRange(string value) {
             setAttribute(IupAttributes.MinMax, value);
         }
 	}
@@ -652,7 +1395,7 @@ public class IupSplitContainer : IupControl
     */
     @property 
 	{
-		public int proportion()  {  return getIntAttribute(IupAttributes.Value); }
+		public int proportion() {  return getIntAttribute(IupAttributes.Value); }
         public void proportion(int value) { setIntAttribute(IupAttributes.Value, value);}
 	}
 
@@ -727,6 +1470,7 @@ public class IupContainerControlBase(T) : IupControl
 
     /* ************* Public methods *************** */
 }
+
 
 /**
 Creates a native container for composing elements in hidden layers with only one layer visible 
@@ -823,7 +1567,7 @@ public class IupTabControl : IupContainerControlBase!IupControl
             return getAttribute(IupAttributes.ShowClose) == FlagIdentifiers.Yes; 
         }
 
-        public void canShowClose(bool value)  {
+        public void canShowClose(bool value) {
             setAttribute(IupAttributes.ShowClose, value ? FlagIdentifiers.Yes : FlagIdentifiers.No);
         }
     }
@@ -833,7 +1577,7 @@ public class IupTabControl : IupContainerControlBase!IupControl
     */
     @property 
 	{
-		public int count()  {  return getIntAttribute(IupAttributes.Count); }
+		public int count() {  return getIntAttribute(IupAttributes.Count); }
 	}
 
     /**
@@ -843,7 +1587,7 @@ public class IupTabControl : IupContainerControlBase!IupControl
     */
     @property 
     {
-        public string currentTabName()  {  return getAttribute(IupAttributes.Value); }
+        public string currentTabName() {  return getAttribute(IupAttributes.Value); }
         public void currentTabName(string value) { setAttribute(IupAttributes.Value, value); }
     }
 
@@ -854,7 +1598,7 @@ public class IupTabControl : IupContainerControlBase!IupControl
     */
     @property 
 	{
-		public int currentTabIndex()  {  return getIntAttribute(IupAttributes.ValuePos); }
+		public int currentTabIndex() {  return getIntAttribute(IupAttributes.ValuePos); }
         public void currentTabIndex(int index) { setIntAttribute(IupAttributes.ValuePos, index); }
 	}
 
@@ -865,7 +1609,7 @@ public class IupTabControl : IupContainerControlBase!IupControl
     */
     @property 
 	{
-		public IupControl currentTab()  {  
+		public IupControl currentTab() {  
             int index = getIntAttribute(IupAttributes.ValuePos);
             return m_items[index]; 
         }
@@ -941,7 +1685,7 @@ public class IupTabControl : IupContainerControlBase!IupControl
         {
             public bool isMultiline() { return getAttribute(IupAttributes.Multiline) == FlagIdentifiers.Yes; }
 
-            public void isMultiline(bool value)  {
+            public void isMultiline(bool value) {
                 setAttribute(IupAttributes.Multiline, value ? FlagIdentifiers.Yes : FlagIdentifiers.No);
             }
         }

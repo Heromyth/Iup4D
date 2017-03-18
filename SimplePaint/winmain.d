@@ -8,12 +8,21 @@ import iup;
 
 version(Windows) { 
     pragma(lib, "iup.lib");
+
     pragma(lib, "iupimglib.lib"); // required only if function IupImageLibOpen() is called
     pragma(lib, "iupim.lib");
     pragma(lib, "im.lib");
+
     pragma(lib, "iupgl.lib");
     pragma(lib, "opengl32.lib");
+
+    pragma(lib, "iupcontrols.lib");
     pragma(lib, "iupglcontrols.lib");
+
+    pragma(lib, "iupcd.lib");
+    pragma(lib, "cd.lib");
+    pragma(lib, "cdgl.lib");
+    pragma(lib, "cdpdf.lib"); 
 }
 
 

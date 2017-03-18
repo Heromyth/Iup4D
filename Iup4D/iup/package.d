@@ -11,6 +11,7 @@ public {
     import iup.datetime;
 	import iup.dialog;
     import iup.drawing;
+    import iup.grid;
     import iup.image;
 	import iup.label;
 	import iup.layout;
@@ -24,5 +25,7 @@ public {
     import iup.thread;
 
     import iup.HMI;
+
+    version(Windows) import iup.ole;
 }
 

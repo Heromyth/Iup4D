@@ -107,11 +107,11 @@ public class IupTextBoxBase : IupStandardControl
     Returns: If IUP_IGNORE is returned the callback will NOT be called for the next dropped files,
     and the processing of dropped files will be interrupted.
     */
-    public EventHandler!(CallbackEventArgs, string, int, int, int)  fileDropped;
+    EventHandler!(CallbackEventArgs, string, int, int, int)  fileDropped;
     mixin EventCallbackAdapter!(IupTextBoxBase, "fileDropped", const (char)*, int, int, int);
-    private CallbackResult onFileDropped(const (char)* fileName, int num, int x, int y) nothrow
+    private IupElementAction onFileDropped(const (char)* fileName, int num, int x, int y) nothrow
     {
-        CallbackResult r = CallbackResult.Default;
+        IupElementAction r = IupElementAction.Default;
         try
         {
             auto callbackArgs = new CallbackEventArgs();
@@ -127,11 +127,11 @@ public class IupTextBoxBase : IupStandardControl
     /**
     Action generated when a mouse button is pressed or released.
     */
-    public EventHandler!(CallbackEventArgs, MouseButtons, MouseState, int, int, string)  mouseClick;
+    EventHandler!(CallbackEventArgs, MouseButtons, MouseState, int, int, string)  mouseClick;
     mixin EventCallbackAdapter!(IupTextBoxBase, "mouseClick", int, int, int, int, const(char)*);
-    private CallbackResult onMouseClick(int button, int pressed, int x, int y, const(char) *status) nothrow
+    private IupElementAction onMouseClick(int button, int pressed, int x, int y, const(char) *status) nothrow
     {       
-        CallbackResult r = CallbackResult.Default;
+        IupElementAction r = IupElementAction.Default;
         try
         {
             auto callbackArgs = new CallbackEventArgs();
@@ -151,11 +151,11 @@ public class IupTextBoxBase : IupStandardControl
     status: status of mouse buttons and certain keyboard keys at the moment the event was generated. 
     The same macros used for BUTTON_CB can be used for this status.
     */
-    public EventHandler!(CallbackEventArgs, int, int, string)  mouseMove;
+    EventHandler!(CallbackEventArgs, int, int, string)  mouseMove;
     mixin EventCallbackAdapter!(IupTextBoxBase, "mouseMove", int, int, const(char)*);
-    private CallbackResult onMouseMove(int x, int y, const(char) *status) nothrow
+    private IupElementAction onMouseMove(int x, int y, const(char) *status) nothrow
     {       
-        CallbackResult r = CallbackResult.Default;
+        IupElementAction r = IupElementAction.Default;
         try
         {
             auto callbackArgs = new CallbackEventArgs();
@@ -176,16 +176,16 @@ public class IupTextBoxBase : IupStandardControl
     Action generated when the text is edited, but before its value is actually 
     changed. Can be generated when using the keyboard, undo system or from the clipboard.
     */
-    public EventHandler!(CallbackEventArgs, int, string)  textChanging;
+    EventHandler!(CallbackEventArgs, int, string)  textChanging;
     mixin EventCallbackAdapter!(IupTextBoxBase, "textChanging", int, char *);
 
     /**
     c: valid alpha numeric character or 0.
     new_value: Represents the new text value.
     */
-    private CallbackResult onTextChanging(int c, char *new_value) nothrow
+    private IupElementAction onTextChanging(int c, char *new_value) nothrow
     {
-        CallbackResult r = CallbackResult.Default;
+        IupElementAction r = IupElementAction.Default;
         try
         {
             auto callbackArgs = new CallbackEventArgs();
@@ -223,8 +223,8 @@ public class IupTextBoxBase : IupStandardControl
     */
     @property 
 	{
-		public int caretIndex()  {  return getIntAttribute(IupAttributes.CaretPos); }
-        public void caretIndex(int value) { setIntAttribute(IupAttributes.CaretPos, value);}
+		int caretIndex()  {  return getIntAttribute(IupAttributes.CaretPos); }
+        void caretIndex(int value) { setIntAttribute(IupAttributes.CaretPos, value);}
 	}
 
     /**
@@ -235,9 +235,9 @@ public class IupTextBoxBase : IupStandardControl
     */
     @property 
 	{
-		public bool isWordWrap() { return getAttribute(IupAttributes.WordWrap) == FlagIdentifiers.Yes; }
+		bool isWordWrap() { return getAttribute(IupAttributes.WordWrap) == FlagIdentifiers.Yes; }
 
-        public void isWordWrap(bool value) 
+        void isWordWrap(bool value) 
         {
             setAttribute(IupAttributes.WordWrap,  value ? FlagIdentifiers.Yes : FlagIdentifiers.No);
         }
@@ -248,9 +248,9 @@ public class IupTextBoxBase : IupStandardControl
     */
     @property 
 	{
-		public bool isOverwrite() { return getAttribute(IupAttributes.Overwrite) == ToggleStateIdentifiers.On; }
+		bool isOverwrite() { return getAttribute(IupAttributes.Overwrite) == ToggleStateIdentifiers.On; }
 
-        public void isOverwrite(bool value) 
+        void isOverwrite(bool value) 
         {
             setAttribute(IupAttributes.Overwrite,  value ? ToggleStateIdentifiers.On : ToggleStateIdentifiers.Off);
         }
@@ -261,9 +261,9 @@ public class IupTextBoxBase : IupStandardControl
     */
     @property 
 	{
-		public bool hasBorder() { return getAttribute(IupAttributes.Border) == FlagIdentifiers.Yes; }
+		bool hasBorder() { return getAttribute(IupAttributes.Border) == FlagIdentifiers.Yes; }
 
-		public void hasBorder(bool value) {
+		void hasBorder(bool value) {
             setAttribute(IupAttributes.Border, value ? FlagIdentifiers.Yes : FlagIdentifiers.No);
 		}
     }
@@ -275,9 +275,9 @@ public class IupTextBoxBase : IupStandardControl
     */
     @property 
     {
-        public bool isFormatting() { return getAttribute(IupAttributes.Formatting) == FlagIdentifiers.Yes; }
+        bool isFormatting() { return getAttribute(IupAttributes.Formatting) == FlagIdentifiers.Yes; }
 
-        public void isFormatting(bool value)  {
+        void isFormatting(bool value)  {
             setAttribute(IupAttributes.Formatting, value ? FlagIdentifiers.Yes : FlagIdentifiers.No);
         }
     }
@@ -287,7 +287,7 @@ public class IupTextBoxBase : IupStandardControl
     */
     @property 
 	{
-		public int lineCount()  {  return getIntAttribute(IupAttributes.LineCount); }
+		int lineCount()  {  return getIntAttribute(IupAttributes.LineCount); }
 	}
 
     /**
@@ -295,8 +295,8 @@ public class IupTextBoxBase : IupStandardControl
     */
     @property 
 	{
-		public string mask()  {  return getAttribute(IupAttributes.Mask); }
-        public void mask(string value) { setAttribute(IupAttributes.Mask, value);}
+		string mask()  {  return getAttribute(IupAttributes.Mask); }
+        void mask(string value) { setAttribute(IupAttributes.Mask, value);}
 	}
 
     /**
@@ -306,8 +306,8 @@ public class IupTextBoxBase : IupStandardControl
     */
     @property 
 	{
-		public int maxLength()  {  return getIntAttribute(IupAttributes.NC); }
-        public void maxLength(int value) { setIntAttribute(IupAttributes.NC, value);}
+		int maxLength()  {  return getIntAttribute(IupAttributes.NC); }
+        void maxLength(int value) { setIntAttribute(IupAttributes.NC, value);}
 	}
 
     /**
@@ -316,7 +316,7 @@ public class IupTextBoxBase : IupStandardControl
     */
     @property 
 	{
-		public bool multiline() { return getAttribute(IupAttributes.Multiline) == FlagIdentifiers.Yes; }
+		bool multiline() { return getAttribute(IupAttributes.Multiline) == FlagIdentifiers.Yes; }
 	}
 
     /**
@@ -326,9 +326,9 @@ public class IupTextBoxBase : IupStandardControl
     */
     @property 
 	{
-		public bool isReadOnly() { return getAttribute(IupAttributes.ReadOnly) == FlagIdentifiers.Yes; }
+		bool isReadOnly() { return getAttribute(IupAttributes.ReadOnly) == FlagIdentifiers.Yes; }
 
-		public void isReadOnly(bool value) {
+		void isReadOnly(bool value) {
             setAttribute(IupAttributes.ReadOnly,  value ? FlagIdentifiers.Yes : FlagIdentifiers.No);
 		}
 	}
@@ -339,8 +339,8 @@ public class IupTextBoxBase : IupStandardControl
     */
     @property 
 	{
-		public string selectedText()  {  return getAttribute(IupAttributes.SelectedText); }
-        public void selectedText(string value) { setAttribute(IupAttributes.SelectedText, value);}
+		string selectedText()  {  return getAttribute(IupAttributes.SelectedText); }
+        void selectedText(string value) { setAttribute(IupAttributes.SelectedText, value);}
 	}
 
     /**
@@ -349,8 +349,8 @@ public class IupTextBoxBase : IupStandardControl
     */
     @property 
 	{
-		public string text()  {  return getAttribute(IupAttributes.Value); }
-        public void text(string value) { 
+		string text()  {  return getAttribute(IupAttributes.Value); }
+        void text(string value) { 
             if(value is null)
                 clearAttribute(IupAttributes.Value);
             else
@@ -364,9 +364,9 @@ public class IupTextBoxBase : IupStandardControl
     */
     @property 
     {
-        public HorizontalAlignment textAlignment() { return m_textAlignment; }
+        HorizontalAlignment textAlignment() { return m_textAlignment; }
 
-        public void textAlignment(HorizontalAlignment value) 
+        void textAlignment(HorizontalAlignment value) 
         {
             m_textAlignment = value;
             setAttribute(IupAttributes.Alignment, AlignmentIdentifiers.convert(value));
@@ -379,7 +379,7 @@ public class IupTextBoxBase : IupStandardControl
     */
     @property 
 	{
-		public int textLength()  {  return getIntAttribute(IupAttributes.Count); }
+		int textLength()  {  return getIntAttribute(IupAttributes.Count); }
 	}
 
     /**
@@ -392,8 +392,8 @@ public class IupTextBoxBase : IupStandardControl
     */
     @property 
 	{
-		public int visibleColumns()  {  return getIntAttribute(IupAttributes.VisibleColumns); }
-        public void visibleColumns(int value) { setIntAttribute(IupAttributes.VisibleColumns, value);}
+		int visibleColumns()  {  return getIntAttribute(IupAttributes.VisibleColumns); }
+        void visibleColumns(int value) { setIntAttribute(IupAttributes.VisibleColumns, value);}
 	}
 
     /**
@@ -403,8 +403,8 @@ public class IupTextBoxBase : IupStandardControl
     */
     @property 
 	{
-		public int visibleLines()  {  return getIntAttribute(IupAttributes.VisibleLines); }
-        public void visibleLines(int value) { setIntAttribute(IupAttributes.VisibleLines, value);}
+		int visibleLines()  {  return getIntAttribute(IupAttributes.VisibleLines); }
+        void visibleLines(int value) { setIntAttribute(IupAttributes.VisibleLines, value);}
 	}
 
 
@@ -415,9 +415,9 @@ public class IupTextBoxBase : IupStandardControl
         */
         @property 
         {
-            public bool canHideSelection () { return getAttribute(IupAttributes.NoHideSel) == FlagIdentifiers.No; }
+            bool canHideSelection () { return getAttribute(IupAttributes.NoHideSel) == FlagIdentifiers.No; }
 
-            public void canHideSelection (bool value)  {
+            void canHideSelection (bool value)  {
                 setAttribute(IupAttributes.NoHideSel, value ? FlagIdentifiers.No: FlagIdentifiers.Yes );
             }
         }
@@ -577,9 +577,9 @@ public class IupTextBox :IupTextBoxBase
     */
     @property 
     {
-        public string caretLocation() { return getAttribute(IupAttributes.Caret); }
+        string caretLocation() { return getAttribute(IupAttributes.Caret); }
 
-        public void caretLocation(string value) 
+        void caretLocation(string value) 
         {
             setAttribute(IupAttributes.Caret, value);
         }
@@ -589,7 +589,7 @@ public class IupTextBox :IupTextBoxBase
     */
     @property 
 	{
-		public void multiline(bool value) {
+		void multiline(bool value) {
             setAttribute(IupAttributes.Multiline,  value ? FlagIdentifiers.Yes : FlagIdentifiers.No);
 		}
 	}
@@ -604,8 +604,8 @@ public class IupTextBox :IupTextBoxBase
         */
         @property 
         {
-            public string watermark()  {  return getAttribute(IupAttributes.CueBanner); }
-            public void watermark(string value) { setAttribute(IupAttributes.CueBanner, value);}
+            string watermark()  {  return getAttribute(IupAttributes.CueBanner); }
+            void watermark(string value) { setAttribute(IupAttributes.CueBanner, value);}
         }
     }
 }
@@ -632,7 +632,6 @@ public class IupMultiLine : IupTextBoxBase
     this()
 	{
         super();
-        m_scrollBar = new IupScrollBar(this);
 	}
 
     protected override Ihandle* createIupObject()
@@ -640,18 +639,23 @@ public class IupMultiLine : IupTextBoxBase
 		return iup.c.api.IupMultiLine(null);
 	}
 
+    protected override void onCreated()
+    {    
+        super.onCreated();
+        m_scrollBar = new IupScrollBar(this);
+    }
+
 
     /* ************* Properties *************** */
-
 
     /**
     scrollbars are shown only if they are necessary. Default: "YES".
     */
     @property 
     {
-        public bool canAutoHideScrollbar() { return getAttribute(IupAttributes.AutoHide) == FlagIdentifiers.Yes; }
+        bool canAutoHideScrollbar() { return getAttribute(IupAttributes.AutoHide) == FlagIdentifiers.Yes; }
 
-        public void canAutoHideScrollbar(bool value) {
+        void canAutoHideScrollbar(bool value) {
             setAttribute(IupAttributes.AutoHide,  value ? FlagIdentifiers.Yes : FlagIdentifiers.No);
         }
     }
@@ -666,9 +670,9 @@ public class IupMultiLine : IupTextBoxBase
     */
     @property 
     {
-        public string caretLocation() { return getAttribute(IupAttributes.Caret); }
+        string caretLocation() { return getAttribute(IupAttributes.Caret); }
 
-        public void caretLocation(string value) 
+        void caretLocation(string value) 
         {
             setAttribute(IupAttributes.Caret, value);
         }
@@ -684,7 +688,7 @@ public class IupMultiLine : IupTextBoxBase
     */
     @property 
 	{
-		public IupScrollBar scrollBars() { return m_scrollBar; }
+		IupScrollBar scrollBars() { return m_scrollBar; }
 		protected void scrollBars(IupScrollBar value) { m_scrollBar = value; }
         private IupScrollBar m_scrollBar; 
 	}
@@ -696,9 +700,9 @@ public class IupMultiLine : IupTextBoxBase
     */
     @property 
     {
-        public string selectionPos() { return getAttribute(IupAttributes.SelectionPos); }
+        string selectionPos() { return getAttribute(IupAttributes.SelectionPos); }
 
-        public void selectionPos(string value) 
+        void selectionPos(string value) 
         {
             setAttribute(IupAttributes.SelectionPos, value);
         }
@@ -709,8 +713,8 @@ public class IupMultiLine : IupTextBoxBase
     */
     @property 
 	{
-		public int tabSize()  {  return getIntAttribute(IupAttributes.TabSize); }
-        public void tabSize(int value) { setIntAttribute(IupAttributes.TabSize, value);}
+		int tabSize()  {  return getIntAttribute(IupAttributes.TabSize); }
+        void tabSize(int value) { setIntAttribute(IupAttributes.TabSize, value);}
 	}
 
 
@@ -722,12 +726,12 @@ public class IupMultiLine : IupTextBoxBase
         */
         @property 
         {
-            public TextFilterStyle filterStyle() { 
+            TextFilterStyle filterStyle() { 
                 string s = getAttribute(IupAttributes.Filter);
                 return TextFilterStyleIdentifiers.convert(s); 
             }
 
-            public void filterStyle(TextFilterStyle value) {
+            void filterStyle(TextFilterStyle value) {
                 setAttribute(IupAttributes.Filter, TextFilterStyleIdentifiers.convert(value));
             }
         }
@@ -804,7 +808,7 @@ if(is(T == int) || is(T == float) || is(T == double))
     Action generated when the text is edited, but before its value is actually 
     changed. Can be generated when using the keyboard, undo system or from the clipboard.
     */
-    public EventHandler!(CallbackEventArgs, int, string)  valueChanging;
+    EventHandler!(CallbackEventArgs, int, string)  valueChanging;
     mixin EventCallbackAdapter!(IupUpDown, "valueChanging", int, char *);
 
     /**
@@ -815,9 +819,9 @@ if(is(T == int) || is(T == float) || is(T == double))
     character, this new character will be used instead. The VALUE attribute can be changed 
     only if IUP_IGNORE is returned.
     */
-    private CallbackResult onValueChanging(int c, char *new_value) nothrow
+    private IupElementAction onValueChanging(int c, char *new_value) nothrow
     {
-        CallbackResult r = CallbackResult.Default;
+        IupElementAction r = IupElementAction.Default;
         try
         {
             auto callbackArgs = new CallbackEventArgs();
@@ -839,9 +843,9 @@ if(is(T == int) || is(T == float) || is(T == double))
     */
     @property 
 	{
-		public bool canAutomaticUpdate() { return getAttribute(IupAttributes.SpinAuto) == FlagIdentifiers.Yes; }
+		bool canAutomaticUpdate() { return getAttribute(IupAttributes.SpinAuto) == FlagIdentifiers.Yes; }
 
-        public void canAutomaticUpdate(bool value) { 
+        void canAutomaticUpdate(bool value) { 
             setAttribute(IupAttributes.SpinAuto, value ? FlagIdentifiers.Yes : FlagIdentifiers.No);
         }
 	}
@@ -851,9 +855,9 @@ if(is(T == int) || is(T == float) || is(T == double))
     */
     @property 
 	{
-		public bool canWrap() { return getAttribute(IupAttributes.SpinWrap) == FlagIdentifiers.Yes; }
+		bool canWrap() { return getAttribute(IupAttributes.SpinWrap) == FlagIdentifiers.Yes; }
 
-        public void canWrap(bool value) { 
+        void canWrap(bool value) { 
             setAttribute(IupAttributes.SpinWrap, value ? FlagIdentifiers.Yes : FlagIdentifiers.No);
         }
 	}
@@ -864,8 +868,8 @@ if(is(T == int) || is(T == float) || is(T == double))
     */
     @property 
 	{
-		public string mask()  {  return getAttribute(IupAttributes.Mask); }
-        public void mask(string value) { setAttribute(IupAttributes.Mask, value);}
+		string mask()  {  return getAttribute(IupAttributes.Mask); }
+        void mask(string value) { setAttribute(IupAttributes.Mask, value);}
 	}
 
     /**
@@ -874,7 +878,7 @@ if(is(T == int) || is(T == float) || is(T == double))
     */
     @property 
 	{
-		public LeftRightAlignment spinAlignment()  {  
+		LeftRightAlignment spinAlignment()  {  
             string v = getAttribute(IupAttributes.SpinAlign);
             if(v == AlignmentIdentifiers.Left)
                 return LeftRightAlignment.Left;
@@ -882,7 +886,7 @@ if(is(T == int) || is(T == float) || is(T == double))
                 return LeftRightAlignment.Right;
         }
 
-        public void spinAlignment(LeftRightAlignment value) { 
+        void spinAlignment(LeftRightAlignment value) { 
             setAttribute(IupAttributes.SpinAlign, toIupIdentifier(value));
         }
 	}
@@ -893,8 +897,8 @@ if(is(T == int) || is(T == float) || is(T == double))
     */
     @property 
 	{
-		public string text()  {  return getAttribute(IupAttributes.Value); }
-        public void text(string value) { 
+		string text()  {  return getAttribute(IupAttributes.Value); }
+        void text(string value) { 
                 setAttribute(IupAttributes.Value, value);
         }
 	}
@@ -905,7 +909,7 @@ if(is(T == int) || is(T == float) || is(T == double))
     */
     @property 
 	{
-		public T increment()  {  
+		T increment()  {  
             static if(is(T == int))
                 return getIntAttribute(IupAttributes.SpinInc); 
             else if (is(T == float))
@@ -914,7 +918,7 @@ if(is(T == int) || is(T == float) || is(T == double))
                 return getDoubleAttribute(IupAttributes.SpinInc); 
         }
 
-        public void increment(T value) { 
+        void increment(T value) { 
             static if(is(T == int))
                 setIntAttribute(IupAttributes.SpinInc, value);
             else if (is(T == float))
@@ -930,7 +934,7 @@ if(is(T == int) || is(T == float) || is(T == double))
     */
     @property 
     {
-        public T maximum() { 
+        T maximum() { 
             static if(is(T == int))
                 return getIntAttribute(IupAttributes.SpinMax); 
             else if (is(T == float))
@@ -939,7 +943,7 @@ if(is(T == int) || is(T == float) || is(T == double))
                 return getDoubleAttribute(IupAttributes.SpinMax); 
         }
 
-        public void maximum(T value)  { 
+        void maximum(T value)  { 
             static if(is(T == int))
                 setIntAttribute(IupAttributes.SpinMax, value);
             else if (is(T == float))
@@ -954,7 +958,7 @@ if(is(T == int) || is(T == float) || is(T == double))
     */
     @property 
     {
-        public T minimum() { 
+        T minimum() { 
             static if(is(T == int))
                 return getIntAttribute(IupAttributes.SpinMin); 
             else if (is(T == float))
@@ -963,7 +967,7 @@ if(is(T == int) || is(T == float) || is(T == double))
                 return getDoubleAttribute(IupAttributes.SpinMin);
         }
 
-        public void minimum(T value) { 
+        void minimum(T value) { 
             static if(is(T == int))
                 setIntAttribute(IupAttributes.SpinMin, value);
             else if (is(T == float))
@@ -978,7 +982,7 @@ if(is(T == int) || is(T == float) || is(T == double))
     */
     @property 
 	{
-		public T value()  { 
+		T value()  { 
             static if(is(T == int))
                 return getIntAttribute(IupAttributes.SpinValue); 
             else if (is(T == float))
@@ -987,7 +991,7 @@ if(is(T == int) || is(T == float) || is(T == double))
                 return getDoubleAttribute(IupAttributes.SpinValue);
         }
 
-        public void value(T v) { 
+        void value(T v) { 
             static if(is(T == int))
                 setIntAttribute(IupAttributes.SpinValue, v);
             else if (is(T == float))

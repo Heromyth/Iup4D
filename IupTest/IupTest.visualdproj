@@ -424,6 +424,7 @@
   <File path="ColorTest.d" />
   <File path="ContainerTest.d" />
   <File path="DialogTest.d" />
+  <File path="GridTest.d" />
   <File path="HmiControlsTest.d" />
   <File path="IdleTest.d" />
   <File path="LabelTest.d" />

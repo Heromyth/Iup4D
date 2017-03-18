@@ -174,9 +174,9 @@ public class IupDialog : IupContentControl
     public EventHandler!(CallbackEventArgs, string, int, int, int)  fileDropped;
     mixin EventCallbackAdapter!(IupDialog, "fileDropped", const (char)*, int, int, int);
 
-    private CallbackResult onFileDropped(const (char)* fileName, int num, int x, int y) nothrow
+    private IupElementAction onFileDropped(const (char)* fileName, int num, int x, int y) nothrow
     {
-        CallbackResult r = CallbackResult.Default;
+        IupElementAction r = IupElementAction.Default;
         try
         {
             auto callbackArgs = new CallbackEventArgs();
@@ -210,9 +210,9 @@ public class IupDialog : IupContentControl
     public EventHandler!(CallbackEventArgs, DialogState)  stateChanged;
     mixin EventCallbackAdapter!(IupDialog, "stateChanged", int);
 
-    private CallbackResult onStateChanged(int state) nothrow
+    private IupElementAction onStateChanged(int state) nothrow
     {
-        CallbackResult r = CallbackResult.Default;
+        IupElementAction r = IupElementAction.Default;
         try
         {
             auto callbackArgs = new CallbackEventArgs();
@@ -1749,9 +1749,9 @@ public class IupFileDialog : IupDialogBase
     */
     public EventHandler!(CallbackEventArgs, string, string)  fileSelected;
     mixin EventCallbackAdapter!(IupFileDialog, "fileSelected", const(char)*, const(char)*);
-    private CallbackResult onFileSelected(const(char)* filename, const(char) *status) nothrow
+    private IupElementAction onFileSelected(const(char)* filename, const(char) *status) nothrow
     {       
-        CallbackResult r = CallbackResult.Default;
+        IupElementAction r = IupElementAction.Default;
         try
         {
             auto callbackArgs = new CallbackEventArgs();
@@ -2568,9 +2568,9 @@ public class IupProgressDialog : IupDialogBase
     public EventHandler!(CallbackEventArgs, DialogState)  stateChanged;
     mixin EventCallbackAdapter!(IupProgressDialog, "stateChanged", int);
 
-    private CallbackResult onStateChanged(int state) nothrow
+    private IupElementAction onStateChanged(int state) nothrow
     {
-        CallbackResult r = CallbackResult.Default;
+        IupElementAction r = IupElementAction.Default;
         try
         {
             auto callbackArgs = new CallbackEventArgs();

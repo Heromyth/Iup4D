@@ -1,6 +1,5 @@
 module iup.control;
 
-
 import iup.c.core;
 import iup.c.api;
 
@@ -12,8 +11,6 @@ import std.format;
 
 import toolkit.drawing;
 
-
-
 version(Windows)
 {
 	import std.windows.charset;
@@ -24,7 +21,6 @@ version(Windows)
 */
 public class IupControl : IupElement
 {
-
 	protected class IupCallbacks  : super.IupCallbacks
 	{
         enum EnterWindow = "ENTERWINDOW_CB";
@@ -60,10 +56,7 @@ public class IupControl : IupElement
 		enum Visible =        "VISIBLE";
 	}
 
-    this()
-    {
-        super();
-    }
+    this() { super(); }
 
 	this(string title)
     {
@@ -165,9 +158,9 @@ public class IupControl : IupElement
     */
     @property 
 	{
-		public bool canExpand() { return getAttribute(IupAttributes.Expand) == FlagIdentifiers.Yes; }
+		bool canExpand() { return getAttribute(IupAttributes.Expand) == FlagIdentifiers.Yes; }
 
-		public void canExpand(bool value) 
+		void canExpand(bool value) 
 		{
             setAttribute(IupAttributes.Expand, value ? FlagIdentifiers.Yes : FlagIdentifiers.No);
 		}
@@ -179,9 +172,9 @@ public class IupControl : IupElement
     */
     @property 
     {
-        public bool canFocus() { return getAttribute(IupAttributes.CanFocus) == FlagIdentifiers.Yes; }
+        bool canFocus() { return getAttribute(IupAttributes.CanFocus) == FlagIdentifiers.Yes; }
 
-        public void canFocus(bool value) 
+        void canFocus(bool value) 
         {
             setAttribute(IupAttributes.CanFocus, value ? FlagIdentifiers.Yes : FlagIdentifiers.No);
         }
@@ -192,8 +185,8 @@ public class IupControl : IupElement
     */
     @property 
 	{
-		public float expandWeight()  {  return getFloatAttribute(IupAttributes.ExpandWeight); }
-        public void expandWeight(float value) { setFloatAttribute(IupAttributes.ExpandWeight, value);}
+		float expandWeight()  {  return getFloatAttribute(IupAttributes.ExpandWeight); }
+        void expandWeight(float value) { setFloatAttribute(IupAttributes.ExpandWeight, value);}
 	}
 
     /**
@@ -201,12 +194,12 @@ public class IupControl : IupElement
     */
     @property 
 	{
-		public ExpandOrientation expandOrientation() { 
+		ExpandOrientation expandOrientation() { 
             string s = getAttribute(IupAttributes.Expand);
             return ExpandOrientationIdentifiers.convert(s); 
         }
 
-		public void expandOrientation(ExpandOrientation value) {
+		void expandOrientation(ExpandOrientation value) {
 			setAttribute(IupAttributes.Expand, ExpandOrientationIdentifiers.convert(value));
 		}
 	}
@@ -223,16 +216,16 @@ public class IupControl : IupElement
     */
     @property 
 	{
-        public Font font() {
+        Font font() {
             string f = getAttribute(IupAttributes.Font);
             return Font.parse(f); 
         }
 
-        public void font(Font value) { 
+        void font(Font value) { 
             setAttribute(IupAttributes.Font, value.toString());
         }
 
-        public void font(string value) { setAttribute(IupAttributes.Font, value);}
+        void font(string value) { setAttribute(IupAttributes.Font, value);}
 	}
 
 
@@ -241,8 +234,8 @@ public class IupControl : IupElement
     */
     @property 
     {
-        public string fontFace()  {  return getAttribute(IupAttributes.FontFace); }
-        public void fontFace(string value) { setAttribute(IupAttributes.FontFace, value);}
+        string fontFace()  {  return getAttribute(IupAttributes.FontFace); }
+        void fontFace(string value) { setAttribute(IupAttributes.FontFace, value);}
     }
 
     /**
@@ -250,20 +243,20 @@ public class IupControl : IupElement
     */
     @property 
 	{
-		public int fontSize()  {  return getIntAttribute(IupAttributes.FontSize); }
-        public void fontSize(int value) { setIntAttribute(IupAttributes.FontSize, value);}
+		int fontSize()  {  return getIntAttribute(IupAttributes.FontSize); }
+        void fontSize(int value) { setIntAttribute(IupAttributes.FontSize, value);}
 	}
 
     /**
     */
     @property 
     {
-        public FontStyle fontStyle()  {  
+        FontStyle fontStyle()  {  
             string s = getAttribute(IupAttributes.FontStyle); 
             return FontStyle.parse(s);
         }
 
-        public void fontStyle(FontStyle value) { 
+        void fontStyle(FontStyle value) { 
             setAttribute(IupAttributes.FontStyle, value.toString());
         }
     }
@@ -282,7 +275,7 @@ public class IupControl : IupElement
     */
     @property 
 	{
-		public Point!int location()  
+		Point!int location()  
         {  
             string s = getAttribute(IupAttributes.ScreenPosition);
             Point!int p;
@@ -290,7 +283,7 @@ public class IupControl : IupElement
             return p; 
         }
 
-        public void location(Point!int value) 
+        void location(Point!int value) 
         { 
             string s = std.format.format("%d,%d", value.x, value.y);
             setAttribute(IupAttributes.ScreenPosition, s);
@@ -312,13 +305,13 @@ public class IupControl : IupElement
     */
     @property 
 	{
-		public Size maxSize() 
+		Size maxSize() 
         { 
             string s = getAttribute(IupAttributes.MaxSize);
             return IupSize.parse(s); 
         }
 
-		public void maxSize(Size value) {
+		void maxSize(Size value) {
 			setAttribute(IupAttributes.MaxSize, IupSize.format(value));
 		}
 	}
@@ -339,13 +332,13 @@ public class IupControl : IupElement
     */
     @property 
 	{
-		public Size minSize() 
+		Size minSize() 
         { 
             string s = getAttribute(IupAttributes.MinSize);
             return IupSize.parse(s); 
         }
 
-		public void minSize(Size value) {
+		void minSize(Size value) {
 			setAttribute(IupAttributes.MinSize, IupSize.format(value));
 		}
 	}
@@ -359,13 +352,13 @@ public class IupControl : IupElement
     */
     @property 
 	{
-		public Size rasterSize() 
+		Size rasterSize() 
         { 
             string s = getAttribute(IupAttributes.RasterSize);
             return IupSize.parse(s); 
         }
 
-		public void rasterSize(Size value) { 
+		void rasterSize(Size value) { 
 			setAttribute(IupAttributes.RasterSize, IupSize.format(value));
 		}
 	}
@@ -379,9 +372,9 @@ public class IupControl : IupElement
     */
     @property 
 	{
-		public Size size() { return m_size; }
+		Size size() { return m_size; }
 
-		public void size(Size value) 
+		void size(Size value) 
 		{
 			m_size = value;
 			setAttribute(IupAttributes.Size, IupSize.format(value));
@@ -394,8 +387,8 @@ public class IupControl : IupElement
     */
     @property 
     {
-        public string tipText() { return m_tooltip.text; }
-        public void tipText(string value)  {  m_tooltip.text = value; }
+        string tipText() { return m_tooltip.text; }
+        void tipText(string value)  {  m_tooltip.text = value; }
     }
 
     /**
@@ -403,7 +396,7 @@ public class IupControl : IupElement
     */
     @property 
 	{
-		public IupTooltip tooltip() { return m_tooltip; }
+		IupTooltip tooltip() { return m_tooltip; }
 		protected void tooltip(IupTooltip value) { m_tooltip = value; }
         private IupTooltip m_tooltip; 
 	}
@@ -423,9 +416,9 @@ public class IupControl : IupElement
     */
     @property 
 	{
-        public bool isFloating() { return getAttribute(IupAttributes.Floating) == FlagIdentifiers.Yes; }
+        bool isFloating() { return getAttribute(IupAttributes.Floating) == FlagIdentifiers.Yes; }
 
-        public void isFloating(bool value)  {
+        void isFloating(bool value)  {
             setAttribute(IupAttributes.Floating, value ? FlagIdentifiers.Yes : FlagIdentifiers.No);
         }
 	}
@@ -438,9 +431,9 @@ public class IupControl : IupElement
     */
     @property 
 	{
-        public bool isVisible() { return getAttribute(IupAttributes.Visible) == FlagIdentifiers.Yes; }
+        bool isVisible() { return getAttribute(IupAttributes.Visible) == FlagIdentifiers.Yes; }
 
-        public void isVisible(bool value)  {
+        void isVisible(bool value)  {
             setAttribute(IupAttributes.Visible, value ? FlagIdentifiers.Yes : FlagIdentifiers.No);
         }
 	}
@@ -506,10 +499,7 @@ public class IupStandardControl : IupControl
     }
 
 
-    this()
-    {
-        super();
-    }
+    this() { super(); }
 
     this(string title)
     {
@@ -523,14 +513,14 @@ public class IupStandardControl : IupControl
     */
     @property 
     {
-        public string cursor() { return getAttribute(IupAttributes.Cursor); }
+        string cursor() { return getAttribute(IupAttributes.Cursor); }
 
-        public void cursor(string value) 
+        void cursor(string value) 
         {
             setStrAttribute(IupAttributes.Cursor, value);
         }
 
-        public void cursor(iup.image.IupImage value) 
+        void cursor(iup.image.IupImage value) 
         {
             setHandleAttribute(IupAttributes.Cursor, value);
         }
@@ -542,13 +532,13 @@ public class IupStandardControl : IupControl
     */
     @property 
 	{
-		public Size padding() 
+		Size padding() 
         { 
             string s = getAttribute(IupAttributes.Padding);
             return IupSize.parse(s); 
         }
 
-		public void padding(Size value) 
+		void padding(Size value) 
 		{
 			setAttribute(IupAttributes.Padding, IupSize.format(value));
 		}
@@ -594,11 +584,12 @@ public class IupScrollBar : IupAuxiliaryObject
     */
     @property 
 	{
-		public ScrollBarsVisibility visibility()  {  
-            return ScrollbarVisibilityIdentifiers.convert(getAttribute(IupAttributes.ScrollBar)); 
+		ScrollBarsVisibility visibility()  { 
+            string v = getAttribute(IupAttributes.ScrollBar);
+            return ScrollbarVisibilityIdentifiers.convert(v); 
         }
 
-        public void visibility(ScrollBarsVisibility value) { 
+        void visibility(ScrollBarsVisibility value) { 
             setAttribute(IupAttributes.ScrollBar, ScrollbarVisibilityIdentifiers.convert(value));
         }
 	}
@@ -608,8 +599,8 @@ public class IupScrollBar : IupAuxiliaryObject
     */
     @property 
 	{
-		public float dx()  {  return getFloatAttribute(IupAttributes.Dx); }
-        public void dx(float value) { setFloatAttribute(IupAttributes.Dx, value);}
+		float dx()  {  return getFloatAttribute(IupAttributes.Dx); }
+        void dx(float value) { setFloatAttribute(IupAttributes.Dx, value);}
 	}
 
 
@@ -618,8 +609,8 @@ public class IupScrollBar : IupAuxiliaryObject
     */
     @property 
 	{
-		public float dy()  {  return getFloatAttribute(IupAttributes.Dy); }
-        public void dy(float value) { setFloatAttribute(IupAttributes.Dy, value);}
+		float dy()  {  return getFloatAttribute(IupAttributes.Dy); }
+        void dy(float value) { setFloatAttribute(IupAttributes.Dy, value);}
 	}
 
     /**
@@ -627,8 +618,8 @@ public class IupScrollBar : IupAuxiliaryObject
     */
     @property 
 	{
-		public float posX()  {  return getFloatAttribute(IupAttributes.PosX); }
-        public void posX(float value) { setFloatAttribute(IupAttributes.PosX, value);}
+		float posX()  {  return getFloatAttribute(IupAttributes.PosX); }
+        void posX(float value) { setFloatAttribute(IupAttributes.PosX, value);}
 	}
 
     /**
@@ -636,8 +627,8 @@ public class IupScrollBar : IupAuxiliaryObject
     */
     @property 
 	{
-		public float posY()  {  return getFloatAttribute(IupAttributes.PosY); }
-        public void posY(float value) { setFloatAttribute(IupAttributes.PosY, value);}
+		float posY()  {  return getFloatAttribute(IupAttributes.PosY); }
+        void posY(float value) { setFloatAttribute(IupAttributes.PosY, value);}
 	}
 
     /**
@@ -645,8 +636,8 @@ public class IupScrollBar : IupAuxiliaryObject
     */
     @property 
 	{
-		public float xMax()  {  return getFloatAttribute(IupAttributes.XMax); }
-        public void xMax(float value) { setFloatAttribute(IupAttributes.XMax, value);}
+		float xMax()  {  return getFloatAttribute(IupAttributes.XMax); }
+        void xMax(float value) { setFloatAttribute(IupAttributes.XMax, value);}
 	}
 
     /**
@@ -654,8 +645,8 @@ public class IupScrollBar : IupAuxiliaryObject
     */
     @property 
 	{
-		public float xMin()  {  return getFloatAttribute(IupAttributes.XMin); }
-        public void xMin(float value) { setFloatAttribute(IupAttributes.XMin, value);}
+		float xMin()  {  return getFloatAttribute(IupAttributes.XMin); }
+        void xMin(float value) { setFloatAttribute(IupAttributes.XMin, value);}
 	}
 
     /**
@@ -663,8 +654,8 @@ public class IupScrollBar : IupAuxiliaryObject
     */
     @property 
 	{
-		public float yMin()  {  return getFloatAttribute(IupAttributes.YMin); }
-        public void yMin(float value) { setFloatAttribute(IupAttributes.YMin, value);}
+		float yMin()  {  return getFloatAttribute(IupAttributes.YMin); }
+        void yMin(float value) { setFloatAttribute(IupAttributes.YMin, value);}
 	}
 
     /**
@@ -672,8 +663,8 @@ public class IupScrollBar : IupAuxiliaryObject
     */
     @property 
 	{
-		public float yMax()  {  return getFloatAttribute(IupAttributes.YMax); }
-        public void yMax(float value) { setFloatAttribute(IupAttributes.YMax, value);}
+		float yMax()  {  return getFloatAttribute(IupAttributes.YMax); }
+        void yMax(float value) { setFloatAttribute(IupAttributes.YMax, value);}
 	}
 
     /**
@@ -681,8 +672,8 @@ public class IupScrollBar : IupAuxiliaryObject
     */
     @property 
 	{
-		public float lineX()  {  return getFloatAttribute(IupAttributes.LineX); }
-        public void lineX(float value) { setFloatAttribute(IupAttributes.LineX, value);}
+		float lineX()  {  return getFloatAttribute(IupAttributes.LineX); }
+        void lineX(float value) { setFloatAttribute(IupAttributes.LineX, value);}
 	}
 
     /**
@@ -690,8 +681,8 @@ public class IupScrollBar : IupAuxiliaryObject
     */
     @property 
 	{
-		public float lineY()  {  return getFloatAttribute(IupAttributes.LineY); }
-        public void lineY(float value) { setFloatAttribute(IupAttributes.LineY, value);}
+		float lineY()  {  return getFloatAttribute(IupAttributes.LineY); }
+        void lineY(float value) { setFloatAttribute(IupAttributes.LineY, value);}
 	}
 
     /**
@@ -699,8 +690,8 @@ public class IupScrollBar : IupAuxiliaryObject
     */
     @property 
 	{
-		public bool xAutoHide()  {  return getAttribute(IupAttributes.XAutoHide) == FlagIdentifiers.Yes;  }
-        public void xAutoHide(bool value)  { 
+		bool xAutoHide()  {  return getAttribute(IupAttributes.XAutoHide) == FlagIdentifiers.Yes;  }
+        void xAutoHide(bool value)  { 
             setAttribute(IupAttributes.XAutoHide, value ? FlagIdentifiers.Yes : FlagIdentifiers.No);
         }
 	}
@@ -710,8 +701,8 @@ public class IupScrollBar : IupAuxiliaryObject
     */
     @property 
 	{
-		public bool yAutoHide()  {  return getAttribute(IupAttributes.YAutoHide) == FlagIdentifiers.Yes; }
-        public void yAutoHide(bool value) { 
+		bool yAutoHide()  {  return getAttribute(IupAttributes.YAutoHide) == FlagIdentifiers.Yes; }
+        void yAutoHide(bool value) { 
             setAttribute(IupAttributes.YAutoHide, value ? FlagIdentifiers.Yes : FlagIdentifiers.No);
         }
 	}
@@ -769,8 +760,8 @@ public class IupTooltip : IupAuxiliaryObject
     */
     @property 
 	{
-		public int delay()  {  return getIntAttribute(IupAttributes.Delay); }
-        public void delay(int value) { setIntAttribute(IupAttributes.Delay, value);}
+		int delay()  {  return getIntAttribute(IupAttributes.Delay); }
+        void delay(int value) { setIntAttribute(IupAttributes.Delay, value);}
 	}
 
     /**
@@ -816,9 +807,9 @@ public class IupTooltip : IupAuxiliaryObject
     */
     @property 
 	{
-        public bool isVisible() { return getAttribute(IupAttributes.Visible) == FlagIdentifiers.Yes; }
+        bool isVisible() { return getAttribute(IupAttributes.Visible) == FlagIdentifiers.Yes; }
 
-        public void isVisible(bool value)  {
+        void isVisible(bool value)  {
             setAttribute(IupAttributes.Visible, value ? FlagIdentifiers.Yes : FlagIdentifiers.No);
         }
 	}
@@ -829,12 +820,12 @@ public class IupTooltip : IupAuxiliaryObject
     */
     @property 
 	{
-        public Rectangle!int rectangle() { 
+        Rectangle!int rectangle() { 
             string s = getAttribute(IupAttributes.Rect);
             return IupRectangleConverter.convert(s);
         }
 
-        public void rectangle(Rectangle!int value)  {
+        void rectangle(Rectangle!int value)  {
             setAttribute(IupAttributes.Rect, IupRectangleConverter.convert(value));
         }
 	}
@@ -844,9 +835,9 @@ public class IupTooltip : IupAuxiliaryObject
     */
     @property 
 	{
-		public string text() { return getAttribute(IupAttributes.Tip); }
+		string text() { return getAttribute(IupAttributes.Tip); }
 
-		public void text(string value) {
+		void text(string value) {
 			setStrAttribute(IupAttributes.Tip, value);
 		}
 	}
@@ -859,9 +850,9 @@ public class IupTooltip : IupAuxiliaryObject
         */
         @property 
         {
-            public bool hasBalloon() { return getAttribute(IupAttributes.Balloon) == FlagIdentifiers.Yes; }
+            bool hasBalloon() { return getAttribute(IupAttributes.Balloon) == FlagIdentifiers.Yes; }
 
-            public void hasBalloon(bool value)  {
+            void hasBalloon(bool value)  {
                 setAttribute(IupAttributes.Balloon, value ? FlagIdentifiers.Yes : FlagIdentifiers.No);
             }
         }
@@ -870,12 +861,12 @@ public class IupTooltip : IupAuxiliaryObject
         */
         @property 
         {
-            public BalloonIco balloonIco() { 
+            BalloonIco balloonIco() { 
                 int code = getIntAttribute(IupAttributes.BalloonTitleIcon);
                 return cast(BalloonIco)code;
             }
 
-            public void balloonIco(BalloonIco value) 
+            void balloonIco(BalloonIco value) 
             {
                 setIntAttribute(IupAttributes.BalloonTitleIcon, cast(int)value);
             }
@@ -886,9 +877,9 @@ public class IupTooltip : IupAuxiliaryObject
         */
         @property 
         {
-            public string balloonTitle() { return m_balloonTitle; }
+            string balloonTitle() { return m_balloonTitle; }
 
-            public void balloonTitle(string value) {
+            void balloonTitle(string value) {
                 m_balloonTitle = value;
                 setAttribute(IupAttributes.BalloonTitle, value);
             }
@@ -904,14 +895,14 @@ public class IupTooltip : IupAuxiliaryObject
         */
         @property 
         {
-            //public string ico() { return getAttribute(IupAttributes.Icon); }
+            //string ico() { return getAttribute(IupAttributes.Icon); }
             //
-            //public void ico(string value) 
+            //void ico(string value) 
             //{
             //    setAttribute(IupAttributes.Icon, value);
             //}
 
-            public void ico(iup.image.IupImage value) 
+            void ico(iup.image.IupImage value) 
             {
                 setHandleAttribute(IupAttributes.Icon, value);
             }
@@ -923,9 +914,9 @@ public class IupTooltip : IupAuxiliaryObject
         */
         @property 
         {
-            public bool allowMarkup() { return getAttribute(IupAttributes.Markup) == FlagIdentifiers.Yes; }
+            bool allowMarkup() { return getAttribute(IupAttributes.Markup) == FlagIdentifiers.Yes; }
 
-            public void allowMarkup(bool value)  {
+            void allowMarkup(bool value)  {
                 setAttribute(IupAttributes.Markup, value ? FlagIdentifiers.Yes : FlagIdentifiers.No);
             }
         }
@@ -945,7 +936,7 @@ enum BalloonIco
 //
 // Summary:
 //     Specifies constants that define which mouse button was pressed.
-public enum MouseButtons
+enum MouseButtons
 {
     //
     // Summary:
@@ -965,7 +956,7 @@ public enum MouseButtons
 /**
 the state of the button
 */
-public enum MouseState
+enum MouseState
 {
     Released = 0,
         Pressed = 1

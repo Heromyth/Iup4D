@@ -86,6 +86,30 @@ enum ContextDriver
     WMF
 }
 
+// deprecated
+//public class CanvasImage
+//{
+//
+//    this(cdImage* handle)
+//    {
+//        this.handle = handle;
+//    }
+//
+//    /**
+//    */
+//    @property 
+//    {
+//        public cdImage*  handle(){ return m_handle; }
+//        protected void handle(cdImage* value) { m_handle = value;}
+//        private cdImage* m_handle;
+//    }
+//
+//
+//    /* ************* Properties *************** */
+//
+//    ///
+//    @property bool isValid() { return m_handle !is null;}
+//}
 
 
 /**
@@ -147,9 +171,8 @@ public class CanvasBase
 
     /* ************* Properties *************** */
 
-
     ///
-    @property bool isValid() { return handle !is null;}
+    @property bool isValid() { return m_handle !is null;}
 
     /**
     Configures a new current foreground color and returns the previous one. This
@@ -287,6 +310,9 @@ public class CanvasBase
 
     void clear() { cdCanvasClear(handle); }
 
+    /**
+    retrieve the original canvas size
+    */
     void getSize(out int width, out int height, out double width_mm, out double height_mm)
     {
         cdCanvasGetSize(handle, &width, &height, &width_mm, &height_mm);
@@ -339,7 +365,7 @@ public class CanvasBase
     //}
 
 
-    void flush() {cdCanvasFlush(handle); }
+    void flush() { cdCanvasFlush(handle); }
 
     /**
     Puts, in a specified area of the canvas, an image with its red, green and blue components defined in the three matrices 
@@ -688,6 +714,12 @@ public class CdCanvas : CanvasBase
         cdCanvasBox(handle, xmin, xmax, ymin, ymax);
     }
 
+    /// ditto
+    void drawBox(ref RectangleInt rect)
+    {
+        cdCanvasBox(handle, rect.x1, rect.x2, rect.y1, rect.y2);
+    }
+
     /**
     Line are segments that connects 2 or more points. The Line function includes the 2 given points and draws the line 
     using the foreground color. Line thickness is controlled by the LineWidth function. By using function LineStyle 
@@ -788,6 +820,28 @@ public class IupCdCanvas : CdCanvas
         this.driver = ContextDriver.IUP;
         handle = cdCreateCanvas(CD_IUP, canvas.handle);
     }
+
+    this(cdCanvas* handle)
+    {
+        assert(handle !is null);
+        this.driver = ContextDriver.IUP;
+        this.handle = handle;
+    }
+}
+
+
+/**
+This driver provides access to a Server Image, a memory-based high-performance image that
+corresponds to the attributes of the system's devices. It is used for offscreen drawings.
+*/
+public class IupImageCanvas : CdCanvas
+{
+
+    this(IupCanvas canvas)
+    {
+        this.driver = ContextDriver.Image;
+        handle = cdCreateCanvas(CD_IMAGE, canvas.handle);
+    }
 }
 
 
@@ -818,7 +872,6 @@ public class IupImageRgbCanvas : CdCanvas
                                      width, height, cast(void*)imageData[0].ptr,  
                                      cast(void*)imageData[1].ptr, cast(void*)imageData[2].ptr, resolution);
         }
-
     }
 }
 

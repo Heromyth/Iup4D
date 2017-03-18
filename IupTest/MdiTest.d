@@ -215,7 +215,7 @@ public class MdiTestDialog : IupDialog
     {
         this.close();
         //this.dispose();
-        //e.result = CallbackResult.Close;
+        //e.result = IupElementActionClose;
     }
 
 

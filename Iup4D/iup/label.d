@@ -75,9 +75,9 @@ public class IupLabel : IupStandardControl
     public EventHandler!(CallbackEventArgs, string, int, int, int)  fileDropped;
     mixin EventCallbackAdapter!(IupLabel, "fileDropped", const (char)*, int, int, int);
 
-    private CallbackResult onFileDropped(const (char)* fileName, int num, int x, int y) nothrow
+    private IupElementAction onFileDropped(const (char)* fileName, int num, int x, int y) nothrow
     {
-        CallbackResult r = CallbackResult.Default;
+        IupElementAction r = IupElementAction.Default;
         try
         {
             auto callbackArgs = new CallbackEventArgs();
@@ -92,11 +92,11 @@ public class IupLabel : IupStandardControl
     /**
     Action generated when a mouse button is pressed or released.
     */
-    public EventHandler!(CallbackEventArgs, MouseButtons, MouseState, int, int, string)  mouseClick;
+    EventHandler!(CallbackEventArgs, MouseButtons, MouseState, int, int, string)  mouseClick;
     mixin EventCallbackAdapter!(IupLabel, "mouseClick", int, int, int, int, const(char)*);
-    private CallbackResult onMouseClick(int button, int pressed, int x, int y, const(char) *status) nothrow
+    private IupElementAction onMouseClick(int button, int pressed, int x, int y, const(char) *status) nothrow
     {       
-        CallbackResult r = CallbackResult.Default;
+        IupElementAction r = IupElementAction.Default;
         try
         {
             auto callbackArgs = new CallbackEventArgs();
@@ -118,9 +118,9 @@ public class IupLabel : IupStandardControl
     */
     public EventHandler!(CallbackEventArgs, int, int, string)  mouseMove;
     mixin EventCallbackAdapter!(IupLabel, "mouseMove", int, int, const(char)*);
-    private CallbackResult onMouseMove(int x, int y, const(char) *status) nothrow
+    private IupElementAction onMouseMove(int x, int y, const(char) *status) nothrow
     {       
-        CallbackResult r = CallbackResult.Default;
+        IupElementAction r = IupElementAction.Default;
         try
         {
             auto callbackArgs = new CallbackEventArgs();
@@ -444,9 +444,9 @@ public class IupLinkLabel : IupLabel
     */
     EventHandler!(CallbackEventArgs, string)  linkClicked;
     mixin EventCallbackAdapter!(IupLinkLabel, "linkClicked", char*);
-    private CallbackResult onLinkClicked(char *url) nothrow
+    private IupElementAction onLinkClicked(char *url) nothrow
     {       
-        CallbackResult r = CallbackResult.Default;
+        IupElementAction r = IupElementAction.Default;
         try
         {
             auto callbackArgs = new CallbackEventArgs();

@@ -64,7 +64,7 @@ public class TrayTestDialog : IupDialog
     private void dialog_closing(Object sender, CallbackEventArgs e)
     {
         this.canHideTaskBar = true;
-        e.result = CallbackResult.Ignore;
+        e.result = IupElementAction.Ignore;
     }
 
     private void dialog_trayClick(Object sender, CallbackEventArgs e, int button, bool pressed, bool dclick)
@@ -110,7 +110,7 @@ public class TrayTestDialog : IupDialog
     {
         this.close();
         //this.dispose();
-        //e.result = CallbackResult.Close;
+        //e.result = IupElementActionClose;
     }
 
 

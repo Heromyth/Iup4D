@@ -93,7 +93,7 @@ public class TextSpinTestDialog : IupDialog
         }
 
         if(pos == 10)
-            e.result = CallbackResult.Ignore;
+            e.result = IupElementAction.Ignore;
     }
 
 

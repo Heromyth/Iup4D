@@ -42,7 +42,7 @@ public class ColorBarTestDialog : IupDialog
         cb = new IupColorBar();
         cb.rasterSize = Size(70, 0);
         cb.expandOrientation = ExpandOrientation.Vertical;
-        cb.groupNumber = 2;
+        cb.divisionNumber = 2;
         cb.canShowSecondary = true;
         cb.previewSize = 60;
         //cb.backgroundColor = "128 0 255";
@@ -128,7 +128,7 @@ public class ColorBarTestDialog : IupDialog
         Color color = cb.getCellColor(cell);
         printf("cell_cb(%d): %d, %d, %d\n", cell, color.R, color.G, color.B);
 
-        args.result = CallbackResult.Ignore;
+        args.result = IupElementAction.Ignore;
         args.color = Colors.Red;
     }
 

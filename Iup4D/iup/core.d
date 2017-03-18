@@ -13,6 +13,7 @@ import toolkit.string;
 import toolkit.event;
 import toolkit.drawing;
 
+
 /**
 Defines a method to release allocated resources.
 */
@@ -25,19 +26,16 @@ interface IDisposable
     void dispose();
 }
 
+
 /**
 */
 interface IIupObject
 {
-    @property 
-	{
-		Ihandle*  handle();
-	}
+    @property Ihandle*  handle();
 
     /**
     */
     @property bool isValid();
-
 
     /**
     Name of the control inside the dialog. Not releated to IupSetHandle.
@@ -47,7 +45,6 @@ interface IIupObject
 		string name();
 		void name(string value);
 	}
-
 }
 
 
@@ -61,8 +58,6 @@ class IupObject : IIupObject
 		enum Name =          "NAME";
         enum Wid = "WID";
     }
-
-
 
     //~this()
     //{
@@ -111,9 +106,7 @@ class IupObject : IIupObject
 	}
 
 
-
     /* ************* Protected methods *************** */
-
 
     /**
     */
@@ -132,7 +125,8 @@ class IupObject : IIupObject
     /**
     It can store only constant strings (like "Title", "30", etc) or application pointers. 
     The given value is not duplicated as a string, only a reference is stored. 
-    Therefore, you can store application custom attributes, such as a context structure to be used in a callback.
+    Therefore, you can store application custom attributes, such as a context structure 
+    to be used in a callback.
     */
     void setAttribute(string name, string value)
     {
@@ -148,7 +142,8 @@ class IupObject : IIupObject
     }
 
     /**
-    this function automatically creates a non conflict name and associates the name with the attribute.
+    this function automatically creates a non conflict name and associates the name with 
+    the attribute.
     */
     protected void setHandleAttribute(string name, IIupObject value)
     {
@@ -179,7 +174,7 @@ class IupObject : IIupObject
     protected void setIdAttribute(string name, int id, string value)
     {
         iup.c.api.IupSetAttributeId(this.handle, std.string.toStringz(name),
-                                id, std.string.toStringz(value));
+                                    id, std.string.toStringz(value));
     }
 
     /**
@@ -251,7 +246,7 @@ class IupObject : IIupObject
         return iup.c.api.IupGetIntInt(handle, std.string.toStringz(name), &i1, &i2);
     }
 
-    protected void* getPointerAttribute(string name) // AsPointer
+    protected void* getPointerAttribute(string name) // As a void pointer
     {
         return cast(void*)iup.c.api.IupGetAttribute(handle, std.string.toStringz(name));
     }
@@ -260,8 +255,6 @@ class IupObject : IIupObject
     {
         return iup.c.api.IupGetAttributeHandle(handle, std.string.toStringz(name));
     }
-
- 
 }
 
 
@@ -273,6 +266,13 @@ class IupDisposableObject : IupObject, IDisposable
     this()
     {
         onCreating();
+        onCreated();
+    }
+
+    this(Ihandle* handle)
+    {
+        assert(handle !is null);
+        m_handle = handle;
         onCreated();
     }
 
@@ -461,6 +461,15 @@ class IupElement : IupDisposableObject
         void foregroundColor(string value)  { setAttribute(IupAttributes.FgColor, value); }
     }
 
+    /**
+    Returns the name of the class of an interface element.
+    */
+    @property string className() { 
+        auto v = iup.c.api.IupGetClassName(handle);
+        return std.string.fromStringz(v).idup;
+    }
+
+
 
     /**
     Element’s title. It is often used to modify some static text of the element (which cannot
@@ -600,7 +609,7 @@ class IupExternalElement : IupObject
 /**
 The callbacks implemented in C by the application must return one of the following values
 */
-enum CallbackResult
+enum IupElementAction
 {
     /**
     Proceeds normally with user interaction. 
@@ -609,8 +618,8 @@ enum CallbackResult
     Default = IUP_DEFAULT,
 
     /**
-    Call IupExitLoop after return. Depending on the state of the application it will close all windows 
-    and exit the application. Applies only to some actions. 
+    Call IupExitLoop after return. Depending on the state of the application it will close
+    all windows and exit the application. Applies only to some actions. 
     */
     Close = IUP_CLOSE,
 
@@ -620,8 +629,8 @@ enum CallbackResult
     Ignore = IUP_IGNORE,
 
     /**
-    Makes the element to ignore the callback and pass the treatment of the execution to the parent element. 
-    Applies only to some actions. 
+    Makes the element to ignore the callback and pass the treatment of the execution to the 
+    parent element. Applies only to some actions. 
     */
     Continue = IUP_CONTINUE
 }
@@ -631,22 +640,78 @@ enum CallbackResult
 */
 class CallbackEventArgs : EventArgs
 {
-
     bool isHandled;
-    CallbackResult result;
+    IupElementAction result;
 
     this()
     {
         isHandled = false;
-        result = CallbackResult.Default;
+        result = IupElementAction.Default;
     }
 
-    this(CallbackResult result)
+    this(IupElementAction result)
     {
         isHandled = false;
         this.result = result;
     }
 }
+
+
+/**
+*/
+interface ICallbackResult(T)
+{
+    @property
+    {
+        T value() nothrow;
+        void value(T r) nothrow;
+    }
+}
+
+
+/**
+*/
+class CallbackResult(T) : ICallbackResult!T
+{
+    @property
+    {
+        T value() nothrow { return m_value; }
+        void value(T r) nothrow { m_value = r; }
+        private T m_value;
+    }
+
+    this()
+    {
+    }
+
+    this(T v)
+    {
+        m_value = v;
+    }
+}
+
+
+alias ActionCallbackResult = CallbackResult!(IupElementAction); 
+alias IntCallbackResult = CallbackResult!(int); 
+
+alias DefaultActionCallbackResult = CallbackResult!(IupElementAction, IupElementAction.Default);
+
+/**
+*/
+class CallbackResult(T, T defaultValue) : CallbackResult!T
+{
+
+    this()
+    {
+        super(defaultValue);
+    }
+
+    this(T v)
+    {
+        super(defaultValue);
+    }
+}
+
 
 
 /**
@@ -679,10 +744,10 @@ mixin template EventCallbackAdapter(T, string eventName, TEventArgs...)
     }.format(eventName, capitalizedName));
 }
 
-
 /**
 Callback Adapter and Default EventHandler
 */
+deprecated("using IupEventHandler instead")
 mixin template EventCallback(T, string eventName, TEventArgs...)
 {
     import toolkit.string : capitalize;
@@ -693,13 +758,46 @@ mixin template EventCallback(T, string eventName, TEventArgs...)
     mixin("EventHandler!(CallbackEventArgs, TEventArgs) "  ~ eventName ~ ";");
 
     mixin(q{
-        private CallbackResult on%2$s(TEventArgs args) nothrow
+        private int on%2$s(TEventArgs args) nothrow
         {
-            CallbackResult r = CallbackResult.Default;
+            IupElementAction r = IupElementAction.Default;
             try {
                 auto callbackArgs = new CallbackEventArgs();
                 %1$s(this, callbackArgs, args); 
                 r = callbackArgs.result;
+            }
+            catch(Exception ex) { /* do nothing. */ }
+            return cast(int)r;
+        }
+    }.format(eventName, capitalizedName));
+
+    mixin EventCallbackAdapter!(T, eventName, TEventArgs);
+}
+
+
+/**
+*/
+mixin template IupEventHandler(T, string eventName, TResponseResults, TEventArgs...)
+//if(is(T == IEventResult))
+//if(IEventResult in BaseTypeTuple!TEventResults)
+{
+    import toolkit.string : capitalize;
+    import toolkit.event;
+
+    enum capitalizedName = capitalize(eventName);
+    alias ResultType = typeof(TResponseResults.value);
+
+    mixin("EventHandler!(CallbackResult!ResultType, TEventArgs) "  ~ eventName ~ ";");
+    //mixin("EventHandler!(EventArgs, TEventArgs) "  ~ eventName ~ ";");
+
+    mixin(q{
+        private ResultType on%2$s(TEventArgs args) nothrow
+        {
+            ResultType r = ResultType.init;
+            try {
+                auto response = new TResponseResults();
+                %1$s(this, response, args); 
+                r = response.value;
             }
             catch(Exception ex) { /* do nothing. */ }
             return r;
@@ -710,6 +808,8 @@ mixin template EventCallback(T, string eventName, TEventArgs...)
 }
 
 
+/**
+*/
 mixin template FunctionCallbackAdapter(string eventName, TEventArgs...)
 {
     import std.format:format;
@@ -734,6 +834,9 @@ mixin template FunctionCallbackAdapter(string eventName, TEventArgs...)
     }.format(eventName, capitalizedName));
 }
 
+
+/**
+*/
 mixin template FunctionCallback(string eventName, TEventArgs...)
 {
     import toolkit.string : capitalize;
@@ -744,9 +847,9 @@ mixin template FunctionCallback(string eventName, TEventArgs...)
     mixin("static CallbackHandler!(CallbackEventArgs, TEventArgs) "  ~ eventName ~ ";");
 
     mixin(q{
-        private static CallbackResult on%2$s(TEventArgs args) nothrow
+        private static IupElementAction on%2$s(TEventArgs args) nothrow
         {
-            CallbackResult r = CallbackResult.Default;
+            IupElementAction r = IupElementAction.Default;
             try {
                 auto callbackArgs = new CallbackEventArgs();
                 %1$s(callbackArgs, args); 
@@ -761,8 +864,9 @@ mixin template FunctionCallback(string eventName, TEventArgs...)
 }
 
 
-
-final class GlobalAttributes
+/**
+*/
+struct GlobalAttributes
 {
 	// General 
 	enum Language =      "LANGUAGE";
@@ -1286,9 +1390,9 @@ struct ToggleStateIdentifiers
 public enum SimpleExpandOrientation
 {
     None,
-    Horizontal,
-    Vertical,
-    Both
+        Horizontal,
+        Vertical,
+        Both
 }
 
 
@@ -1553,7 +1657,7 @@ struct IupImages
     enum Petrobras = "IUP_Petrobras"; 
 
     enum CircleProgressAnimation = "IUP_CircleProgressAnimation"; 
-    
+
 
     /* // NOT included in the pre-compiled library, since 3.3
     enum IconMessageSecurity = "IUP_IconMessageSecurity"; 
@@ -1753,7 +1857,7 @@ struct NumberMaskStyle
 
     /// unsigned floating point number
     enum UFloatComma = "(/d+/,?/d*|/,/d+)";
-    
+
 }
 
 

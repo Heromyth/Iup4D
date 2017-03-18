@@ -9,17 +9,17 @@ version(Windows) {
 }
 
 
-import std.container.array;
-import std.stdio;
 import std.algorithm;
 //import std.exception;
-import std.string;
-import std.traits;
 import std.conv;
+import std.container.array;
 import std.file;
-import std.path;
 import std.format;
 import std.math;
+import std.path;
+import std.stdio;
+import std.string;
+import std.traits;
 
 import core.stdc.stdlib; 
 
@@ -40,6 +40,7 @@ import ColorTest;
 import ContainerTest;
 import HmiControlsTest;
 import DialogTest;
+import GridTest;
 import IdleTest;
 import LabelTest;
 import ListTest;
@@ -61,7 +62,6 @@ public class MainForm : IupDialog
 {
     private IupListBox listBox;
     private Array!TestElement testItems; 
-    //Appender!TestElement testItems;
 
     this() 
     {
@@ -97,11 +97,11 @@ public class MainForm : IupDialog
         this.closing += &dialog_closing;
 
         //resetUserSize();
-
     }
 
     private void dialog_loaded(Object sender, CallbackEventArgs args)
     {
+
         //for(int i=0; i<testItems.length; i++)
         //{
         //    listBox.items.append(testItems[i].title);
@@ -114,7 +114,7 @@ public class MainForm : IupDialog
 
     private void dialog_closing(Object sender, CallbackEventArgs e)
     {
-        e.result = CallbackResult.Close;
+        e.result = IupElementAction.Close;
     }
 
     private void listBox_keyPress(Object sender, CallbackEventArgs e, int key)
@@ -200,6 +200,18 @@ public class MainForm : IupDialog
                 dialog = new CanvasScrollbarTestDialog();
                 break;
 
+            case TestElements.CellsCheckboard:
+                dialog = new CellsCheckboardTestDialog();
+                break;
+
+            case TestElements.CellsDegrade:
+                dialog = new CellsDegradeTestDialog();
+                break;
+
+            case TestElements.CellsNumbering:
+                dialog = new CellsNumberingTestDialog();
+                break;
+
             case TestElements.Clipboard:
                 dialog = new ClipboardTestDialog();
                 break;
@@ -218,6 +230,10 @@ public class MainForm : IupDialog
 
             case TestElements.Dialog:
                 dialog = new DialogTestDialog();
+                break;
+
+            case TestElements.Expander:
+                dialog = new ExpanderTestDialog();
                 break;
 
             case TestElements.GridBox:
@@ -278,6 +294,10 @@ public class MainForm : IupDialog
 
             case TestElements.Sbox:
                 dialog = new SboxTestDialog();
+                break;
+
+            case TestElements.ScrollBox:
+                dialog = new ScrollBoxTestDialog();
                 break;
 
             case TestElements.SplitContainer:
@@ -345,11 +365,15 @@ public class MainForm : IupDialog
         testItems.insertBack(new TestElement(TestElements.CanvasCDDBuffer, TestElements.CanvasCDDBuffer));
         testItems.insertBack(new TestElement(TestElements.CanvasOpenGL, TestElements.CanvasOpenGL));
         testItems.insertBack(new TestElement(TestElements.CanvasScrollbar, TestElements.CanvasScrollbar));
+        testItems.insertBack(new TestElement(TestElements.CellsCheckboard, TestElements.CellsCheckboard));
+        testItems.insertBack(new TestElement(TestElements.CellsDegrade, TestElements.CellsDegrade));
+        testItems.insertBack(new TestElement(TestElements.CellsNumbering, TestElements.CellsNumbering));
         testItems.insertBack(new TestElement(TestElements.Clipboard, TestElements.Clipboard));
         testItems.insertBack(new TestElement(TestElements.ColorBar, TestElements.ColorBar));
         testItems.insertBack(new TestElement(TestElements.ColorBrowser, TestElements.ColorBrowser));
         testItems.insertBack(new TestElement(TestElements.Dial, TestElements.Dial));
         testItems.insertBack(new TestElement(TestElements.Dialog, TestElements.Dialog));
+        testItems.insertBack(new TestElement(TestElements.Expander, TestElements.Expander));
         testItems.insertBack(new TestElement(TestElements.FlatButton, TestElements.FlatButton));
         testItems.insertBack(new TestElement(TestElements.GetColorDialog, TestElements.GetColorDialog));
         testItems.insertBack(new TestElement(TestElements.GridBox, TestElements.GridBox));
@@ -366,6 +390,7 @@ public class MainForm : IupDialog
         testItems.insertBack(new TestElement(TestElements.ProgressDialog, TestElements.ProgressDialog));
         testItems.insertBack(new TestElement(TestElements.Slider, "Val(Slider)"));
         testItems.insertBack(new TestElement(TestElements.Sbox, TestElements.Sbox));
+        testItems.insertBack(new TestElement(TestElements.ScrollBox, TestElements.ScrollBox));
         testItems.insertBack(new TestElement(TestElements.SplitContainer, TestElements.SplitContainer));
         testItems.insertBack(new TestElement(TestElements.SpinBox, TestElements.SpinBox));
         testItems.insertBack(new TestElement(TestElements.SysInfo, TestElements.SysInfo));
@@ -392,11 +417,15 @@ struct TestElements
     enum CanvasCDDBuffer = "CanvasCDDBuffer";
     enum CanvasOpenGL = "CanvasOpenGL";
     enum CanvasScrollbar = "CanvasScrollbar";
+    enum CellsCheckboard = "CellsCheckboard";
+    enum CellsDegrade = "CellsDegrade";
+    enum CellsNumbering = "CellsNumbering";
     enum Clipboard = "Clipboard";
     enum ColorBar = "ColorBar";
     enum ColorBrowser = "ColorBrowser";
-    enum Dialog = "Dialog";
     enum Dial = "Dial";
+    enum Dialog = "Dialog";
+    enum Expander = "Expander";
     enum FlatButton = "FlatButton";
     enum GetColorDialog = "GetColorDialog";
     enum GridBox = "GridBox";
@@ -413,6 +442,7 @@ struct TestElements
     enum ProgressDialog = "ProgressDialog";
     enum Slider = "Slider";
     enum Sbox = "Sbox";
+    enum ScrollBox = "ScrollBox";
     enum SplitContainer = "SplitContainer";
     enum SpinBox = "SpinBox";
     enum SysInfo = "SysInfo";

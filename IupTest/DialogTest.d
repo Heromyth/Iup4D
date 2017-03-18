@@ -124,14 +124,14 @@ public class DialogTestDialog : IupDialog
         IupDialog dialog = cast(IupDialog)sender;
         writefln("CLOSE_CB(%s) with IupDestroy", dialog.title);
         //this.dispose();
-        //e.result = CallbackResult.Ignore;
+        //e.result = IupElementAction.Ignore;
     }
 
     private void dialog_closing2(Object sender, CallbackEventArgs e)
     {
         IupDialog dialog = cast(IupDialog)sender;
         writefln("CLOSE_CB(%s) with IUP_IGNORE", dialog.title);
-        e.result = CallbackResult.Ignore;
+        e.result = IupElementAction.Ignore;
     }
 
     private void dialog_destroying(Object sender, CallbackEventArgs args)
@@ -243,11 +243,11 @@ public class DialogTestDialog : IupDialog
 
             case Keys.ESC:
                 dialog.close();
-                args.result = CallbackResult.Ignore;
+                args.result = IupElementAction.Ignore;
                 break;
 
             case Keys.c:
-                args.result = CallbackResult.Close;
+                args.result = IupElementAction.Close;
                 break;
 
             case Keys.h:
@@ -466,7 +466,7 @@ public class DialogTestDialog : IupDialog
     private void dialog_sizeChanged(Object sender, CallbackEventArgs args, int width, int height)
     {
         IupDialog dialog = cast(IupDialog)sender;
-        writefln("RESIZE_CB(%s, %d, %d) RASTERSIZE=%s CLIENTSIZE=%s", dialog.title, width, height, 
+        writefln("RESIZE_CB(%s, width=%d, height=%d) RASTERSIZE=%s CLIENTSIZE=%s", dialog.title, width, height, 
                IupSize.format(dialog.rasterSize), IupSize.format(dialog.clientSize));
     }
 
@@ -599,7 +599,7 @@ public class ProgressDialogTestDialog : IupDialog
         else
         {
             //dialog.state = ProgressDialogState.Processing;
-            args.result = CallbackResult.Continue;
+            args.result = IupElementAction.Continue;
         }
     }
 
@@ -624,7 +624,7 @@ public class ProgressDialogTestDialog : IupDialog
         }
         writefln("End");
         Application.exitLoop();
-        //args.result = CallbackResult.Close;
+        //args.result = IupElementActionClose;
     }
 
 

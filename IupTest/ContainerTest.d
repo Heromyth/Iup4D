@@ -23,6 +23,223 @@ import toolkit.input;
 import toolkit.drawing;
 
 
+// 32x32 8-bit
+private const(ubyte)[] img_bits2 = [
+    2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2
+        ,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2
+        ,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,2
+        ,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,2,2
+        ,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,2,2,2
+        ,2,2,2,2,2,2,2,2,2,2,3,3,3,3,1,1,3,3,3,3,3,3,3,3,3,3,2,2,2,2,2,2
+        ,2,2,2,2,2,2,2,2,2,3,3,3,3,3,1,1,3,3,3,3,3,3,3,3,3,2,2,2,2,2,2,2
+        ,2,2,2,2,2,2,2,2,3,3,3,3,3,3,1,1,3,3,3,3,3,3,3,3,2,2,2,2,2,2,2,2
+        ,3,3,3,3,3,3,3,3,3,3,3,3,3,3,1,1,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3
+        ,3,3,3,3,3,3,3,3,3,3,3,3,3,3,1,1,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3
+        ,3,3,3,0,3,3,3,3,3,3,3,3,3,3,1,1,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3
+        ,3,3,3,0,3,3,3,3,3,3,3,3,3,3,1,1,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3
+        ,3,3,3,0,3,0,3,0,3,3,0,3,3,3,1,1,0,3,3,3,0,0,3,0,3,3,0,0,0,3,3,3
+        ,3,3,3,0,3,0,0,3,0,0,3,0,3,0,1,1,3,0,3,0,3,3,0,0,3,0,3,3,3,0,3,3
+        ,3,3,3,0,3,0,3,3,0,3,3,0,3,3,1,1,3,0,3,0,3,3,3,0,3,0,3,3,3,0,3,3
+        ,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+        ,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+        ,3,3,3,0,3,0,3,3,0,3,3,0,3,0,1,1,3,0,3,0,3,3,0,0,3,0,3,3,3,0,3,3
+        ,3,3,3,0,3,0,3,3,0,3,3,0,3,3,1,1,0,0,3,3,0,0,3,0,3,3,0,0,0,3,3,3
+        ,3,3,3,3,3,3,3,3,3,3,3,3,3,3,1,1,3,3,3,3,3,3,3,0,3,3,3,3,3,3,3,3
+        ,3,3,3,3,3,3,3,3,3,3,3,3,3,3,1,1,3,3,3,0,3,3,3,0,3,3,3,3,3,3,3,3
+        ,3,3,3,3,3,3,3,3,3,3,3,3,3,3,1,1,3,3,3,3,0,0,0,3,3,3,3,3,3,3,3,3
+        ,3,3,3,3,3,3,3,3,3,3,3,3,3,3,1,1,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3
+        ,3,3,3,3,3,3,3,3,3,3,3,3,3,3,1,1,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3
+        ,2,2,2,2,2,2,2,3,3,3,3,3,3,3,1,1,3,3,3,3,3,2,2,2,2,2,2,2,2,2,2,2
+        ,2,2,2,2,2,2,3,3,3,3,3,3,3,3,1,1,3,3,3,3,2,2,2,2,2,2,2,2,2,2,2,2
+        ,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2
+        ,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2
+        ,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2
+        ,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2
+        ,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2
+        ,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2
+];
+
+
+public class ExpanderTestDialog : IupDialog
+{
+    this() 
+    {
+        super();
+    }
+
+    protected override void initializeComponent() 
+    {
+        IupImage8 img2 = new IupImage8(32, 32, img_bits2);
+        img2.setColor(0, Color.fromRgb(0, 0, 0));
+        img2.setColor(1, Color.fromRgb(0, 255, 0));
+        img2.useBackground(2);
+        img2.setColor(3, Color.parse("255 0 0"));
+
+        IupImage8 image_close = new IupImage8(16, 16, img_plus);
+        image_close.useBackground(0);
+        image_close.setColor(1, Color.parse("255 255 255"));
+
+        IupImage8 image_high = new IupImage8(16, 16, img_plus);
+        image_high.useBackground(0);
+        image_high.setColor(1, Color.fromRgb(192, 192, 192));
+
+        IupImage8 image_open = new IupImage8(16, 16, img_minus);
+        image_open.useBackground(0);
+        image_close.setColor(1, Color.parse("255 255 255"));
+
+        //
+        IupButton btn1 = new IupButton("Button Text");
+        btn1.padding = Size(5, 5);
+        btn1.tipText = "Button TIP";
+
+        IupButton btn2 = new IupButton("Text");
+        btn2.padding = Size(5, 5);
+
+        IupVbox vbox1 = new IupVbox(btn1, btn2);
+
+        //
+        IupToggle toggle1 = new IupToggle("Toggle Text");
+        toggle1.isChecked = true;
+        toggle1.tipText = "Toggle TIP";
+
+        IupToggle toggle2 = new IupToggle();
+        toggle2.isChecked = true;
+        toggle2.image = IupImages.Tecgraf;
+        toggle2.imagePressed = img2;
+
+        IupToggle toggle3 = new IupToggle();
+        toggle3.isChecked = true;
+        toggle3.image = IupImages.Tecgraf;
+
+        IupRadioGroup radioGroup = new IupRadioGroup(new IupVbox(new IupToggle("Toggle Text"),
+                                                                 new IupToggle("Toggle Text")));
+        IupGroupBox groupBox = new IupGroupBox(radioGroup);
+        groupBox.title = "IupRadio";
+
+        IupVbox vbox3 = new IupVbox(toggle1, toggle2, toggle3, groupBox);
+
+        IupBackgroundBox backgroundBox = new IupBackgroundBox(vbox3);
+        backgroundBox.backgroundColor = "255 255 255";
+        backgroundBox.hasBorder = true;
+        //backgroundBox.setPaintEvent(false);
+
+        IupExpander _frm_3 = new IupExpander(backgroundBox);
+        _frm_3.title = "IupExpander";
+        _frm_3.foregroundColor = "255 255 255";
+        _frm_3.barBackground = "100 150 250";
+        _frm_3.animationStyle = ExpanderAnimationStyle.Slide;
+        //_frm_3.barSize = 50;
+        _frm_3.canTitleExpand = true;
+        _frm_3.titleHighlightColor = "192 192 192";
+        
+        //_frm_3.titleOpenColor = "0 0 192";
+
+        _frm_3.extraButtonsCount = 3;
+        _frm_3.setExtraButtonImage(1, image_close);
+        _frm_3.setExtraButtonPressedImage(1, image_open);
+        _frm_3.setExtraButtonHighlightImage(1, image_high);
+
+        _frm_3.setExtraButtonImage(2, image_close);
+        _frm_3.setExtraButtonPressedImage(2, image_open);
+        _frm_3.setExtraButtonHighlightImage(2, image_high);
+
+        _frm_3.setExtraButtonImage(3, image_close);
+        _frm_3.setExtraButtonPressedImage(3, image_open);
+        _frm_3.setExtraButtonHighlightImage(3, image_high);
+
+        _frm_3.stateChanged += &_frm_3_stateChanged;
+        _frm_3.stateChanging += &_frm_3_stateChanging;
+        _frm_3.extraMouseClick += &_frm_3_extraMouseClick;
+
+
+        IupHbox _hbox_1 = new IupHbox(
+                          //    _frm_1,
+                          //    _frm_2,
+                          _frm_3,
+                          //    _frm_4,
+                          //    _frm_5
+                          );
+
+        IupVbox _vbox_1 = new IupVbox(
+                          _hbox_1);
+
+        _vbox_1.margin = Size(5, 5);
+        _vbox_1.gap = 5;
+
+
+        this.child = _vbox_1;
+        this.title = "IupExpander Test";
+        this.margin = Size(10, 10);
+
+        this.loaded += &dialog_loaded;
+    }
+
+    private void dialog_loaded(Object sender, CallbackEventArgs e)
+    {
+    }
+
+    private void _frm_3_stateChanged(Object sender, CallbackEventArgs e)
+    {
+        IupElement element = cast(IupElement)sender;
+        writef("ACTION(%s)\n", element.className);
+    }
+
+    private void _frm_3_stateChanging(Object sender, CallbackEventArgs e, ExpanderState state)
+    {
+        IupElement element = cast(IupElement)sender;
+        writef("OPENCLOSE_CB(%s, state=%s)\n", element.className, state);
+    }
+
+    private void _frm_3_extraMouseClick(Object sender, CallbackEventArgs e, 
+                                   int button, MouseState mouseState)
+    {
+        IupElement element = cast(IupElement)sender;
+        writef("EXTRABUTTON_CB(%s, but=%s, press=%s)\n", element.className, button, mouseState);
+    }
+
+
+    // 16x16 8-bit
+    private const(ubyte)[] img_plus = [
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0,
+        0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+    ];
+
+    // 16x16 8-bit
+    private const(ubyte)[] img_minus = [
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0,
+        0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+    ];
+}
+
+
 public class GridBoxTestDialog : IupDialog
 {
 
@@ -231,6 +448,99 @@ public class HboxTestDialog : IupDialog
         this.gap = 10;
         this.title = "IupHbox Test";
     }
+}
+
+
+public class ScrollBoxTestDialog : IupDialog
+{
+    this() 
+    {
+        super();
+    }
+
+    protected override void initializeComponent() 
+    {
+        IupImage8 img2 = new IupImage8(32, 32, img_bits2);
+        img2.setColor(0, Color.fromRgb(0, 0, 0));
+        img2.setColor(1, Color.fromRgb(0, 255, 0));
+        img2.useBackground(2);
+        img2.setColor(3, Color.parse("255 0 0"));
+
+
+        //
+        IupButton btn1 = new IupButton("Button Text");
+        btn1.padding = Size(5, 5);
+        btn1.tipText = "Button TIP";
+
+        IupButton btn2 = new IupButton("Text");
+        btn2.padding = Size(5, 5);
+
+        IupVbox vbox1 = new IupVbox(btn1, btn2);
+
+        //
+        IupToggle toggle1 = new IupToggle("Toggle Text");
+        toggle1.isChecked = true;
+        toggle1.tipText = "Toggle TIP";
+
+        IupToggle toggle2 = new IupToggle();
+        toggle2.isChecked = true;
+        toggle2.image = IupImages.Tecgraf;
+        toggle2.imagePressed = img2;
+
+        IupToggle toggle3 = new IupToggle();
+        toggle3.isChecked = true;
+        toggle3.image = IupImages.Tecgraf;
+
+        IupRadioGroup radioGroup = new IupRadioGroup(new IupVbox(new IupToggle("Toggle Text"),
+                                                                 new IupToggle("Toggle Text")));
+        IupGroupBox groupBox = new IupGroupBox(radioGroup);
+        groupBox.title = "IupRadio";
+
+        IupVbox vbox3 = new IupVbox(toggle1, toggle2, toggle3, groupBox);
+        IupGroupBox _frm_3 = new IupGroupBox(vbox3);
+        _frm_3.title = "IupToggle";
+
+
+        IupHbox _hbox_1 = new IupHbox(
+                                      //    _frm_1,
+                                      //    _frm_2,
+                                      _frm_3
+                                      //    _frm_4,
+                                      //    _frm_5
+                                      );
+
+        IupVbox _vbox_1 = new IupVbox(
+                                      _hbox_1);
+
+        _vbox_1.margin = Size(5, 5);
+        _vbox_1.gap = 5;
+
+        IupScrollBox scrollBox = new IupScrollBox(_vbox_1);
+        scrollBox.canAutoUpdateLayout = true;
+
+        IupVbox _vbox_2 = new IupVbox(scrollBox);
+
+        this.child = _vbox_2;
+        this.title = "IupScrollBox Test";
+        this.margin = Size(10, 10);
+        this.rasterSize = Size(150, 150);
+
+        this.loaded += &dialog_loaded;
+        this.sizeChanged += &dialog_sizeChanged;
+    }
+
+    private void dialog_loaded(Object sender, CallbackEventArgs e)
+    {
+    }
+
+
+    private void dialog_sizeChanged(Object sender, CallbackEventArgs args, int width, int height)
+    {
+        IupDialog dialog = cast(IupDialog)sender;
+        writefln("RESIZE_CB(%s, width=%d, height=%d) RASTERSIZE=%s CLIENTSIZE=%s", dialog.title, width, height, 
+                 IupSize.format(dialog.rasterSize), IupSize.format(dialog.clientSize));
+    }
+
 }
 
 

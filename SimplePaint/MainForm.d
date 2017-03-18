@@ -460,7 +460,7 @@ class ToolboxDialog : IupDialog
 
     private void dialog_closing(Object sender, CallbackEventArgs e)
     {
-        //e.result = CallbackResult.Ignore;
+        //e.result = IupElementAction.Ignore;
     }
 
     // 16x16 32-bit
@@ -933,8 +933,8 @@ public class MainForm : IupDialog
     private void dialog_closing(Object sender, CallbackEventArgs e)
     {
         performExit();
-        //e.result = CallbackResult.Ignore;
-        e.result = CallbackResult.Close;
+        //e.result = IupElementAction.Ignore;
+        e.result = IupElementAction.Close;
     }
 
 
@@ -1332,7 +1332,7 @@ public class MainForm : IupDialog
         string outText;
 
         outText = std.format.format("resolution : %d x %d", currentImage.width, currentImage.height);
-        outText ~= std.format.format("\ndepth : %d", currentImage.planeNumber);
+        outText ~= std.format.format("\ndepth : %d", currentImage.planesCount);
         outText ~= std.format.format("\nsize(bytes) : %d", currentImage.size);
         outText ~= std.format.format("\nisAlpha : %s", to!string(currentImage.hasAlpha));
         cdCanvas.drawText(20,200, outText);
@@ -1863,7 +1863,7 @@ public class MainForm : IupDialog
         //statusLabel.title  = format("fileName:%s, Number=%d, x=%d, y=%d", fileName, number, x, y);
 
         //if(number < 2)
-        //    e.result = CallbackResult.Ignore;
+        //    e.result = IupElementAction.Ignore;
     }
 
 
@@ -1929,10 +1929,10 @@ public class MainForm : IupDialog
             performExit();
             //config.dispose();
             //this.close();
-            e.result = CallbackResult.Close;
+            e.result = IupElementAction.Close;
         }
         else
-            e.result = CallbackResult.Ignore;
+            e.result = IupElementAction.Ignore;
     }
 
     private void performExit()
