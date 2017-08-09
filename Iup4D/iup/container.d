@@ -1438,7 +1438,7 @@ public class IupContainerControlBase(T) : IupControl
     Inserts an interface element before another child of the container. Valid for any element 
     that contains other elements like dialog, frame, hbox, vbox, zbox, menu, etc.
     */
-    protected void itemsInserted(Object sender, int index, T[] items)
+    protected void itemsInserted(Object sender, size_t index, T[] items)
     {
         T current = m_items[index+items.length];
         foreach(T c ; items)
@@ -1450,9 +1450,9 @@ public class IupContainerControlBase(T) : IupControl
     /**
     All the specified items will be removed and destroyed.
     */
-    protected void itemsRemoved(Object sender, int index, int count)
+    protected void itemsRemoved(Object sender, size_t index, size_t count)
     {
-        for(int i=index; i<index+count; i++)
+        for(size_t i=index; i<index+count; i++)
         {
             T c = m_items[index];
             if(c !is null) iup.c.IupDestroy(c.handle);

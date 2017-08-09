@@ -76,7 +76,7 @@ public class IupMenu : IupElement
     Inserts an interface element before another child of the container. Valid for any element 
     that contains other elements like dialog, frame, hbox, vbox, zbox, menu, etc.
     */
-    private void itemsInserted(Object sender, int index, IupMenuElement[] items)
+    private void itemsInserted(Object sender, size_t index, IupMenuElement[] items)
     {
         IupMenuElement current = m_items[index+items.length];
         foreach(IupMenuElement c ; items)
@@ -89,9 +89,9 @@ public class IupMenu : IupElement
     /**
     to be removed
     */
-    private void itemsRemoved(Object sender, int index, int count)
+    private void itemsRemoved(Object sender, size_t index, size_t count)
     {
-        for(int i=index; i<index+count; i++)
+        for(size_t i=index; i<index+count; i++)
         {
             IupMenuElement c = m_items[index];
             if(c is null) continue;

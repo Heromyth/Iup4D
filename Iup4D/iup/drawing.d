@@ -117,16 +117,16 @@ public class IupDraw
     */
     void drawPolygon(Point!int[] points)
     {
-        int count = points.length;
+        size_t count = points.length;
         int[] p = new int[count * 2];
         int j= 0;
-        for(int i=0; i<count; i++)
+        for(size_t i=0; i<count; i++)
         {
             p[j] = points[i].x;
             p[j+1] = points[i].y;
             j += 2;
         }
-        iup.c.api.IupDrawPolygon(m_handle, p.ptr, count);
+        iup.c.api.IupDrawPolygon(m_handle, p.ptr, cast(int)count);
     }
 
     /**
@@ -136,7 +136,7 @@ public class IupDraw
     */
     void drawText(string str, int x, int y)
     {
-        iup.c.api.IupDrawText(m_handle, str.ptr, str.length, x, y);
+        iup.c.api.IupDrawText(m_handle, str.ptr, cast(int) str.length, x, y);
     }
 
     /**

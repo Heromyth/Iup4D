@@ -93,11 +93,11 @@ public class Font
         //{
         //}
 
-        int styleIndex = font.indexOf(',');
+        ptrdiff_t styleIndex = font.indexOf(',');
         string fontName = font[0..styleIndex];
         styleIndex++;
 
-        int sizeIndex = font.lastIndexOf(' ');
+        ptrdiff_t sizeIndex = font.lastIndexOf(' ');
 
         FontStyle style = FontStyles.Plain;
         if(sizeIndex > styleIndex)

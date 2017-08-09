@@ -3,23 +3,29 @@ Iup4D is a D binding library for IUP with OOP style. Its API is similar to WinFo
 
 Copyright © 2016-2017 BitWorld. All Rights Reserved.
 
-
-## Requirements
-Library | Version
---- | ---
-DMD | 2.071.2
-Visual D | 0.3.44 beta 1 (Patched with #67)
-IUP | 3.20
-DerelictGL3 | 2.0
-
-
-## Status
-It's still under active development and is only tested on Windows X86.
-
 ## License
 This software is licensed under the Boost Software License, Version 1.0.
 
 For more details, see the full text of the license in the file Boost.txt.
+
+## Requirements
+Tools | Version
+--- | ---
+DMD | 2.075
+DUB | 1.4.0
+Visual D | 0.45.0
+IUP | 3.22
+DerelictGL3 | 2.0
+
+
+## Build status
+Platform | Building | Runing
+--- | --- | ---
+Windows x86 | succeeded | succeeded
+Windows x64 | succeeded | crashed
+Linux | Todo | Todo
+
+
 
 ## Example
 ```D
@@ -96,6 +102,10 @@ class MainForm : IupDialog
     }
 }
 ```
+
+
+    // dub build :simple-demo --arch=x86_mscoff --build=debug --compiler=dmd
+
 
 ## Screenshots
 ![Paint](Screenshots/Simple%20Paint.png)

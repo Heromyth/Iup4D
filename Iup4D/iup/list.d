@@ -103,7 +103,7 @@ public class IupListControl : IupStandardControl
         m_scrollBar = new IupScrollBar(this);
     }
 
-    private void itemUpdated(Object sender, int index, string newValue)
+    private void itemUpdated(Object sender, size_t index, string newValue)
     {
         setAttribute(to!string(index+1), newValue);
     }
@@ -125,9 +125,9 @@ public class IupListControl : IupStandardControl
     /**
     Inserts an item before the given index position.
     */
-    private void itemsInserted(Object sender, int index, string[] items)
+    private void itemsInserted(Object sender, size_t index, string[] items)
     {
-        for(int i=0; i<items.length; i++)
+        for(size_t i=0; i<items.length; i++)
         {
             // inserts an item before the given id position. id starts at 1. If id=COUNT+1 then it will
             // append after the last item. Ignored if out of bounds. Ignored if set before map.
@@ -141,10 +141,10 @@ public class IupListControl : IupStandardControl
     /**
     to be removed
     */
-    private void itemsRemoved(Object sender, int index, int count)
+    private void itemsRemoved(Object sender, size_t index, size_t count)
     {
         string id = to!string(index+1);
-        for(int i=0; i<count; i++)
+        for(size_t i=0; i<count; i++)
         {
             setAttribute(IupAttributes.RemoveItem, id);
         }

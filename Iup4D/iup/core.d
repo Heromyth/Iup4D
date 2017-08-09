@@ -171,10 +171,10 @@ class IupObject : IIupObject
 
     /**
     */
-    protected void setIdAttribute(string name, int id, string value)
+    protected void setIdAttribute(string name, size_t id, string value)
     {
         iup.c.api.IupSetAttributeId(this.handle, std.string.toStringz(name),
-                                    id, std.string.toStringz(value));
+                                    cast(int)id, std.string.toStringz(value));
     }
 
     /**
@@ -1717,14 +1717,13 @@ struct IupSize
 	{
 
 		Size r = Size(0,0);
-		int index = 0;
-		index = std.string.indexOf(s, 'x');
+		auto index = std.string.indexOf(s, 'x');
 		if(index == -1)
 			return r;
 
 		r.width = to!int(s[0..index]);
 
-		int length = s.length;
+		auto length = s.length;
 		if(s[$-1] == '\0')
 			length--;
 
@@ -1762,14 +1761,13 @@ struct IupOffsetXY
 	static OffsetXY parse(const(char)[] s )
 	{
 		OffsetXY r = OffsetXY(0,0);
-		int index = 0;
-		index = std.string.indexOf(s, 'x');
+		int index = cast(int) std.string.indexOf(s, 'x');
 		if(index == -1)
 			return r;
 
 		r.dx = to!int(s[0..index]);
 
-		int length = s.length;
+		int length = cast(int) s.length;
 		if(s[$-1] == '\0')
 			length--;
 

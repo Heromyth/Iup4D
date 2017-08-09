@@ -52,6 +52,7 @@
   <otherDMD>0</otherDMD>
   <cccmd>$(CC) -c</cccmd>
   <ccTransOpt>1</ccTransOpt>
+  <addDepImp>0</addDepImp>
   <program>$(DMDInstallDir)windows\bin\dmd.exe</program>
   <imppath>..\Iup4D;..\DerelictOrg</imppath>
   <fileImppath />
@@ -154,6 +155,7 @@
   <otherDMD>0</otherDMD>
   <cccmd>$(CC) -c</cccmd>
   <ccTransOpt>1</ccTransOpt>
+  <addDepImp>0</addDepImp>
   <program>$(DMDInstallDir)windows\bin\dmd.exe</program>
   <imppath>..\Iup4D;..\DerelictOrg</imppath>
   <fileImppath />
@@ -256,6 +258,7 @@
   <otherDMD>0</otherDMD>
   <cccmd>$(CC) -c</cccmd>
   <ccTransOpt>1</ccTransOpt>
+  <addDepImp>0</addDepImp>
   <program>$(DMDInstallDir)windows\bin\dmd.exe</program>
   <imppath />
   <fileImppath />
@@ -358,6 +361,7 @@
   <otherDMD>0</otherDMD>
   <cccmd>$(CC) -c</cccmd>
   <ccTransOpt>1</ccTransOpt>
+  <addDepImp>0</addDepImp>
   <program>$(DMDInstallDir)windows\bin\dmd.exe</program>
   <imppath />
   <fileImppath />
@@ -409,6 +413,38 @@
   <filesToClean>*.obj;*.cmd;*.build;*.json;*.dep</filesToClean>
  </Config>
  <Folder name="IupTest">
+  <Folder name="source">
+   <File path="source\ButtonTest.d" />
+   <File path="source\CalendarTest.d" />
+   <File path="source\CanvasTest.d" />
+   <File path="source\ClipboardTest.d" />
+   <File path="source\ColorTest.d" />
+   <File path="source\ContainerTest.d" />
+   <File path="source\DialogTest.d" />
+   <File path="source\GridTest.d" />
+   <File path="source\HboxTest.d" />
+   <File path="source\HmiControlsTest.d" />
+   <File path="source\IdleTest.d" />
+   <File path="source\LabelTest.d" />
+   <File path="source\ListTest.d" />
+   <File path="source\main.d" />
+   <File path="source\MainForm.d" />
+   <File path="source\MdiTest.d" />
+   <File path="source\MenuTest.d" />
+   <File path="source\PredefinedDialogsTest.d" />
+   <File path="source\ProgressBarTest.d" />
+   <File path="source\SboxTest.d" />
+   <File path="source\SliderTest.d" />
+   <File path="source\SplitTest.d" />
+   <File path="source\SysInfoTest.d" />
+   <File path="source\TextSpinTest.d" />
+   <File path="source\TextTest.d" />
+   <File path="source\TimerTest.d" />
+   <File path="source\ToggleTest.d" />
+   <File path="source\TrayTest.d" />
+   <File path="source\VboxTest.d" />
+   <File path="source\ZboxTest.d" />
+  </Folder>
   <Folder name="Resources">
    <File path="Resources\iup.manifest" />
    <File path="Resources\iuptest.rc" />
@@ -417,31 +453,5 @@
    <File path="Resources\tecgraf.ico" />
    <File path="Resources\test_sizes.ico" />
   </Folder>
-  <File path="ButtonTest.d" />
-  <File path="CalendarTest.d" />
-  <File path="CanvasTest.d" />
-  <File path="ClipboardTest.d" />
-  <File path="ColorTest.d" />
-  <File path="ContainerTest.d" />
-  <File path="DialogTest.d" />
-  <File path="GridTest.d" />
-  <File path="HmiControlsTest.d" />
-  <File path="IdleTest.d" />
-  <File path="LabelTest.d" />
-  <File path="ListTest.d" />
-  <File path="main.d" />
-  <File path="MainForm.d" />
-  <File path="MdiTest.d" />
-  <File path="MenuTest.d" />
-  <File path="PredefinedDialogsTest.d" />
-  <File path="ProgressBarTest.d" />
-  <File path="SliderTest.d" />
-  <File path="SplitTest.d" />
-  <File path="SysInfoTest.d" />
-  <File path="TextSpinTest.d" />
-  <File path="TextTest.d" />
-  <File path="TimerTest.d" />
-  <File path="ToggleTest.d" />
-  <File path="TrayTest.d" />
  </Folder>
 </DProject>

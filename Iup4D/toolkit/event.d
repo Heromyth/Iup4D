@@ -183,8 +183,8 @@ struct CallbackHandler(T...)
             m_handler ~= handler;
         else static if(op == "-")
         {  
-            int len = m_handler.length;
-            for(int i=0; i<len; i++)
+            size_t len = m_handler.length;
+            for(size_t i=0; i<len; i++)
             {
                 if(m_handler[i] == handler)
                 {

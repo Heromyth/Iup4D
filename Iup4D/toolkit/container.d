@@ -186,9 +186,9 @@ class ItemCollection(T, bool isObservable=true) : EnumerableCollection!(T)
     static if(isObservable)
     {
         EventHandler!(T[]) appended;
-        EventHandler!(int, T[]) inserted;
-        EventHandler!(int, int) removed;
-        EventHandler!(int, T) updated;
+        EventHandler!(size_t, T[]) inserted;
+        EventHandler!(size_t, size_t) removed;
+        EventHandler!(size_t, T) updated;
         EventHandler!() cleared;
     }
 
@@ -236,7 +236,7 @@ class ItemCollection(T, bool isObservable=true) : EnumerableCollection!(T)
 
     /**
     */
-    void insert(int index, T[] items...)
+    void insert(size_t index, T[] items...)
     {
         T current = m_collection[index];
         auto r = std.algorithm.find(m_collection[], current);
