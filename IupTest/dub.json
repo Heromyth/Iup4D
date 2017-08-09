@@ -1,0 +1,14 @@
+{
+    "name": "iup-test",
+    "targetName": "IupTest",
+    "targetType": "executable",
+    "dependencies": {
+        "iup4d": {
+            "path": "../"
+        }
+    },
+    "preBuildCommands":[
+        "rc /foIupTest\\iuptest.res IupTest\\Resources\\iuptest.rc"
+    ],
+    "sourceFiles-windows":["iuptest.res"]
+}

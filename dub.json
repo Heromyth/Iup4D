@@ -1,0 +1,41 @@
+{
+	"name": "iup4d",
+	"targetName": "Iup4D",
+	"targetType": "staticLibrary",
+	"authors": [
+		"BitWorld"
+	],
+	"description": "Iup4D is a binding library for IUP in D language with OOP style.",
+	"copyright": "Copyright © 2017, BitWorld",
+	"license": "BSD 3-clause",
+	"sourcePaths": [
+		"Iup4D"
+	],
+	"importPaths": [
+		"Iup4D"
+	],
+	"dependencies": {
+		"iup4d:derelictorg": "*"
+	},
+	"lflags-windows-x86_mscoff": [
+		"/LIBPATH:.\\Thirdparties\\lib32mscoff"
+	],
+	"libs-windows-x86_mscoff": [
+		"msvcrtd",
+		"User32"
+	],
+	"lflags-windows-x86_64": [
+		"/LIBPATH:.\\Thirdparties\\lib64mscoff"
+	],
+	"libs-windows-x86_64": [
+		"msvcrtd",
+		"User32"
+	],
+	"subPackages": [
+		"DerelictOrg",
+		"IupTest",
+		"Examples/SimpleDemo",
+		"Examples/WindowsDemo",
+		"Examples/SimplePaint"
+	]
+}

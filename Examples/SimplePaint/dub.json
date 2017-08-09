@@ -1,0 +1,16 @@
+{
+    "name": "simple-paint",
+    "targetName": "SimplePaint",
+    "targetType": "executable",
+    "sourcePaths": [
+        "."
+    ],
+    "importPaths": [
+        "."
+    ],
+    "dependencies": {
+        "iup4d": {
+            "path": "../../"
+        }
+    }
+}

@@ -1,0 +1,11 @@
+{
+    "name": "derelictorg",
+    "targetName": "DerelictOrg",
+    "targetType": "library",
+    "sourcePaths": [
+        "."
+    ],
+    "importPaths": [
+        "."
+    ]
+}

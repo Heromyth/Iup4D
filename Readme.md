@@ -17,15 +17,12 @@ Visual D | 0.45.0
 IUP | 3.22
 DerelictGL3 | 2.0
 
-
 ## Build status
 Platform | Building | Runing
 --- | --- | ---
-Windows x86 | succeeded | succeeded
-Windows x64 | succeeded | crashed
+Windows x86(mscoff) | succeeded | succeeded
+Windows x64 | succeeded | IupTest crashed
 Linux | Todo | Todo
-
-
 
 ## Example
 ```D
@@ -103,9 +100,47 @@ class MainForm : IupDialog
 }
 ```
 
+## Directories
+Name | Description
+--- | ---
+Iup4D | The core library
+DerelictOrg | OpenGL binding library
+IupTest | The test program for Iup4D
+Examples | Some simple demos for Iup4D
+Thirdparties | The import librares from IUP 
 
-    // dub build :simple-demo --arch=x86_mscoff --build=debug --compiler=dmd
 
+## Build
+
+### Preparation
+
+- Windows
+
+1. IUP libraries
+
+Download the IUP develop libraries and extract all `.lib` files to the `Thirdparties` directory. See also, [Readme.md](Thirdparties/lib32mscoff/Readme.md). 
+
+2. Resource compiler
+
+It can be found in `C:\Program Files (x86)\Windows Kits\10\bin\x86` on Windows 10. Make sure that it can be searched in environment variable `PATH`.
+
+### Visual D
+
+You can use Visual D to build Iup4D on Windows.
+
+### DUB
+
+1. build core lib
+```sh
+dub build --arch=x86_mscoff --build=release --compiler=dmd
+```
+2. build examples
+```sh
+dub build :simple-demo --arch=x86_mscoff --build=release --compiler=dmd
+dub build :windows-demo --arch=x86_mscoff --build=release --compiler=dmd
+dub build :simple-paint --arch=x86_mscoff --build=release --compiler=dmd
+dub build :iup-test --arch=x86_mscoff --build=release --compiler=dmd
+```
 
 ## Screenshots
 ![Paint](Screenshots/Simple%20Paint.png)

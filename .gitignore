@@ -26,7 +26,6 @@ bld/
 *.VC.db
 
 
-
 # DUB
 .dub
 docs.json
@@ -37,11 +36,19 @@ docs/
 # Code coverage
 *.lst
 
-# zxp
+# custom
 *.bak
 *.doc
 *.docx
+*.exe
 *.lib
 *.rar
 *.zip
+*/logs/
+*/bak/
+Thirdparties/*.lib
+temp/
 Generated_Code/
+Iup.NET/
+WindowsFormsTest/
+WpfApplication*/

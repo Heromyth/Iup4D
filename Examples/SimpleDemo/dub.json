@@ -1,0 +1,16 @@
+{
+    "name": "simple-demo",
+    "targetName": "SimpleDemo",
+    "targetType": "executable",
+    "sourcePaths": [
+        "."
+    ],
+    "importPaths": [
+        "."
+    ],
+    "dependencies": {
+        "iup4d": {
+            "path": "../../"
+        }
+    }
+}

@@ -1,0 +1,16 @@
+{
+    "name": "windows-demo",
+    "targetName": "WindowsDemo",
+    "targetType": "executable",
+    "sourcePaths": [
+        "."
+    ],
+    "importPaths": [
+        "."
+    ],
+    "dependencies": {
+        "iup4d": {
+            "path": "../../"
+        }
+    }
+}
